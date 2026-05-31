@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia do Jogador — Jornada PIPE</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:18px;--shadow:0 12px 36px rgba(2,6,23,.10);--gold:#f59e0b;--ok:#10b981}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:30px 18px}
+.wrap{max-width:1000px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:34px 38px;box-shadow:var(--shadow);text-align:center}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:5px 14px;border-radius:999px;font-size:13px;font-weight:700;margin-bottom:12px;letter-spacing:.5px}
+.hero h1{font-size:34px;margin-bottom:10px}
+.hero p{opacity:.94;font-size:17px;max-width:680px;margin:0 auto;line-height:1.5}
+section{background:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow);margin-top:20px}
+section h2{font-size:22px;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+section h2 .n{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800}
+section p{font-size:15.5px;line-height:1.6;margin-bottom:10px}
+.strip{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.fase{flex:1;min-width:150px;border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:5px solid var(--brand)}
+.fase b{font-size:14px}.fase small{display:block;color:var(--muted);font-size:12.5px;margin-top:3px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-top:6px}
+.card{border:1.5px solid var(--line);border-radius:12px;padding:16px}
+.card .em{font-size:26px}.card h3{font-size:15px;margin:6px 0 4px}.card p{font-size:13px;color:var(--muted);margin:0;line-height:1.45}
+.lvls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:14px;font-weight:700;color:var(--muted)}
+.lvls .ar{color:var(--brand)}
+.steps{counter-reset:s;list-style:none}
+.steps li{position:relative;padding:10px 0 10px 44px;font-size:15px;line-height:1.5;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.tip{background:var(--soft);border-left:5px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14.5px;line-height:1.55;margin-top:6px}
+.golden{background:#fffbeb;border-left:5px solid var(--gold)}
+.cta{text-align:center;margin-top:24px}
+.cta a{display:inline-block;background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;font-weight:800;text-decoration:none;padding:15px 30px;border-radius:14px;font-size:17px;box-shadow:var(--shadow)}
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:26px}
+b.h{color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="hero">
+  <span class="badge">GUIA DO JOGADOR</span>
+  <h1>🎮 A Travessia do Vale da Morte</h1>
+  <p>Bem-vindos! A partir de hoje, seu grupo é uma <b>startup</b>. A missão do semestre: atravessar o “Vale da Morte” — onde a maioria das ideias morre por falta de recurso — e chegar ao <b>Demo Day</b> com uma proposta pronta para o PIPE FAPESP.</p>
+ </div>
+
+ <section>
+  <h2><span class="n">1</span>Como o jogo funciona</h2>
+  <p>São <b>12 missões</b> (uma por aula), organizadas em <b>5 fases</b>. Cada missão usa uma ferramenta interativa e gera uma entrega — e essas entregas, somadas, viram a sua proposta final.</p>
+  <div class="strip">
+   <div class="fase"><b>Fase 1 · Descobrir</b><small>Achar o problema certo</small></div>
+   <div class="fase"><b>Fase 2 · Idear</b><small>Gerar e escolher a solução</small></div>
+   <div class="fase"><b>Fase 3 · Validar</b><small>Provar valor e inovação</small></div>
+   <div class="fase"><b>Fase 4 · Financiar</b><small>Achar o edital certo</small></div>
+   <div class="fase"><b>Fase 5 · Defender</b><small>A batalha final: o pitch</small></div>
+  </div>
+ </section>
+
+ <section>
+  <h2><span class="n">2</span>Como pontuar</h2>
+  <div class="cards">
+   <div class="card"><div class="em">⭐</div><h3>XP</h3><p>+100 por missão concluída. O XP faz sua startup subir de nível.</p></div>
+   <div class="card"><div class="em">💰</div><h3>Capital Semente</h3><p>+50 por missão. Moeda do jogo, que pode ser trocada por ajudas na Loja.</p></div>
+   <div class="card"><div class="em">🏅</div><h3>Conquistas</h3><p>Badges desbloqueadas ao completar fases e marcos especiais.</p></div>
+   <div class="card"><div class="em">🃏</div><h3>Cartas de Evento</h3><p>Imprevistos do mundo real — alguns dão bônus, outros são desafios.</p></div>
+  </div>
+  <p style="margin-top:14px">Sua startup evolui de nível conforme acumula XP:</p>
+  <div class="lvls">🌱 Garagem <span class="ar">→</span> 🔧 MVP <span class="ar">→</span> 🚀 Tração <span class="ar">→</span> 📈 Escala <span class="ar">→</span> 🏆 Pronto pro Demo Day</div>
+ </section>
+
+ <section>
+  <h2><span class="n">3</span>Regras de ouro</h2>
+  <div class="tip golden">🏆 <b>Qualidade vence quantidade.</b> Concluir a missão não é só clicar — é entregar a peça com capricho. A banca final avalia o conteúdo, não o número de cliques.</div>
+  <div class="tip" style="margin-top:10px">🔒 As missões abrem em <b>ordem</b>: termine uma para liberar a próxima. (O professor pode ativar o “Modo livre” quando quiser.)</div>
+  <div class="tip" style="margin-top:10px">💾 <b>Salve sempre.</b> O jogo guarda no navegador, mas o que vale para entregar é o <b>boletim exportado</b> (veja o passo 5).</div>
+ </section>
+
+ <section>
+  <h2><span class="n">4</span>Como jogamos — aula a aula</h2>
+  <ol class="steps">
+   <li>No início, cada grupo cria sua startup (Termo de Abertura) e recebe o <b>Mapa da Jornada</b>.</li>
+   <li>A cada aula, avançamos <b>uma ou mais missões</b>: usamos a ferramenta em grupo e concluímos a missão no mapa.</li>
+   <li>Ao concluir, vocês ganham XP e Capital Semente — e veem a barra de progresso subir.</li>
+   <li>No fim de cada aula, o grupo <b>exporta o boletim</b> e entrega ao professor (assim o progresso fica registrado).</li>
+   <li>Na última aula é o <b>Demo Day</b>: pitch de 8 minutos para a banca. Quem atravessou o vale, conquista o financiamento.</li>
+  </ol>
+ </section>
+
+ <section>
+  <h2><span class="n">5</span>Como salvar e entregar o trabalho</h2>
+  <p>Dois níveis de salvamento, ambos sem precisar de login:</p>
+  <div class="tip">💾 <b>Em cada widget</b>: o botão <b>Salvar</b> baixa um <code>.json</code> daquela ferramenta, e <b>Carregar</b> recupera depois. Bom para retomar uma ferramenta específica.</div>
+  <div class="tip" style="margin-top:10px">📤 <b>No Mapa da Jornada</b>: o botão <b>“Exportar boletim”</b> gera <b>um único arquivo</b> com TODO o trabalho da startup (XP, missões e o conteúdo de todas as ferramentas). <b>É esse arquivo que vocês entregam ao professor.</b></div>
+  <div class="tip golden" style="margin-top:10px">⚠️ <b>Importante:</b> o progresso fica no navegador daquele computador. Se forem trocar de máquina, exportem o boletim antes e usem <b>“Importar boletim”</b> no outro computador.</div>
+ </section>
+
+ <div class="cta"><a href="mapa_jornada.html">🗺️ Abrir o Mapa da Jornada e começar →</a></div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+</body>
+</html>

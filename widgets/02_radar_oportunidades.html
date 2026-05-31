@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Radar de Oportunidades</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--warn:#f59e0b;--ok:#10b981}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1080px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:18px;margin-bottom:12px}
+.row{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+input[type=text]{flex:1;min-width:200px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+select{border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer;font-size:14px}
+.btn.alt{background:var(--soft);color:var(--muted)}
+.matrix{position:relative;height:420px;border:1.5px solid var(--line);border-radius:12px;margin-top:14px;background:linear-gradient(135deg,#fff,#f0fdfa)}
+.axis{position:absolute;color:var(--muted);font-size:12px;font-weight:600}
+.dot{position:absolute;transform:translate(-50%,50%);background:var(--brand);color:#fff;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:600;box-shadow:var(--shadow);cursor:default;white-space:nowrap}
+.quad{position:absolute;font-size:11px;color:#94a3b8;font-weight:700}
+.item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:14px}
+.item button{border:none;background:none;color:var(--warn);cursor:pointer;font-weight:700}
+.hmw{background:var(--soft);border-left:4px solid var(--accent);padding:12px 16px;border-radius:8px;font-size:14.5px;margin-top:10px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 2 · JORNADA PIPE</span>
+  <h1>🎯 Radar de Oportunidades & Caça-Problemas</h1>
+  <p>Inovação que recebe fomento resolve uma dor real. Liste problemas/dores que vocês observam, classifique por <b>frequência</b> (quão comum) e <b>intensidade</b> (quão dói), e veja quais merecem virar projeto. Depois, transforme o problema escolhido em uma pergunta "Como poderíamos...?".</p></div>
+
+ <div class="panel">
+  <h2>1. Cadastre as dores observadas</h2>
+  <div class="row">
+   <input id="txt" type="text" placeholder="Ex.: pequenas vinícolas perdem 20% da safra por falta de previsão de geada">
+   <select id="freq"><option value="1">Frequência: rara</option><option value="3" selected>Frequência: média</option><option value="5">Frequência: altíssima</option></select>
+   <select id="inten"><option value="1">Intensidade: leve</option><option value="3" selected>Intensidade: média</option><option value="5">Intensidade: grave</option></select>
+   <button class="btn" onclick="add()">+ Adicionar</button>
+  </div>
+  <div id="list"></div>
+ </div>
+
+ <div class="panel">
+  <h2>2. Matriz Frequência × Intensidade</h2>
+  <small>Canto superior direito = dores frequentes e graves → melhores candidatas a virar projeto PIPE.</small>
+  <div class="matrix" id="matrix">
+   <div class="axis" style="left:8px;top:6px;">↑ Intensidade</div>
+   <div class="axis" style="right:8px;bottom:6px;">Frequência →</div>
+   <div class="quad" style="right:14px;top:14px;">🔥 PRIORIDADE</div>
+   <div class="quad" style="left:14px;top:14px;">nicho intenso</div>
+   <div class="quad" style="left:14px;bottom:24px;">descartar</div>
+   <div class="quad" style="right:14px;bottom:24px;">incômodo comum</div>
+  </div>
+ </div>
+
+ <div class="panel">
+  <h2>3. Reframe: "Como poderíamos...?"</h2>
+  <div class="row"><select id="pick"></select><button class="btn" onclick="hmw()">Gerar pergunta</button>
+   <button class="btn alt" onclick="exportTxt()">⬇ Exportar</button></div>
+  <div id="hmwout"></div>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+
+<script>
+let D=JSON.parse(localStorage.getItem("radar")||"[]");
+function save(){localStorage.setItem("radar",JSON.stringify(D))}
+function add(){const t=document.getElementById("txt").value.trim();if(!t)return;
+ D.push({t,f:+freq.value,i:+inten.value});document.getElementById("txt").value="";save();render()}
+function del(i){D.splice(i,1);save();render()}
+function render(){
+ document.getElementById("list").innerHTML=D.map((d,i)=>`<div class="item"><span>${d.t} <small>(freq ${d.f} · int ${d.i})</small></span><button onclick="del(${i})">remover</button></div>`).join("")||"<small>Nenhuma dor cadastrada ainda.</small>";
+ const m=document.getElementById("matrix");[...m.querySelectorAll(".dot")].forEach(e=>e.remove());
+ D.forEach((d,i)=>{const x=8+(d.f-1)/4*84,y=8+(d.i-1)/4*84;const el=document.createElement("div");el.className="dot";
+  el.style.left=x+"%";el.style.bottom=y+"%";el.style.background=(d.f>=4&&d.i>=4)?"#ef4444":"var(--brand)";
+  el.textContent=(i+1)+". "+d.t.slice(0,22)+(d.t.length>22?"…":"");m.appendChild(el)});
+ document.getElementById("pick").innerHTML=D.map((d,i)=>`<option value="${i}">${i+1}. ${d.t.slice(0,40)}</option>`).join("");
+}
+function hmw(){const i=+document.getElementById("pick").value;if(isNaN(i)||!D[i])return;
+ const verbs=["reduzir","eliminar","antecipar","monitorar","automatizar","baratear"];
+ const v=verbs[Math.floor(Math.random()*verbs.length)];
+ document.getElementById("hmwout").innerHTML=`<div class="hmw"><b>Como poderíamos ${v}</b> a dor: "${D[i].t}" <b>de forma inovadora e tecnicamente viável?</b><br><small>Use esta pergunta para abrir o brainstorming da próxima aula (Osborn / SCAMPER).</small></div>`}
+function exportTxt(){let s="RADAR DE OPORTUNIDADES — Jornada PIPE\n\n";D.forEach((d,i)=>s+=`${i+1}. ${d.t} | freq ${d.f} | int ${d.i}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="radar_oportunidades.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="radar",_FN="radar_oportunidades";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

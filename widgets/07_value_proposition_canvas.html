@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Proposition Canvas</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1120px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+@media(max-width:760px){.cols{grid-template-columns:1fr}}
+.side{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.side h2{font-size:17px;margin-bottom:4px}.side .sh{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.sq{background:var(--brand)}.sc{background:var(--accent)}
+.block{border:1.5px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+.block h3{font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.tag{font-size:18px}
+.it{display:flex;justify-content:space-between;gap:8px;background:var(--soft);border-radius:8px;padding:7px 10px;font-size:13.5px;margin-bottom:6px}
+.it button{border:none;background:none;color:#f59e0b;cursor:pointer;font-weight:700}
+.add{display:flex;gap:6px}.add input{flex:1;border:1.5px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px}
+.add button{border:none;background:var(--brand);color:#fff;border-radius:8px;padding:0 14px;cursor:pointer;font-weight:700}
+.btn{background:#fff;color:var(--muted);border:1.5px solid var(--line);border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer;margin-top:14px}
+.fit{text-align:center;background:#fff;border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-top:18px;font-size:14px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 7 · JORNADA PIPE</span>
+  <h1>💎 Value Proposition Canvas</h1>
+  <p>Antes do modelo de negócios, o encaixe (fit): o que o cliente precisa × o que você entrega. Preencha o <b>perfil do cliente</b> (à direita) e só depois o <b>mapa de valor</b> (à esquerda). Cada aliviador de dor deve responder a uma dor real.</p></div>
+
+ <div class="cols">
+  <div class="side">
+   <h2 style="color:var(--accent)">🎁 Mapa de Valor</h2><div class="sh">O que a sua solução oferece</div>
+   <div class="block"><h3><span class="tag">🛠️</span> Produtos & Serviços</h3><div id="L_prod"></div><div class="add"><input id="i_prod" placeholder="adicionar..."><button onclick="add('prod')">+</button></div></div>
+   <div class="block"><h3><span class="tag">🩹</span> Aliviadores de Dor</h3><div id="L_alivio"></div><div class="add"><input id="i_alivio" placeholder="adicionar..."><button onclick="add('alivio')">+</button></div></div>
+   <div class="block"><h3><span class="tag">🚀</span> Geradores de Ganho</h3><div id="L_ganho"></div><div class="add"><input id="i_ganho" placeholder="adicionar..."><button onclick="add('ganho')">+</button></div></div>
+  </div>
+  <div class="side">
+   <h2 style="color:var(--brand)">👤 Perfil do Cliente</h2><div class="sh">Quem você quer atender</div>
+   <div class="block"><h3><span class="tag">✅</span> Tarefas (Jobs)</h3><div id="L_jobs"></div><div class="add"><input id="i_jobs" placeholder="adicionar..."><button onclick="add('jobs')">+</button></div></div>
+   <div class="block"><h3><span class="tag">😣</span> Dores</h3><div id="L_dores"></div><div class="add"><input id="i_dores" placeholder="adicionar..."><button onclick="add('dores')">+</button></div></div>
+   <div class="block"><h3><span class="tag">😍</span> Ganhos desejados</h3><div id="L_gdesejo"></div><div class="add"><input id="i_gdesejo" placeholder="adicionar..."><button onclick="add('gdesejo')">+</button></div></div>
+  </div>
+ </div>
+ <div class="fit" id="fit"></div>
+ <div style="text-align:center"><button class="btn" onclick="exportTxt()">⬇ Exportar canvas</button></div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+<script>
+const K=["prod","alivio","ganho","jobs","dores","gdesejo"];
+let S=JSON.parse(localStorage.getItem("vpc")||"null")||{prod:[],alivio:[],ganho:[],jobs:[],dores:[],gdesejo:[]};
+function save(){localStorage.setItem("vpc",JSON.stringify(S))}
+function add(k){const el=document.getElementById("i_"+k);if(!el.value.trim())return;S[k].push(el.value.trim());el.value="";save();render()}
+function del(k,i){S[k].splice(i,1);save();render()}
+function render(){
+ K.forEach(k=>document.getElementById("L_"+k).innerHTML=S[k].map((x,i)=>`<div class="it"><span>${x}</span><button onclick="del('${k}',${i})">✕</button></div>`).join(""));
+ const tot=K.reduce((a,k)=>a+S[k].length,0),need=S.dores.length+S.gdesejo.length,have=S.alivio.length+S.ganho.length;
+ document.getElementById("fit").innerHTML=`<b>Encaixe:</b> ${have} respostas de valor para ${need} necessidades do cliente. ${have>=need&&need>0?"✅ Bom equilíbrio — cada dor/ganho parece endereçado.":"⚠️ Garanta que cada dor e ganho do cliente tenha um aliviador ou gerador correspondente."}`;
+}
+function exportTxt(){const lbl={prod:"Produtos & Serviços",alivio:"Aliviadores de Dor",ganho:"Geradores de Ganho",jobs:"Tarefas do Cliente",dores:"Dores",gdesejo:"Ganhos Desejados"};
+ let s="VALUE PROPOSITION CANVAS — Jornada PIPE\n\n";K.forEach(k=>{s+=lbl[k]+":\n"+(S[k].map(x=>"  - "+x).join("\n")||"  (vazio)")+"\n\n"});
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="value_proposition_canvas.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="vpc",_FN="value_proposition_canvas";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

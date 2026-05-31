@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TRL & Caráter Inovador</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981;--warn:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1060px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:18px;margin-bottom:14px}
+.trl{display:flex;gap:6px;flex-wrap:wrap}
+.step{flex:1;min-width:90px;border:2px solid var(--line);border-radius:10px;padding:10px;cursor:pointer;text-align:center;transition:.15s}
+.step.on{border-color:var(--brand);background:#eef2ff}
+.step b{display:block;font-size:20px;color:var(--brand)}
+.step small{font-size:10.5px;color:var(--muted);line-height:1.3;display:block;margin-top:4px}
+.desc{margin-top:14px;background:var(--soft);border-radius:10px;padding:14px;font-size:14.5px}
+.chk{display:flex;align-items:flex-start;gap:10px;padding:10px;border-bottom:1px solid var(--line);font-size:14px}
+.chk input{margin-top:3px;width:18px;height:18px}
+.gauge{height:14px;background:var(--soft);border-radius:999px;overflow:hidden;margin:14px 0 6px}
+.gauge>div{height:100%;background:linear-gradient(90deg,var(--brand),var(--accent));width:0;transition:.3s}
+.verdict{font-size:15px;font-weight:700;padding:12px 16px;border-radius:10px;margin-top:10px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer;margin-top:12px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 6 · JORNADA PIPE</span>
+  <h1>🚦 Maturidade Tecnológica (TRL) & Caráter Inovador</h1>
+  <p>A FAPESP financia <b>risco tecnológico</b>, não produto pronto. Posicione seu projeto na escala TRL e teste se ele realmente tem caráter inovador — o critério que mais reprova propostas no desk review.</p></div>
+
+ <div class="panel">
+  <h2>1. Onde está sua tecnologia? (TRL 1–9)</h2>
+  <div class="trl" id="trl"></div>
+  <div class="desc" id="trldesc"></div>
+  <small style="display:block;margin-top:8px">💡 PIPE Fase 1 costuma partir de TRL 2–4 (viabilidade). Fase 2 leva o TRL adiante rumo a 6–8.</small>
+ </div>
+
+ <div class="panel">
+  <h2>2. Teste de Caráter Inovador</h2>
+  <div id="chks"></div>
+  <div class="gauge"><div id="g"></div></div>
+  <div class="verdict" id="verdict"></div>
+  <button class="btn" onclick="exportTxt()">⬇ Exportar diagnóstico</button>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+
+<script>
+const TRL=[
+ [1,"Princípios básicos observados","Ideia/conceito científico inicial; ainda só teoria."],
+ [2,"Conceito tecnológico formulado","Aplicação prática imaginada; hipótese de solução."],
+ [3,"Prova de conceito experimental","Primeiros experimentos validam a hipótese em laboratório."],
+ [4,"Validação em laboratório","Componentes integrados funcionam em ambiente controlado."],
+ [5,"Validação em ambiente relevante","Protótipo testado em condições próximas das reais."],
+ [6,"Demonstração em ambiente relevante","Protótipo funcional demonstrado fora do laboratório."],
+ [7,"Demonstração em ambiente operacional","Protótipo opera em condições reais de uso."],
+ [8,"Sistema completo qualificado","Produto final testado e homologado."],
+ [9,"Sistema comprovado em operação","Tecnologia madura, em uso comercial."]];
+const CHK=[
+ "Há novidade real frente ao que já existe no mercado (não é só melhoria incremental óbvia)",
+ "Fizemos busca de anterioridade / estado da arte (patentes, concorrentes, papers)",
+ "Existe risco/incerteza técnica a ser resolvido por pesquisa (não é só engenharia conhecida)",
+ "A solução pode ser protegida ou difícil de copiar (PI, know-how, dado)",
+ "Resolve uma dor relevante de um mercado identificável",
+ "A inovação é tecnicamente plausível com a equipe e o prazo previstos"];
+let S=JSON.parse(localStorage.getItem("trl")||'{"trl":2,"chk":[]}');
+function save(){localStorage.setItem("trl",JSON.stringify(S))}
+function pick(n){S.trl=n;save();render()}
+function tog(i){S.chk[i]=!S.chk[i];save();render()}
+function render(){
+ document.getElementById("trl").innerHTML=TRL.map(t=>`<div class="step ${S.trl==t[0]?'on':''}" onclick="pick(${t[0]})"><b>${t[0]}</b><small>${t[1]}</small></div>`).join("");
+ const cur=TRL.find(t=>t[0]==S.trl);document.getElementById("trldesc").innerHTML=`<b>TRL ${cur[0]} — ${cur[1]}.</b> ${cur[2]}`;
+ document.getElementById("chks").innerHTML=CHK.map((c,i)=>`<label class="chk"><input type="checkbox" ${S.chk[i]?"checked":""} onchange="tog(${i})"><span>${c}</span></label>`).join("");
+ const n=S.chk.filter(Boolean).length,pct=Math.round(n/CHK.length*100);
+ document.getElementById("g").style.width=pct+"%";
+ const v=document.getElementById("verdict");
+ if(pct>=83){v.style.background="#ecfdf5";v.style.color="var(--ok)";v.textContent=`✅ ${pct}% — Forte caráter inovador. Bom candidato a PIPE.`}
+ else if(pct>=50){v.style.background="#fffbeb";v.style.color="var(--warn)";v.textContent=`⚠️ ${pct}% — Caráter inovador parcial. Reforce os itens em aberto.`}
+ else{v.style.background="#fef2f2";v.style.color="#ef4444";v.textContent=`❌ ${pct}% — Risco de desk reject. Pode ser melhoria incremental, não inovação.`}
+}
+function exportTxt(){const cur=TRL.find(t=>t[0]==S.trl);
+ let s=`DIAGNÓSTICO TRL & CARÁTER INOVADOR\n\nTRL atual: ${cur[0]} — ${cur[1]}\n\nChecklist:\n`;
+ CHK.forEach((c,i)=>s+=`  [${S.chk[i]?"X":" "}] ${c}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="diagnostico_trl.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="trl",_FN="diagnostico_trl";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

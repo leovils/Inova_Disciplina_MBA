@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronograma & Riscos</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981;--warn:#f59e0b;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1100px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-top:18px;overflow-x:auto}
+.panel h2{font-size:17px;margin-bottom:12px}
+.gantt{min-width:680px}
+.grow{display:grid;grid-template-columns:200px repeat(9,1fr);align-items:center;gap:2px;margin-bottom:4px}
+.ghead{font-size:11px;color:var(--muted);font-weight:700;text-align:center}
+.cellm{height:26px;background:var(--soft);border-radius:4px;position:relative}
+.barwrap{grid-column:2 / span 9;height:26px;position:relative}
+.bar{position:absolute;height:22px;top:2px;background:linear-gradient(90deg,var(--brand),var(--brand2));border-radius:6px;color:#fff;font-size:11px;display:flex;align-items:center;padding-left:8px;overflow:hidden;white-space:nowrap}
+.actname{font-size:13px;display:flex;justify-content:space-between;align-items:center;padding-right:6px}
+.actname button{border:none;background:none;color:var(--warn);cursor:pointer}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+input,select{border:1.5px solid var(--line);border-radius:8px;padding:8px;font-size:13px}
+input[type=text]{flex:1;min-width:160px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.riskgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:420px;margin-top:8px}
+.rcell{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;cursor:default;position:relative}
+.ritem{display:flex;justify-content:space-between;padding:8px;border-bottom:1px solid var(--line);font-size:13.5px;align-items:center}
+.ritem button{border:none;background:none;color:var(--warn);cursor:pointer}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 10 · JORNADA PIPE</span>
+  <h1>📅 Cronograma & Matriz de Riscos</h1>
+  <p>A FAPESP avalia se o plano cabe no prazo (Fase 1 = 9 meses) e se a equipe enxerga os riscos. Monte o cronograma de atividades/marcos e mapeie o que pode dar errado — com plano de mitigação. Avaliador adora gestão de risco honesta.</p></div>
+
+ <div class="panel">
+  <h2>Cronograma — 9 meses (Fase 1)</h2>
+  <div class="gantt" id="gantt"></div>
+  <div class="row"><input id="aname" type="text" placeholder="Atividade/marco (ex.: validação em laboratório)">
+   <select id="astart"></select>
+   <select id="adur"></select>
+   <button class="btn" onclick="addAct()">+ Atividade</button></div>
+ </div>
+
+ <div class="panel">
+  <h2>Matriz de Riscos (Probabilidade × Impacto)</h2>
+  <div style="display:flex;gap:24px;flex-wrap:wrap">
+   <div><small>Mapa de calor</small><div class="riskgrid" id="heat"></div><small>↑ impacto · → probabilidade</small></div>
+   <div style="flex:1;min-width:280px"><div id="rlist"></div>
+    <div class="row"><input id="rname" type="text" placeholder="Risco (ex.: sensor não atinge precisão)">
+     <select id="rprob"><option value="1">Prob. baixa</option><option value="2">Prob. média</option><option value="3">Prob. alta</option></select>
+     <select id="rimp"><option value="1">Impacto baixo</option><option value="2">Impacto médio</option><option value="3">Impacto alto</option></select>
+     <button class="btn" onclick="addRisk()">+ Risco</button></div>
+    <input id="rmit" type="text" placeholder="Mitigação para o último risco..." style="width:100%;margin-top:6px" onchange="setMit(this.value)">
+   </div>
+  </div>
+  <div class="row"><button class="btn alt" onclick="exportTxt()">⬇ Exportar plano</button></div>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+<script>
+let S=JSON.parse(localStorage.getItem("crono")||"null")||{acts:[],risks:[]};
+document.getElementById("astart").innerHTML=[1,2,3,4,5,6,7,8,9].map(m=>`<option value="${m}">início mês ${m}</option>`).join("");
+document.getElementById("adur").innerHTML=[1,2,3,4,5,6].map(d=>`<option value="${d}">${d} mês(es)</option>`).join("");
+function save(){localStorage.setItem("crono",JSON.stringify(S))}
+function addAct(){const n=document.getElementById("aname").value.trim();if(!n)return;
+ S.acts.push({n,s:+document.getElementById("astart").value,d:+document.getElementById("adur").value});document.getElementById("aname").value="";save();render()}
+function delAct(i){S.acts.splice(i,1);save();render()}
+function addRisk(){const n=document.getElementById("rname").value.trim();if(!n)return;
+ S.risks.push({n,p:+document.getElementById("rprob").value,im:+document.getElementById("rimp").value,mit:""});document.getElementById("rname").value="";save();render()}
+function delRisk(i){S.risks.splice(i,1);save();render()}
+function setMit(v){if(S.risks.length)S.risks[S.risks.length-1].mit=v;save();render()}
+function render(){
+ let g=`<div class="grow"><div></div>${[1,2,3,4,5,6,7,8,9].map(m=>`<div class="ghead">M${m}</div>`).join("")}</div>`;
+ S.acts.forEach((a,i)=>{const left=(a.s-1)/9*100,w=Math.min(a.d,9-a.s+1)/9*100;
+  g+=`<div class="grow"><div class="actname"><span>${a.n}</span><button onclick="delAct(${i})">✕</button></div>
+   <div class="barwrap"><div class="bar" style="left:${left}%;width:${w}%">M${a.s}–${a.s+a.d-1}</div></div></div>`;});
+ if(!S.acts.length)g+=`<small>Adicione atividades para montar o Gantt.</small>`;
+ document.getElementById("gantt").innerHTML=g;
+ // heat 3x3 mapped into 5col? use 3x3
+ const heat=document.getElementById("heat");heat.style.gridTemplateColumns="repeat(3,1fr)";let cells="";
+ for(let im=3;im>=1;im--){for(let p=1;p<=3;p++){const sc=im*p;const col=sc>=6?"var(--danger)":sc>=3?"var(--warn)":"var(--ok)";
+   const here=S.risks.filter(r=>r.p===p&&r.im===im).length;
+   cells+=`<div class="rcell" style="background:${col}">${here?here+" risco(s)":""}</div>`;}}
+ heat.innerHTML=cells;
+ document.getElementById("rlist").innerHTML=S.risks.map((r,i)=>{const sc=r.p*r.im;const col=sc>=6?"var(--danger)":sc>=3?"var(--warn)":"var(--ok)";
+  return `<div class="ritem"><span><b style="color:${col}">●</b> ${r.n} <small>(P${r.p}×I${r.im})</small>${r.mit?"<br><small>↳ "+r.mit+"</small>":""}</span><button onclick="delRisk(${i})">✕</button></div>`}).join("")||"<small>Nenhum risco mapeado.</small>";
+}
+function exportTxt(){let s="CRONOGRAMA & RISCOS — Jornada PIPE\n\nCronograma (Fase 1, 9 meses):\n";
+ S.acts.forEach(a=>s+=`  ${a.n}: M${a.s} a M${a.s+a.d-1}\n`);
+ s+="\nRiscos:\n";S.risks.forEach(r=>s+=`  ${r.n} | Prob ${r.p} × Impacto ${r.im}${r.mit?" | Mitigação: "+r.mit:""}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="cronograma_riscos.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="crono",_FN="cronograma_riscos";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

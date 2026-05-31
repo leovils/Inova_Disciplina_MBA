@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rubrica de Pitch & Submissão</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981;--warn:#f59e0b;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:980px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:17px;margin-bottom:6px}
+.crit{padding:12px 0;border-bottom:1px solid var(--line)}
+.crit .top{display:flex;justify-content:space-between;align-items:center}
+.crit b{font-size:14.5px}.crit small{color:var(--muted)}
+.stars{display:flex;gap:4px}
+.star{font-size:24px;cursor:pointer;color:#cbd5e1;line-height:1}
+.star.on{color:#f59e0b}
+.scorebox{text-align:center;padding:18px;border-radius:14px;margin-top:14px}
+.scorebox .n{font-size:40px;font-weight:800}
+.chk{display:flex;align-items:flex-start;gap:10px;padding:9px;border-bottom:1px solid var(--line);font-size:14px}
+.chk input{margin-top:3px;width:18px;height:18px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer;margin-top:12px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 12 · JORNADA PIPE</span>
+  <h1>🎤 Rubrica de Pitch & Checklist de Submissão</h1>
+  <p>Dia de banca! Use esta rubrica para avaliar (ou autoavaliar) cada pitch como um parecerista FAPESP faria. Depois, rode o checklist de submissão — os itens que mais derrubam propostas no desk review.</p></div>
+
+ <div class="panel">
+  <h2>Rubrica de avaliação <small>(notas de 1 a 5, ponderadas)</small></h2>
+  <div id="crits"></div>
+  <div class="scorebox" id="score"></div>
+  <button class="btn alt" onclick="exportTxt()">⬇ Exportar parecer</button>
+ </div>
+
+ <div class="panel">
+  <h2>Checklist de Submissão PIPE</h2>
+  <div id="chks"></div>
+  <div id="cverdict" style="margin-top:12px;font-weight:700"></div>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+<script>
+const C=[
+ {n:"Problema / dor relevante",w:15,d:"Há dor real, com mercado identificável?"},
+ {n:"Caráter inovador",w:25,d:"Novidade real, risco tecnológico, anterioridade pesquisada"},
+ {n:"Viabilidade técnica e método",w:25,d:"Plano de pesquisa crível, metodologia, marcos, riscos"},
+ {n:"Mercado e modelo de negócio",w:15,d:"Caminho para virar empresa sustentável"},
+ {n:"Equipe e infraestrutura",w:10,d:"Time capaz de executar; recursos disponíveis"},
+ {n:"Clareza e impacto do pitch",w:10,d:"Comunicação objetiva e convincente"}];
+const CHK=["Caráter inovador explicitado e comparado ao estado da arte","Objetivos e metas mensuráveis","Plano de trabalho com cronograma de até 9 meses (Fase 1)","Orçamento dentro do teto e coerente com as atividades","Riscos técnicos identificados com mitigação","Equipe qualificada e infraestrutura descrita","Empresa elegível (≤250 func., P&D em SP)","Resumo claro e sem jargão desnecessário"];
+let S=JSON.parse(localStorage.getItem("rubrica")||"null")||{s:{},chk:[]};
+function save(){localStorage.setItem("rubrica",JSON.stringify(S))}
+function setS(i,v){S.s[i]=v;save();render()}
+function tog(i){S.chk[i]=!S.chk[i];save();render()}
+function render(){
+ document.getElementById("crits").innerHTML=C.map((c,i)=>{const cur=S.s[i]||0;
+  return `<div class="crit"><div class="top"><div><b>${c.n}</b> <small>· peso ${c.w}%</small><br><small>${c.d}</small></div>
+   <div class="stars">${[1,2,3,4,5].map(v=>`<span class="star ${v<=cur?'on':''}" onclick="setS(${i},${v})">★</span>`).join("")}</div></div></div>`}).join("");
+ const tot=C.reduce((a,c,i)=>a+(S.s[i]||0)*c.w/100,0),pct=tot/5*100;
+ const box=document.getElementById("score");let col,msg;
+ if(pct>=80){col="var(--ok)";msg="Forte — recomendável para submissão"}else if(pct>=60){col="var(--warn)";msg="Promissor — precisa de ajustes"}else{col="var(--danger)";msg="Frágil — risco de desk reject"}
+ box.style.background=col+"15";box.innerHTML=`<small>Nota ponderada</small><div class="n" style="color:${col}">${tot.toFixed(2)}<small style="font-size:18px">/5</small></div><div style="color:${col};font-weight:700">${msg}</div>`;
+ document.getElementById("chks").innerHTML=CHK.map((c,i)=>`<label class="chk"><input type="checkbox" ${S.chk[i]?"checked":""} onchange="tog(${i})"><span>${c}</span></label>`).join("");
+ const n=S.chk.filter(Boolean).length;const cv=document.getElementById("cverdict");
+ cv.textContent=`${n}/${CHK.length} itens prontos. ${n===CHK.length?"✅ Pronto para submeter no SAGe!":"Faltam itens — não submeta ainda."}`;
+ cv.style.color=n===CHK.length?"var(--ok)":"var(--warn)";
+}
+function exportTxt(){const tot=C.reduce((a,c,i)=>a+(S.s[i]||0)*c.w/100,0);
+ let s="PARECER DE PITCH — Jornada PIPE\n\n";C.forEach((c,i)=>s+=`  ${c.n} (${c.w}%): ${S.s[i]||0}/5\n`);
+ s+=`\n  NOTA PONDERADA: ${tot.toFixed(2)}/5\n\nChecklist de submissão:\n`;CHK.forEach((c,i)=>s+=`  [${S.chk[i]?"X":" "}] ${c}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="parecer_pitch.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="rubrica",_FN="parecer_pitch";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

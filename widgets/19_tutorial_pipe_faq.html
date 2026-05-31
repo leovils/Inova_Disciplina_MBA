@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial PIPE FAPESP & FAQ</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1060px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:800px}
+.tutorial{display:grid;grid-template-columns:240px 1fr;gap:16px;margin-top:18px}
+@media(max-width:760px){.tutorial{grid-template-columns:1fr}}
+.steps{background:#fff;border-radius:var(--radius);padding:12px;box-shadow:var(--shadow);height:fit-content}
+.step{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted)}
+.step .n{width:24px;height:24px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.step.on{background:#eef2ff;color:var(--brand)}.step.on .n{background:var(--brand);color:#fff}
+.content{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);min-height:340px;display:flex;flex-direction:column}
+.content h2{font-size:21px;margin-bottom:12px;color:var(--brand)}
+.content p{font-size:14.5px;line-height:1.6;margin-bottom:10px}
+.content ul{margin:4px 0 12px 20px}.content li{font-size:14px;line-height:1.55;margin-bottom:6px}
+.phases{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:6px 0 12px}
+@media(max-width:600px){.phases{grid-template-columns:1fr}}
+.ph{border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:4px solid var(--brand)}
+.ph h4{font-size:14px}.ph .v{font-size:18px;font-weight:800;color:var(--accent);margin:4px 0}.ph p{font-size:12.5px;color:var(--muted);margin:0}
+.nav{display:flex;justify-content:space-between;margin-top:auto;padding-top:16px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer;font-size:14px}
+.btn.alt{background:var(--soft);color:var(--muted)}
+.btn:disabled{opacity:.4;cursor:default}
+.callout{background:var(--soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:13.5px;margin:6px 0 12px}
+.faq{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:18px}
+.faq h2{font-size:20px;margin-bottom:12px}
+.search{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px 14px;font-size:14px;margin-bottom:14px}
+.qa{border-bottom:1px solid var(--line)}
+.qa .q{padding:13px 6px;font-size:14.5px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;gap:10px}
+.qa .q span.ar{color:var(--brand);transition:.2s}
+.qa.open .q span.ar{transform:rotate(180deg)}
+.qa .a{max-height:0;overflow:hidden;transition:.25s;font-size:14px;line-height:1.6;color:var(--muted)}
+.qa.open .a{max-height:400px;padding:0 6px 14px}
+.src{text-align:center;font-size:12px;color:var(--muted);margin-top:16px}
+.src a{color:var(--brand)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">BIBLIOTECA DE CONCEITOS · APOIO À AULA 9</span>
+  <h1>🎓 Tutorial Interativo: PIPE FAPESP</h1>
+  <p>Tudo o que a turma precisa saber sobre o programa que é o destino do projeto final. Navegue pelos passos e tire dúvidas no FAQ. Material de autoatendimento — use em sala ou em casa.</p></div>
+
+ <div class="tutorial">
+  <div class="steps" id="steps"></div>
+  <div class="content" id="content"></div>
+ </div>
+
+ <div class="faq">
+  <h2>❓ Perguntas frequentes</h2>
+  <input class="search" id="search" placeholder="Buscar dúvida... (ex.: contrapartida, prazo, SAGe)">
+  <div id="faqlist"></div>
+  <div class="src">Fonte oficial: <a href="https://fapesp.br/pipe/" target="_blank">fapesp.br/pipe</a> · <a href="https://fapesp.br/pipe/faq" target="_blank">FAQ PIPE</a> · dados de 2025.</div>
+ </div>
+</div>
+<div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+
+<script>
+const STEPS=[
+ {ic:"💡",t:"O que é o PIPE",html:`<h2>💡 O que é o PIPE</h2>
+  <p>O <b>PIPE — Pesquisa Inovativa em Pequenas Empresas</b> é o programa da FAPESP que financia pesquisa para inovação em pequenas empresas do Estado de São Paulo.</p>
+  <p>Diferente de um empréstimo, é <b>subvenção (grant)</b>: o dinheiro <b>não precisa ser devolvido</b>. Em troca, a FAPESP banca o <b>risco tecnológico</b> — projetos com incerteza científica e potencial de inovação.</p>
+  <div class="callout">💬 Em uma frase: o PIPE paga para a sua empresa <b>descobrir se uma ideia inovadora é tecnicamente viável</b> — e depois desenvolvê-la.</div>`},
+ {ic:"🪜",t:"As três fases",html:`<h2>🪜 As três fases</h2>
+  <div class="phases">
+   <div class="ph"><h4>Fase 1</h4><div class="v">R$300 mil</div><p>Até 9 meses. Viabilidade técnico-científica da ideia.</p></div>
+   <div class="ph"><h4>Fase 2</h4><div class="v">R$1,5 mi</div><p>Até 24 meses. Desenvolvimento da inovação propriamente dita.</p></div>
+   <div class="ph"><h4>Fase 3 (PAPPE/Invest)</h4><div class="v">R$1 mi</div><p>Até 18 meses. Desenvolvimento comercial e industrial.</p></div>
+  </div>
+  <p>O nosso trabalho do semestre tem como alvo a <b>Fase 1</b>: provar que a ideia é viável. As fases seguintes desenvolvem e levam ao mercado.</p>`},
+ {ic:"✅",t:"Quem pode (elegibilidade)",html:`<h2>✅ Quem pode participar</h2>
+  <ul>
+   <li>Empresas com <b>até 250 funcionários</b> e unidade de P&D no <b>Estado de São Paulo</b>.</li>
+   <li>O <b>Pesquisador Responsável</b> deve <b>residir no Estado de SP</b> (exige comprovante).</li>
+   <li>O pesquisador pode ser <b>sócio, empregado ou ter vínculo formal</b> com a empresa.</li>
+   <li>Não tem empresa ainda? É possível propor com o compromisso de constituí-la.</li>
+  </ul>
+  <div class="callout">🎯 No nosso curso, cada grupo simula ser essa pequena empresa de base tecnológica.</div>`},
+ {ic:"💸",t:"O que financia",html:`<h2>💸 O que o PIPE financia</h2>
+  <p>Os recursos cobrem o que o projeto de pesquisa realmente precisa, por rubricas:</p>
+  <ul>
+   <li>Material de consumo e serviços de terceiros;</li>
+   <li>Equipamentos e material permanente;</li>
+   <li>Bolsas para a equipe de pesquisa;</li>
+   <li>Diárias e viagens; reserva técnica.</li>
+  </ul>
+  <p>O orçamento precisa ser <b>coerente com as atividades</b> do plano de trabalho. A empresa também pode oferecer <b>contrapartida</b> — e ela é avaliada.</p>`},
+ {ic:"📤",t:"Como submeter",html:`<h2>📤 Como submeter</h2>
+  <ul>
+   <li>Tudo é feito pelo <b>SAGe</b> (Sistema de Apoio à Gestão): <b>fapesp.br/sage</b>.</li>
+   <li>Fases 1, 2 e PIPE Invest têm <b>fluxo contínuo</b> — pode submeter a qualquer momento do ano.</li>
+   <li>Cadastre a proposta, preencha o formulário e anexe o plano de pesquisa.</li>
+  </ul>
+  <div class="callout">🛠️ O widget <b>Rubrica de Pitch & Checklist</b> (Aula 12) tem a lista de verificação pré-submissão.</div>`},
+ {ic:"⚖️",t:"Como é avaliado",html:`<h2>⚖️ Critérios de avaliação</h2>
+  <p>A análise é por mérito, feita por pareceristas. Pesam fortemente:</p>
+  <ul>
+   <li><b>Caráter inovador</b> e diferenciação frente ao estado da arte;</li>
+   <li><b>Viabilidade técnico-científica</b> e qualidade do plano de pesquisa;</li>
+   <li><b>Capacidade da equipe</b> e infraestrutura;</li>
+   <li><b>Potencial de mercado</b> e de geração de inovação.</li>
+  </ul>
+  <div class="callout">⚠️ A reprovação mais comum é por <b>falta de caráter inovador</b> (projeto incremental demais). Use o widget de TRL & Caráter Inovador para testar.</div>`}
+];
+let cur=0;
+function renderSteps(){
+ document.getElementById("steps").innerHTML=STEPS.map((s,i)=>`<div class="step ${i===cur?'on':''}" onclick="goStep(${i})"><span class="n">${i+1}</span>${s.t}</div>`).join("");
+ const s=STEPS[cur];
+ document.getElementById("content").innerHTML=s.html+`<div class="nav">
+   <button class="btn alt" onclick="goStep(${cur-1})" ${cur===0?'disabled':''}>‹ Anterior</button>
+   <button class="btn" onclick="goStep(${cur+1})" ${cur===STEPS.length-1?'disabled':''}>Próximo ›</button></div>`;
+}
+function goStep(i){if(i<0||i>=STEPS.length)return;cur=i;renderSteps();}
+const FAQ=[
+ {q:"Preciso já ter uma empresa para submeter?",a:"Não necessariamente. É possível submeter com o compromisso de constituir a empresa. Mas ela deve ter (ou vir a ter) unidade de P&D no Estado de São Paulo e até 250 funcionários."},
+ {q:"O dinheiro do PIPE precisa ser devolvido?",a:"Não. O PIPE é subvenção (grant) — recurso não reembolsável. A FAPESP assume o risco tecnológico do projeto."},
+ {q:"Quando posso submeter? Existe prazo?",a:"As Fases 1, 2 e o PIPE Invest têm fluxo contínuo: você pode submeter a qualquer momento do ano pelo SAGe. Chamadas específicas (como algumas da Fase 3) podem ter prazos próprios."},
+ {q:"Quanto cada fase financia e por quanto tempo?",a:"Fase 1: até R$300 mil por até 9 meses (viabilidade). Fase 2: até R$1,5 milhão por até 24 meses (desenvolvimento). Fase 3 (PAPPE/Invest): até R$1 milhão por até 18 meses (desenvolvimento comercial e industrial)."},
+ {q:"Quem é o Pesquisador Responsável e quais os requisitos?",a:"É quem lidera tecnicamente o projeto. Deve residir no Estado de SP (com comprovante) e ter vínculo com a empresa — como sócio, empregado ou por vínculo formal que garanta condições para a pesquisa."},
+ {q:"Preciso oferecer contrapartida?",a:"A contrapartida da empresa não é obrigatória da mesma forma em todas as fases, mas os valores solicitados e os oferecidos em contrapartida são avaliados. Demonstrar comprometimento ajuda."},
+ {q:"Onde submeto a proposta?",a:"No SAGe (Sistema de Apoio à Gestão da FAPESP), em fapesp.br/sage. Você cria a proposta, preenche o formulário e anexa o plano de pesquisa."},
+ {q:"O que mais reprova uma proposta?",a:"Falta de caráter inovador (projeto incremental, sem risco tecnológico real), plano de pesquisa frágil, ausência de busca de anterioridade e orçamento incoerente com as atividades."},
+ {q:"Qual a diferença entre PIPE e Finep?",a:"Ambos apoiam inovação, mas a FAPESP (PIPE) é estadual (SP) e foca subvenção a pesquisa de alto risco em pequenas empresas. A Finep é federal e opera subvenção, crédito e equity (Finep Startup), por chamadas públicas."},
+ {q:"O que é o estado da arte / busca de anterioridade?",a:"É a verificação do que já existe (patentes, concorrentes, literatura) para demonstrar que a sua solução é nova. É essencial para sustentar o caráter inovador. Veja o widget de PI & Marco Legal."},
+ {q:"Posso usar o recurso para comprar equipamentos?",a:"Sim, equipamentos e material permanente são rubricas financiáveis, desde que justificados pelas atividades do projeto. Também há material de consumo, serviços, bolsas, diárias e reserva técnica."},
+ {q:"O TRL importa para o PIPE?",a:"Sim. A Fase 1 normalmente parte de TRL baixo a intermediário (2–4), focada em viabilidade. A Fase 2 avança a maturidade rumo a protótipos validados."}
+];
+function renderFaq(filter=""){
+ const f=filter.toLowerCase();
+ const list=FAQ.filter(x=>!f||x.q.toLowerCase().includes(f)||x.a.toLowerCase().includes(f));
+ document.getElementById("faqlist").innerHTML=list.map((x,i)=>`<div class="qa" id="qa${i}">
+   <div class="q" onclick="document.getElementById('qa${i}').classList.toggle('open')"><span>${x.q}</span><span class="ar">▾</span></div>
+   <div class="a">${x.a}</div></div>`).join("")||`<p style="color:var(--muted);font-size:14px">Nenhuma dúvida encontrada. Tente outro termo.</p>`;
+}
+document.getElementById("search").addEventListener("input",e=>renderFaq(e.target.value));
+renderSteps();renderFaq();
+</script>
+</body>
+</html>

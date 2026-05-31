@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jornada PIPE — Estratégias de Fomento à Inovação</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:18px;--shadow:0 12px 36px rgba(2,6,23,.10);--ok:#10b981}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:34px 18px}
+.wrap{max-width:1100px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:34px 38px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:5px 14px;border-radius:999px;font-size:12.5px;font-weight:600;margin-bottom:12px}
+.head h1{font-size:32px;margin-bottom:8px}.head p{opacity:.93;font-size:16px;max-width:760px;line-height:1.5}
+.prog{margin-top:20px}.prog .track{height:12px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden}
+.prog .fill{height:100%;background:#fff;border-radius:999px;transition:.4s;width:0}
+.prog small{opacity:.9;font-size:13px}
+.goal{background:#fff;border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow);margin-top:20px;border-left:6px solid var(--accent)}
+.goal h2{font-size:18px;margin-bottom:6px}.goal p{font-size:14.5px;color:var(--muted);line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px;margin-top:20px}
+.card{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:.18s;position:relative;overflow:hidden}
+.card:hover{transform:translateY(-4px)}
+.card .num{position:absolute;top:-10px;right:8px;font-size:64px;font-weight:800;color:#eef2ff;z-index:0}
+.card .inner{position:relative;z-index:1}
+.card .ph{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent)}
+.card h3{font-size:17px;margin:4px 0 6px}
+.card p{font-size:13.5px;color:var(--muted);line-height:1.5;margin-bottom:12px}
+.tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:auto}
+.tool{font-size:12px;font-weight:600;background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;text-decoration:none;padding:7px 12px;border-radius:8px;display:inline-flex;align-items:center;gap:5px}
+.tool.empty{background:var(--soft);color:var(--muted)}
+.tool.sec{background:#fff;color:var(--brand);border:1.5px solid var(--line)}
+.tool.guide{background:#fff;color:var(--accent);border:1.5px solid var(--line)}
+.chkrow{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;color:var(--muted)}
+.chkrow input{width:17px;height:17px}
+.foot{text-align:center;color:var(--muted);font-size:13px;margin-top:30px;line-height:1.6}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:#fff;opacity:.92}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head">
+  <span class="badge">MBA · 12 ENCONTROS · ESTÉTICA STARTUP</span>
+  <h1>🚀 Jornada PIPE</h1>
+  <p>Estratégias de Fomento à Inovação. Ao longo de 12 encontros, cada grupo transforma uma ideia em uma proposta pronta para o PIPE FAPESP — passando por descoberta de problema, ideação, modelo de negócio, plano de pesquisa, orçamento e pitch. Cada aula tem ferramentas interativas. Clique e construa.</p>
+  <div class="prog"><div class="track"><div class="fill" id="fill"></div></div><small id="ptxt">0 de 12 aulas concluídas</small></div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+   <a href="apresentacao_game.html" style="background:#fff;color:var(--brand);font-weight:800;text-decoration:none;padding:12px 22px;border-radius:12px;box-shadow:var(--shadow)">▶️ Apresentação do Game (1ª aula)</a>
+   <a href="mapa_jornada.html" style="background:#fff;color:var(--brand);font-weight:800;text-decoration:none;padding:12px 22px;border-radius:12px;box-shadow:var(--shadow)">🎮 Mapa da Jornada</a>
+   <a href="guia_do_jogador.html" style="background:rgba(255,255,255,.18);color:#fff;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:12px">📖 Guia do Jogador</a>
+   <a href="painel_professor.html" style="background:rgba(255,255,255,.18);color:#fff;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:12px">📊 Painel do Professor</a>
+  </div>
+ </div>
+
+ <div class="goal">
+  <h2>🎯 Entregável final: a Proposta PIPE</h2>
+  <p>O trabalho do semestre é uma <b>proposta de pesquisa para inovação</b> nos moldes do PIPE FAPESP Fase 1 (até 9 meses, R$300 mil), com pitch de 8 minutos na última aula avaliado por uma banca. Cada aula entrega uma peça da proposta — ao final, o quebra-cabeça está montado.</p>
+ </div>
+
+ <div class="grid" id="grid"></div>
+
+ <div class="goal" style="border-left-color:var(--brand)">
+  <h2>📚 Biblioteca de Conceitos</h2>
+  <p>Widgets de referência teórica para sustentar a base da disciplina. Use como apoio nas Aulas 1 e 6 (e quando precisar fixar fundamentos).</p>
+ </div>
+ <div class="grid" id="bib"></div>
+
+ <div class="foot">
+  Jornada PIPE FAPESP · Estratégias de Fomento à Inovação<br>
+  <small>Progresso salvo neste navegador. Abra cada widget, use em sala e exporte o resultado para compor a proposta.</small>
+ </div>
+</div>
+<script>
+const A=[
+ {ph:"Bloco 1 · Descobrir",t:"Boas-vindas & Ecossistema de Fomento",d:"Por que o governo financia inovação, quem são os players e como formar as startups da turma.",w:[["🗺️ Mapa do Ecossistema","widgets/01_mapa_ecossistema_fomento.html"],["🚀 Termo de Abertura","widgets/13_termo_abertura_startup.html"]]},
+ {ph:"Bloco 1 · Descobrir",t:"Caça ao Problema",d:"Encontrar dores reais e relevantes. Sem problema bom, não há projeto financiável.",w:[["🎯 Radar de Oportunidades","widgets/02_radar_oportunidades.html"]]},
+ {ph:"Bloco 2 · Idear",t:"Geração de Ideias — Osborn",d:"Listagem de Atributos: inovar atributo por atributo. Volume de ideias antes do filtro.",w:[["🧩 Listagem de Osborn","widgets/03_listagem_osborn.html"]]},
+ {ph:"Bloco 2 · Idear",t:"Expansão Criativa — SCAMPER",d:"Sete lentes para reinventar a ideia e fugir do óbvio incremental.",w:[["🔀 Painel SCAMPER","widgets/04_scamper.html"]]},
+ {ph:"Bloco 2 · Idear",t:"Seleção & Priorização",d:"Escolher UMA ideia com critérios ponderados e transparentes.",w:[["⚖️ Matriz de Priorização","widgets/05_matriz_priorizacao.html"]]},
+ {ph:"Bloco 3 · Validar",t:"Inovação, Risco & TRL",d:"O que é caráter inovador, estado da arte e maturidade tecnológica (TRL 1–9).",w:[["🚦 TRL & Caráter Inovador","widgets/06_trl_carater_inovador.html"]]},
+ {ph:"Bloco 3 · Validar",t:"Proposta de Valor",d:"Encaixe entre o que o cliente precisa e o que a solução entrega.",w:[["💎 Value Proposition Canvas","widgets/07_value_proposition_canvas.html"]]},
+ {ph:"Bloco 3 · Validar",t:"Modelo de Negócio",d:"Da tecnologia à empresa sustentável, em 9 blocos.",w:[["🧱 Business Model Canvas","widgets/08_business_model_canvas.html"]]},
+ {ph:"Bloco 4 · Financiar",t:"Mapa do Fomento & PIPE",d:"Escolher o edital certo e mergulhar nas fases e regras do PIPE FAPESP.",w:[["🧭 Qual fomento é seu?","widgets/09_seletor_edital.html"]]},
+ {ph:"Bloco 4 · Financiar",t:"Plano de Pesquisa & Riscos",d:"Metodologia, metas, cronograma de 9 meses e gestão de riscos.",w:[["📅 Cronograma & Riscos","widgets/10_cronograma_riscos.html"]]},
+ {ph:"Bloco 4 · Financiar",t:"Orçamento & Equipe",d:"Distribuir recursos por rubricas dentro do teto e montar o time.",w:[["💰 Orçamento & Equipe","widgets/11_orcamento_equipe.html"]]},
+ {ph:"Bloco 5 · Defender",t:"Pitch Day & Submissão",d:"Banca avaliadora, rubrica de pitch e checklist final de submissão no SAGe.",w:[["🎤 Rubrica & Checklist","widgets/12_rubrica_pitch_submissao.html"]]}
+];
+const SLIDES=["slides/aula01_ecossistema.html","slides/aula02_problema.html","slides/aula03_osborn.html","slides/aula04_scamper.html","slides/aula05_priorizacao.html","slides/aula06_trl.html","slides/aula07_proposta_valor.html","slides/aula08_bmc.html","slides/aula09_pipe.html","slides/aula10_cronograma.html","slides/aula11_orcamento.html","slides/aula12_pitch.html"];
+let done=JSON.parse(localStorage.getItem("jornada_done")||"[]");
+function tog(i){done[i]=!done[i];localStorage.setItem("jornada_done",JSON.stringify(done));render()}
+function render(){
+ document.getElementById("grid").innerHTML=A.map((a,i)=>`<div class="card"><div class="num">${i+1}</div><div class="inner">
+  <span class="ph">${a.ph}</span><h3>Aula ${i+1} — ${a.t}</h3><p>${a.d}</p>
+  <div class="tools">
+   <a class="tool sec" href="${SLIDES[i]}" target="_blank">🖥️ Slides</a>
+   ${a.w.map(w=>`<a class="tool" href="${w[1]}" target="_blank">${w[0]}</a>`).join("")}
+   ${a.w.map(w=>`<a class="tool guide" href="guias/${w[1].split('/').pop().replace('.html','.md')}" target="_blank">📖 Guia</a>`).join("")}
+  </div>
+  <label class="chkrow"><input type="checkbox" ${done[i]?"checked":""} onchange="tog(${i})"> marcar como concluída</label>
+ </div></div>`).join("");
+ const n=done.filter(Boolean).length;document.getElementById("fill").style.width=(n/12*100)+"%";
+ document.getElementById("ptxt").textContent=`${n} de 12 aulas concluídas`;
+}
+const BIB=[
+ ["🏛️","Sistema Nacional de Inovação","Atores e hélices da inovação (Tríplice/Quádrupla).","14_sistema_nacional_inovacao.html","Apoio · Aula 1"],
+ ["📘","Manual de Oslo","O que é inovação + tipos + quiz.","15_manual_oslo_inovacao.html","Apoio · Aula 6"],
+ ["🧬","Taxonomia da Inovação","Grau, Henderson-Clark, Christensen, abertura.","16_taxonomia_inovacao.html","Apoio · Aulas 5–6"],
+ ["📊","Indicadores de Inovação","GII, PINTEC, P&D/PIB + painel de KPIs.","17_indicadores_inovacao.html","Apoio · Aula 1"],
+ ["⚖️","Propriedade Intelectual & Marco Legal","Patentes, INPI, Lei do Bem, Marco Legal.","18_propriedade_intelectual_marco_legal.html","Apoio · Aula 6"],
+ ["🎓","Tutorial PIPE FAPESP & FAQ","Tutorial guiado das fases + perguntas frequentes pesquisáveis.","19_tutorial_pipe_faq.html","Apoio · Aula 9"]
+];
+function renderBib(){
+ document.getElementById("bib").innerHTML=BIB.map(b=>`<div class="card"><div class="inner">
+  <span class="ph">${b[4]}</span><h3>${b[0]} ${b[1]}</h3><p>${b[2]}</p>
+  <div class="tools">
+   <a class="tool" href="widgets/${b[3]}" target="_blank">🧰 Abrir widget</a>
+   <a class="tool guide" href="guias/${b[3].replace('.html','.md')}" target="_blank">📖 Guia</a>
+  </div></div></div>`).join("");
+}
+render();renderBib();
+</script>
+</body>
+</html>

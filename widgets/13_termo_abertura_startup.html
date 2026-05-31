@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termo de Abertura da Startup</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:880px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px}
+.panel{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-top:18px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.3px;margin-bottom:6px}
+.field input,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px;font-size:14.5px;font-family:inherit;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:600px){.two{grid-template-columns:1fr}}
+.member{display:flex;gap:8px;margin-bottom:8px}
+.member input{flex:1}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.del{border:none;background:none;color:#f59e0b;cursor:pointer;font-weight:700;padding:0 6px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+.bar{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 1 · JORNADA PIPE</span>
+  <h1>🚀 Termo de Abertura da Startup</h1>
+  <p>Cada grupo nasce como uma startup fictícia que vai construir uma proposta PIPE ao longo do semestre. Batizem a empresa, definam o time e o território de inovação. Este é o documento-mãe da jornada.</p></div>
+
+ <div class="panel">
+  <div class="field"><label>Nome da startup</label><input data-k="nome" placeholder="Ex.: GeadaZero Tecnologia"></div>
+  <div class="two">
+   <div class="field"><label>Área tecnológica</label><input data-k="area" placeholder="Ex.: AgTech / sensoriamento"></div>
+   <div class="field"><label>Cliente-alvo</label><input data-k="cliente" placeholder="Ex.: pequenas vinícolas do sul de SP"></div>
+  </div>
+  <div class="field"><label>Problema / dor que queremos atacar</label><textarea data-k="dor" rows="2" placeholder="Qual incômodo real motiva a empresa?"></textarea></div>
+  <div class="field"><label>Frase de missão (1 linha)</label><input data-k="missao" placeholder="Ex.: proteger a safra com previsão de geada acessível"></div>
+
+  <div class="field"><label>Equipe e papéis</label><div id="team"></div>
+   <div class="bar"><button class="btn" onclick="addM()">+ Integrante</button></div>
+  </div>
+
+  <div class="field"><label>Por que vale a pena (aposta)</label><textarea data-k="aposta" rows="2" placeholder="Por que acreditam que essa inovação pode dar certo?"></textarea></div>
+
+  <div class="bar"><button class="btn alt" onclick="exportTxt()">⬇ Exportar termo</button><button class="btn alt" onclick="window.print()">🖨️ Imprimir / PDF</button></div>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+<script>
+let S=JSON.parse(localStorage.getItem("termo")||"null")||{f:{},team:[{n:"",r:""}]};
+function save(){localStorage.setItem("termo",JSON.stringify(S))}
+document.querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;el.value=S.f[k]||"";el.addEventListener("input",()=>{S.f[k]=el.value;save()})});
+function addM(){S.team.push({n:"",r:""});save();renderTeam()}
+function delM(i){S.team.splice(i,1);save();renderTeam()}
+function renderTeam(){document.getElementById("team").innerHTML=S.team.map((m,i)=>`<div class="member">
+ <input placeholder="Nome" value="${m.n.replace(/"/g,'&quot;')}" oninput="S.team[${i}].n=this.value;save()">
+ <input placeholder="Papel (ex.: pesquisador responsável)" value="${m.r.replace(/"/g,'&quot;')}" oninput="S.team[${i}].r=this.value;save()">
+ <button class="del" onclick="delM(${i})">✕</button></div>`).join("")}
+function exportTxt(){let s="TERMO DE ABERTURA DA STARTUP — Jornada PIPE\n\n";
+ const lbl={nome:"Startup",area:"Área",cliente:"Cliente-alvo",dor:"Problema/dor",missao:"Missão",aposta:"Aposta"};
+ for(const k in lbl)s+=`${lbl[k]}: ${S.f[k]||"—"}\n`;s+="\nEquipe:\n";S.team.forEach(m=>s+=`  ${m.n||"?"} — ${m.r||"?"}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="termo_abertura_startup.txt";a.click()}
+renderTeam();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="termo",_FN="termo_abertura_startup";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

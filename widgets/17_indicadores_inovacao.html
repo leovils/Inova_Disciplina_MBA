@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Indicadores de Inovação</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1040px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:800px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:18px;margin-bottom:6px}.panel .desc{font-size:13px;color:var(--muted);margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.card{border:1.5px solid var(--line);border-radius:12px;padding:14px;border-top:4px solid var(--brand)}
+.card h3{font-size:15px;margin-bottom:4px}.card .big{font-size:22px;font-weight:800;color:var(--brand);margin:2px 0}
+.card p{font-size:12.5px;color:var(--muted);line-height:1.45}
+.tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 8px;border-radius:6px}
+.in{background:#eef2ff;color:var(--brand)}.out{background:#ecfdf5;color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
+td,th{border-bottom:1px solid var(--line);padding:8px;text-align:left}
+th{font-size:11px;text-transform:uppercase;color:var(--muted)}
+input{border:1.5px solid var(--line);border-radius:8px;padding:7px;font-size:13px;width:100%}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.del{border:none;background:none;color:#f59e0b;cursor:pointer;font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">BIBLIOTECA DE CONCEITOS · AULA 1</span>
+  <h1>📊 Indicadores de Inovação</h1>
+  <p>Como se mede inovação? Conheça os principais indicadores — de país, de empresa e de projeto — e monte o painel de KPIs da sua startup. Distinga indicadores de <b>entrada</b> (esforço) dos de <b>saída/resultado</b>.</p></div>
+
+ <div class="panel">
+  <h2>Indicadores de referência</h2>
+  <div class="desc">Os mais citados no Brasil e no mundo.</div>
+  <div class="cards" id="ref"></div>
+  <small style="display:block;margin-top:10px">Dados: GII 2024 (WIPO) e definições da PINTEC/IBGE. Valores nacionais mudam a cada ciclo — confira a fonte mais recente.</small>
+ </div>
+
+ <div class="panel">
+  <h2>Monte o painel de KPIs da sua startup</h2>
+  <div class="desc">Escolha 4–6 indicadores que você acompanharia para provar que a inovação está funcionando.</div>
+  <table><thead><tr><th>Indicador</th><th>Meta</th><th>Tipo</th><th></th></tr></thead><tbody id="kpis"></tbody></table>
+  <div class="row"><input id="kn" placeholder="Indicador (ex.: % receita de produtos novos)" style="max-width:280px">
+   <input id="km" placeholder="Meta (ex.: 25%)" style="max-width:130px">
+   <select id="kt" style="border:1.5px solid var(--line);border-radius:8px;padding:8px;font-size:13px"><option value="entrada">Entrada</option><option value="saida">Saída/Resultado</option></select>
+   <button class="btn" onclick="addK()">+ KPI</button></div>
+  <div class="row" id="sugs"></div>
+  <div class="row"><button class="btn alt" onclick="exportTxt()">⬇ Exportar painel</button></div>
+ </div>
+</div>
+<div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const REF=[
+ {h:"Global Innovation Index",big:"50º",p:"Posição do Brasil em 2024 (de 133 economias; 78 indicadores). Líder na América Latina. Fonte: WIPO.",t:"out"},
+ {h:"Investimento em P&D",big:"% do PIB",p:"Quanto o país/empresa investe em pesquisa e desenvolvimento. Indicador clássico de entrada.",t:"in"},
+ {h:"Taxa de inovação (PINTEC)",big:"PINTEC",p:"% de empresas que implementaram inovação num período. Medida pelo IBGE no Brasil.",t:"out"},
+ {h:"Patentes (INPI)",big:"depósitos",p:"Nº de pedidos/concessões de patentes — proxy de output tecnológico.",t:"out"},
+ {h:"Pessoal em P&D",big:"pesquisadores",p:"Nº de pesquisadores/equipe dedicada — indicador de entrada.",t:"in"},
+ {h:"Receita de novos produtos",big:"%",p:"% do faturamento vindo de produtos lançados nos últimos anos — output de empresa.",t:"out"}];
+const SUG=["% receita de produtos novos","Investimento em P&D / receita","Nº de protótipos por trimestre","Time-to-market (meses)","Nº de patentes depositadas","NPS / satisfação do cliente","Nº de experimentos validados"];
+let S=JSON.parse(localStorage.getItem("indicadores")||"null")||{kpis:[]};
+function save(){localStorage.setItem("indicadores",JSON.stringify(S))}
+function addK(){const n=document.getElementById("kn").value.trim();if(!n)return;
+ S.kpis.push({n,m:document.getElementById("km").value.trim(),t:document.getElementById("kt").value});
+ document.getElementById("kn").value="";document.getElementById("km").value="";save();render()}
+function addSug(x){S.kpis.push({n:x,m:"",t:"saida"});save();render()}
+function delK(i){S.kpis.splice(i,1);save();render()}
+function render(){
+ document.getElementById("ref").innerHTML=REF.map(r=>`<div class="card"><span class="tag ${r.t==='in'?'in':'out'}">${r.t==='in'?'entrada':'saída'}</span>
+   <h3>${r.h}</h3><div class="big">${r.big}</div><p>${r.p}</p></div>`).join("");
+ document.getElementById("kpis").innerHTML=S.kpis.map((k,i)=>`<tr><td>${k.n}</td><td>${k.m||"—"}</td><td>${k.t==='entrada'?'Entrada':'Saída'}</td><td><span class="del" onclick="delK(${i})">✕</span></td></tr>`).join("")||`<tr><td colspan="4"><small>Nenhum KPI ainda. Use as sugestões abaixo ou adicione o seu.</small></td></tr>`;
+ document.getElementById("sugs").innerHTML="<small style='width:100%'>Sugestões (clique para adicionar):</small>"+SUG.map(x=>`<span class="btn alt" style="cursor:pointer;padding:6px 12px" onclick="addSug('${x.replace(/'/g,"")}')">+ ${x}</span>`).join("");
+}
+function exportTxt(){let s="PAINEL DE KPIs DE INOVAÇÃO\n\n";S.kpis.forEach(k=>s+=`  ${k.n} | meta: ${k.m||"-"} | ${k.t}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="painel_kpis_inovacao.txt";a.click()}
+const _KEY="indicadores",_FN="painel_kpis_inovacao";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+render();
+</script>
+</body>
+</html>

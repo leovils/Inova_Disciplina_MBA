@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orçamento PIPE & Equipe</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1000px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:17px;margin-bottom:12px}
+.toggle{display:inline-flex;background:var(--soft);border-radius:10px;padding:4px;margin-bottom:14px}
+.toggle button{border:none;background:none;padding:8px 16px;border-radius:8px;font-weight:600;cursor:pointer;color:var(--muted)}
+.toggle button.on{background:var(--brand);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{border-bottom:1px solid var(--line);padding:9px;text-align:left}
+th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+.val{text-align:right}
+input[type=number]{width:130px;border:1.5px solid var(--line);border-radius:8px;padding:7px;text-align:right;font-size:13px}
+input[type=text]{border:1.5px solid var(--line);border-radius:8px;padding:7px;font-size:13px;width:100%}
+.bargraph{height:18px;background:var(--soft);border-radius:999px;overflow:hidden;margin:14px 0 6px}
+.bargraph>div{height:100%;transition:.3s}
+.tot{font-size:20px;font-weight:800}
+.lim{font-size:13px;color:var(--muted)}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.del{border:none;background:none;color:#f59e0b;cursor:pointer;font-weight:700}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 11 · JORNADA PIPE</span>
+  <h1>💰 Orçamento & Equipe do Projeto</h1>
+  <p>Orçamento coerente com o plano de trabalho é metade da aprovação. Distribua os recursos pelas rubricas, respeite o teto da fase e monte a equipe com dedicação realista. Tudo salva automaticamente.</p></div>
+
+ <div class="panel">
+  <div class="toggle"><button id="t1" class="on" onclick="setFase(1)">Fase 1 · R$300 mil · 9 meses</button><button id="t2" onclick="setFase(2)">Fase 2 · R$1,5 mi · 24 meses</button></div>
+  <h2>Rubricas orçamentárias</h2>
+  <table><thead><tr><th>Rubrica</th><th class="val">Valor (R$)</th></tr></thead><tbody id="rub"></tbody></table>
+  <div class="bargraph"><div id="bar"></div></div>
+  <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap">
+   <span class="tot" id="tot">R$ 0</span><span class="lim" id="lim"></span></div>
+ </div>
+
+ <div class="panel">
+  <h2>Equipe</h2>
+  <table><thead><tr><th>Nome / papel</th><th>Função</th><th>Dedicação</th><th></th></tr></thead><tbody id="team"></tbody></table>
+  <div class="row"><input id="mn" type="text" placeholder="Nome" style="max-width:160px">
+   <input id="mr" type="text" placeholder="Função (ex.: pesquisador responsável)" style="max-width:240px">
+   <input id="md" type="text" placeholder="Dedicação (ex.: 20h/sem)" style="max-width:140px">
+   <button class="btn" onclick="addM()">+ Membro</button></div>
+ </div>
+ <div class="row"><button class="btn alt" onclick="exportTxt()">⬇ Exportar orçamento + equipe</button></div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+<script>
+const RUB=["Material de consumo","Serviços de terceiros (PJ)","Equipamentos / material permanente","Bolsas (FAPESP)","Diárias e viagens","Reserva técnica"];
+let S=JSON.parse(localStorage.getItem("orc")||"null")||{fase:1,v:{},team:[]};
+function save(){localStorage.setItem("orc",JSON.stringify(S))}
+function setFase(f){S.fase=f;document.getElementById("t1").classList.toggle("on",f===1);document.getElementById("t2").classList.toggle("on",f===2);save();render()}
+function setV(r,v){S.v[r]=+v||0;save();render()}
+function addM(){const n=document.getElementById("mn").value.trim();if(!n)return;
+ S.team.push({n,r:document.getElementById("mr").value.trim(),d:document.getElementById("md").value.trim()});
+ ["mn","mr","md"].forEach(id=>document.getElementById(id).value="");save();render()}
+function delM(i){S.team.splice(i,1);save();render()}
+function fmt(n){return "R$ "+n.toLocaleString("pt-BR",{minimumFractionDigits:0})}
+function render(){
+ document.getElementById("rub").innerHTML=RUB.map(r=>`<tr><td>${r}</td><td class="val"><input type="number" value="${S.v[r]||""}" placeholder="0" onchange="setV('${r}',this.value)"></td></tr>`).join("");
+ const tot=RUB.reduce((a,r)=>a+(S.v[r]||0),0),lim=S.fase===1?300000:1500000,pct=Math.min(100,tot/lim*100);
+ document.getElementById("tot").textContent=fmt(tot);
+ const bar=document.getElementById("bar");bar.style.width=pct+"%";bar.style.background=tot>lim?"var(--danger)":"linear-gradient(90deg,var(--brand),var(--accent))";
+ document.getElementById("lim").innerHTML=tot>lim?`⚠️ Acima do teto de ${fmt(lim)} (excesso de ${fmt(tot-lim)})`:`${pct.toFixed(0)}% do teto de ${fmt(lim)}`;
+ document.getElementById("lim").style.color=tot>lim?"var(--danger)":"var(--muted)";
+ document.getElementById("team").innerHTML=S.team.map((m,i)=>`<tr><td>${m.n}</td><td>${m.r||"—"}</td><td>${m.d||"—"}</td><td><span class="del" onclick="delM(${i})">✕</span></td></tr>`).join("")||`<tr><td colspan="4"><small>Nenhum membro ainda.</small></td></tr>`;
+}
+function exportTxt(){const tot=RUB.reduce((a,r)=>a+(S.v[r]||0),0);
+ let s=`ORÇAMENTO PIPE — Fase ${S.fase}\n\n`;RUB.forEach(r=>s+=`  ${r}: ${fmt(S.v[r]||0)}\n`);s+=`  TOTAL: ${fmt(tot)}\n\nEquipe:\n`;
+ S.team.forEach(m=>s+=`  ${m.n} — ${m.r} (${m.d})\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="orcamento_equipe.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="orc",_FN="orcamento_equipe";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

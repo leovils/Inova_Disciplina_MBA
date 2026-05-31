@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propriedade Intelectual & Marco Legal</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1040px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:800px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:18px;margin-bottom:6px}.panel .desc{font-size:13px;color:var(--muted);margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:12px}
+.card{border:1.5px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;border-top:4px solid var(--brand);transition:.15s}
+.card:hover{transform:translateY(-3px)}
+.card .ic{font-size:22px}.card h3{font-size:15px;margin:4px 0}.card p{font-size:12.5px;color:var(--muted);line-height:1.45}
+.law{border-left:4px solid var(--accent);background:var(--soft);border-radius:10px;padding:12px 14px;margin-bottom:10px;font-size:13.5px}
+.law b{color:var(--accent)}
+.box-an{background:var(--soft);border-radius:12px;padding:14px;font-size:13.5px;line-height:1.55}
+.box-an a{color:var(--brand);font-weight:600}
+textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:14px;margin-bottom:10px;resize:vertical;font-family:inherit}
+label.f{font-size:12.5px;font-weight:700;color:var(--brand);display:block;margin-bottom:4px}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.open{display:flex}
+.bx{background:#fff;border-radius:var(--radius);max-width:520px;width:100%;padding:26px}
+.bx h2{font-size:20px;margin-bottom:6px}.bx .sub{color:var(--accent);font-weight:700;font-size:13px;margin-bottom:12px}
+.bx dl{display:grid;grid-template-columns:120px 1fr;gap:7px 12px;font-size:14px}.bx dt{font-weight:700;color:var(--muted)}
+.close{float:right;border:none;background:var(--soft);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:18px;color:var(--muted)}
+.btn{background:#fff;color:var(--muted);border:1.5px solid var(--line);border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">BIBLIOTECA DE CONCEITOS · AULA 6</span>
+  <h1>⚖️ Propriedade Intelectual & Marco Legal</h1>
+  <p>Caráter inovador sem proteção e sem base legal é um projeto vulnerável. Conheça os tipos de PI, como fazer busca de anterioridade e o arcabouço legal brasileiro que sustenta o fomento — e esboce a estratégia de PI do seu projeto.</p></div>
+
+ <div class="panel">
+  <h2>Tipos de proteção (clique para detalhes)</h2>
+  <div class="desc">Cada ativo intelectual tem o seu instrumento. No Brasil, a maioria é registrada no INPI.</div>
+  <div class="cards" id="pi"></div>
+ </div>
+
+ <div class="panel">
+  <h2>Busca de anterioridade</h2>
+  <div class="desc">Antes de afirmar que algo é novo, verifique se já existe. É exigência do caráter inovador.</div>
+  <div class="box-an">Pesquise em bases de patentes e literatura: <a href="https://busca.inpi.gov.br" target="_blank">INPI</a>, <a href="https://patents.google.com" target="_blank">Google Patents</a>, <a href="https://worldwide.espacenet.com" target="_blank">Espacenet</a>, <a href="https://patentscope.wipo.int" target="_blank">Patentscope (WIPO)</a> e bases científicas (Scopus, Web of Science, Google Scholar).<br><br><b>Dica:</b> documente a busca — ela vira a seção de “estado da arte” da proposta PIPE.</div>
+ </div>
+
+ <div class="panel">
+  <h2>Marco legal da inovação no Brasil</h2>
+  <div class="desc">As leis que organizam e incentivam a inovação.</div>
+  <div id="laws"></div>
+ </div>
+
+ <div class="panel">
+  <h2>Estratégia de PI do meu projeto</h2>
+  <div class="desc">Esboce — entra na proposta e mostra maturidade ao avaliador.</div>
+  <label class="f">O que pode ser protegido? (e por qual instrumento)</label><textarea data-k="oque" rows="2" placeholder="Ex.: o algoritmo (segredo + software), o nome (marca)..."></textarea>
+  <label class="f">Resultado da busca de anterioridade</label><textarea data-k="busca" rows="2" placeholder="O que encontramos? O que nos diferencia?"></textarea>
+  <label class="f">Próximos passos de proteção</label><textarea data-k="passos" rows="2" placeholder="Ex.: depósito de patente após a Fase 1..."></textarea>
+  <button class="btn" onclick="exportTxt()">⬇ Exportar estratégia</button>
+ </div>
+</div>
+<div class="modal" id="modal"><div class="bx" id="bxc"></div></div>
+<div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const PI=[
+ {ic:"💡",n:"Patente de Invenção",prot:"Solução técnica nova, com atividade inventiva e aplicação industrial.",prazo:"20 anos",onde:"INPI"},
+ {ic:"🔧",n:"Modelo de Utilidade",prot:"Melhoria funcional em objeto de uso prático (forma nova que melhora o uso).",prazo:"15 anos",onde:"INPI"},
+ {ic:"™️",n:"Marca",prot:"Sinal que identifica produtos/serviços (nome, logo).",prazo:"10 anos renováveis",onde:"INPI"},
+ {ic:"🎨",n:"Desenho Industrial",prot:"Forma plástica ornamental de um objeto (design).",prazo:"até 25 anos",onde:"INPI"},
+ {ic:"💻",n:"Programa de Computador",prot:"Código-fonte de software (registro como direito autoral).",prazo:"50 anos",onde:"INPI (registro de software)"},
+ {ic:"🤫",n:"Segredo Industrial",prot:"Conhecimento confidencial com valor competitivo (know-how).",prazo:"enquanto sigiloso",onde:"Contratos/NDA (não se registra)"}];
+const LAWS=[
+ ["Marco Legal da Inovação — Lei nº 13.243/2016 (e Decreto 9.283/2018)","Flexibiliza a relação ICT–empresa: compartilhamento de laboratórios, bolsas, encomenda tecnológica, participação de pesquisadores em empresas."],
+ ["Lei do Bem — Lei nº 11.196/2005","Incentivos fiscais (dedução de IR/CSLL) para empresas no regime de lucro real que investem em P&D."],
+ ["Lei de Inovação original — Lei nº 10.973/2004","Base das parcerias público-privadas em CT&I; criou os NITs."],
+ ["EC nº 85/2015","Elevou CT&I a tema constitucional, integrando União, estados e municípios."],
+ ["Lei de Informática / processos produtivos básicos","Incentivos ao setor de TICs mediante investimento em P&D."]];
+let S=JSON.parse(localStorage.getItem("pi")||"null")||{f:{}};
+function save(){localStorage.setItem("pi",JSON.stringify(S))}
+function render(){
+ document.getElementById("pi").innerHTML=PI.map((p,i)=>`<div class="card" onclick="open_(${i})"><div class="ic">${p.ic}</div><h3>${p.n}</h3><p>${p.prot}</p></div>`).join("");
+ document.getElementById("laws").innerHTML=LAWS.map(l=>`<div class="law"><b>${l[0]}</b><br>${l[1]}</div>`).join("");
+ document.querySelectorAll("[data-k]").forEach(el=>{el.value=S.f[el.dataset.k]||"";el.addEventListener("input",()=>{S.f[el.dataset.k]=el.value;save()})});
+}
+function open_(i){const p=PI[i];document.getElementById("bxc").innerHTML=`<button class="close" onclick="document.getElementById('modal').classList.remove('open')">×</button>
+ <h2>${p.ic} ${p.n}</h2><div class="sub">Propriedade Intelectual</div>
+ <dl><dt>Protege</dt><dd>${p.prot}</dd><dt>Prazo</dt><dd>${p.prazo}</dd><dt>Onde</dt><dd>${p.onde}</dd></dl>`;
+ document.getElementById("modal").classList.add("open");}
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("open")};
+function exportTxt(){let s="ESTRATÉGIA DE PI — Jornada PIPE\n\n";
+ s+=`O que proteger: ${S.f.oque||"-"}\n\nBusca de anterioridade: ${S.f.busca||"-"}\n\nPróximos passos: ${S.f.passos||"-"}\n`;
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="estrategia_pi.txt";a.click()}
+const _KEY="pi",_FN="estrategia_pi";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Nacional de Inovação</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1080px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:800px}
+.toggle{display:inline-flex;background:#fff;border-radius:10px;padding:4px;margin:18px 0 4px;box-shadow:var(--shadow)}
+.toggle button{border:none;background:none;padding:9px 16px;border-radius:8px;font-weight:700;cursor:pointer;color:var(--muted);font-size:13px}
+.toggle button.on{background:var(--brand);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:14px}
+.node{background:#fff;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);cursor:pointer;border-top:5px solid var(--brand);transition:.16s}
+.node:hover{transform:translateY(-4px)}
+.node.q4{opacity:.5;filter:grayscale(.4)}
+.node .ic{font-size:26px}
+.node h3{font-size:16px;margin:6px 0 4px}
+.node p{font-size:13px;color:var(--muted);line-height:1.45}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:50}
+.modal.open{display:flex}
+.box{background:#fff;border-radius:var(--radius);max-width:560px;width:100%;padding:28px;max-height:88vh;overflow:auto}
+.box h2{font-size:22px;margin-bottom:4px}.box .sub{color:var(--accent);font-weight:700;font-size:13px;margin-bottom:14px}
+.box h4{font-size:13px;text-transform:uppercase;color:var(--brand);margin:14px 0 6px;letter-spacing:.4px}
+.box ul{margin-left:18px}.box li{font-size:14px;margin-bottom:5px}
+.close{float:right;border:none;background:var(--soft);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:18px;color:var(--muted)}
+.note{background:#fff;border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin-top:16px;font-size:14px;color:var(--muted);border-left:5px solid var(--accent)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">BIBLIOTECA DE CONCEITOS · AULA 1</span>
+  <h1>🏛️ Sistema Nacional de Inovação (SNI)</h1>
+  <p>Inovação não acontece numa empresa isolada — ela emerge de uma rede de atores que interagem: quem pesquisa, quem produz, quem financia, quem regula e quem usa. Conheça cada ator e alterne entre a Tríplice e a Quádrupla Hélice.</p></div>
+
+ <div class="toggle"><button id="t3" class="on" onclick="setH(3)">Tríplice Hélice</button><button id="t4" onclick="setH(4)">Quádrupla Hélice</button></div>
+ <div class="note" id="hnote"></div>
+ <div class="grid" id="grid"></div>
+</div>
+<div class="modal" id="modal"><div class="box" id="boxc"></div></div>
+<div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+
+<script>
+const N=[
+ {ic:"🎓",nome:"Universidades & ICTs",helice:3,cor:"#6366f1",desc:"Geram conhecimento, formam pessoas e fazem pesquisa de base.",
+  papeis:["Pesquisa básica e aplicada","Formação de capital humano","Transferência de tecnologia (NITs)"],ex:["USP, Unicamp, institutos de pesquisa","Núcleos de Inovação Tecnológica (NITs)"]},
+ {ic:"🏢",nome:"Empresas",helice:3,cor:"#8b5cf6",desc:"Transformam conhecimento em produtos, processos e valor no mercado.",
+  papeis:["P&D corporativo","Lançamento de inovações","Investimento e absorção de tecnologia"],ex:["Startups de base tecnológica","Indústria, spin-offs acadêmicas"]},
+ {ic:"🏛️",nome:"Governo",helice:3,cor:"#0ea5e9",desc:"Formula políticas, financia e regula o ambiente de inovação.",
+  papeis:["Política de CT&I","Marco regulatório","Compras públicas de inovação"],ex:["MCTI","Planos NIB, FNDCT"]},
+ {ic:"💰",nome:"Agências de Fomento",helice:3,cor:"#14b8a6",desc:"Canalizam recursos para reduzir o risco da inovação.",
+  papeis:["Subvenção, crédito, equity","Bolsas e auxílios","Editais e chamadas"],ex:["FAPESP, Finep, BNDES, Embrapii, Sebrae"]},
+ {ic:"👥",nome:"Sociedade & Usuários",helice:4,cor:"#f59e0b",desc:"4ª hélice: cidadãos, consumidores e comunidades que demandam, validam e co-criam inovação.",
+  papeis:["Demanda e validação","Co-criação e dados de uso","Aceitação social e legitimidade"],ex:["Usuários de tecnologias","Movimentos sociais, comunidades de prática"]},
+ {ic:"🏦",nome:"Capital & Mercado",helice:4,cor:"#ef4444",desc:"Investidores privados e o mercado que escalam e remuneram a inovação.",
+  papeis:["Venture capital e anjos","Escala e internacionalização","Sinais de mercado"],ex:["Fundos de VC, investidores-anjo","Bolsa, M&A"]}
+];
+let H=3;
+function setH(h){H=h;document.getElementById("t3").classList.toggle("on",h===3);document.getElementById("t4").classList.toggle("on",h===4);render()}
+function render(){
+ document.getElementById("hnote").innerHTML=H===3
+  ?"<b>Tríplice Hélice</b> (Etzkowitz & Leydesdorff): a inovação nasce da interação dinâmica entre <b>universidade, indústria e governo</b>. As agências de fomento operam como o ‘combustível’ dessa engrenagem."
+  :"<b>Quádrupla Hélice</b>: acrescenta a <b>sociedade civil e os usuários</b> como atores ativos — inovação aberta, orientada por demanda social e legitimidade pública. (Há ainda a Quíntupla Hélice, que inclui o meio ambiente.)";
+ document.getElementById("grid").innerHTML=N.map((n,i)=>`<div class="node ${H===3&&n.helice===4?'q4':''}" style="border-color:${n.cor}" onclick="open_(${i})">
+   <div class="ic">${n.ic}</div><h3>${n.nome}</h3><p>${n.desc}</p></div>`).join("");
+}
+function open_(i){const n=N[i];document.getElementById("boxc").innerHTML=`<button class="close" onclick="document.getElementById('modal').classList.remove('open')">×</button>
+ <h2>${n.ic} ${n.nome}</h2><div class="sub">${n.helice===4?'Ator da 4ª hélice':'Ator central (Tríplice Hélice)'}</div>
+ <p>${n.desc}</p><h4>Papéis no sistema</h4><ul>${n.papeis.map(p=>`<li>${p}</li>`).join("")}</ul>
+ <h4>Exemplos no Brasil</h4><ul>${n.ex.map(e=>`<li>${e}</li>`).join("")}</ul>`;
+ document.getElementById("modal").classList.add("open");}
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("open")};
+render();
+</script>
+</body>
+</html>

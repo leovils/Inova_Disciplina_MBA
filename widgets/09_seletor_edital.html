@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qual fomento é seu?</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:760px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px}
+.panel{background:#fff;border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-top:18px}
+.prog{height:8px;background:var(--soft);border-radius:999px;overflow:hidden;margin-bottom:18px}
+.prog>div{height:100%;background:linear-gradient(90deg,var(--brand),var(--accent));transition:.3s}
+.q{font-size:18px;font-weight:700;margin-bottom:16px}
+.opt{border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;cursor:pointer;font-size:14.5px;transition:.15s}
+.opt:hover{border-color:var(--brand);background:#eef2ff}
+.res{text-align:center}
+.res .big{font-size:24px;font-weight:800;color:var(--brand);margin:8px 0}
+.res .why{background:var(--soft);border-radius:12px;padding:16px;font-size:14px;text-align:left;margin:14px 0;line-height:1.55}
+.alt{font-size:13px;color:var(--muted);margin-top:10px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-weight:600;cursor:pointer;margin-top:8px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 9 · JORNADA PIPE</span>
+  <h1>🧭 Qual fonte de fomento é a sua?</h1>
+  <p>Editais errados = trabalho desperdiçado. Responda 4 perguntas e descubra a fonte mais aderente ao seu projeto — e por que o PIPE costuma ser o destino certo para pesquisa de alto risco.</p></div>
+ <div class="panel" id="panel"></div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+<script>
+const Q=[
+ {q:"Quem é o proponente?",o:[["Pequena empresa (ou pretende abrir) no Estado de SP","sp"],["Empresa de qualquer porte no Brasil","br"],["Grande empresa precisando de crédito/escala","grande"]]},
+ {q:"Em que estágio está a inovação?",o:[["Ideia / viabilidade técnica (alto risco)","risco"],["Desenvolvimento de protótipo/produto","dev"],["Já tem produto, quer escalar/produzir","escala"]]},
+ {q:"Que tipo de dinheiro faz sentido?",o:[["Subvenção que não precisa devolver (grant)","grant"],["Crédito/empréstimo com retorno previsto","credito"],["Investimento em troca de participação (equity)","equity"]]},
+ {q:"Precisa de parceria com instituição de pesquisa (ICT)?",o:[["Sim, pesquisa aplicada em conjunto","ict"],["Não necessariamente","solo"]]}
+];
+let i=0,A=[];
+function render(){
+ const p=document.getElementById("panel");
+ if(i<Q.length){const q=Q[i];
+  p.innerHTML=`<div class="prog"><div style="width:${i/Q.length*100}%"></div></div><div class="q">${i+1}. ${q.q}</div>`+
+   q.o.map((o,j)=>`<div class="opt" onclick="pick('${o[1]}')">${o[0]}</div>`).join("");
+ }else result(p);
+}
+function pick(v){A.push(v);i++;render()}
+function result(p){
+ let rec="FAPESP — PIPE",why="",alt="";
+ if(A.includes("sp")&&A.includes("grant")){rec="FAPESP — PIPE";why="Você é exatamente o público do PIPE: pequena empresa paulista, buscando subvenção (não reembolsável) para pesquisa de alto risco. <b>Fase 1</b> (até 9 meses / R$300 mil) testa a viabilidade; <b>Fase 2</b> (até 24 meses / R$1,5 mi) desenvolve a inovação.";alt="Alternativas: Finep (subvenção federal, programas Centelha/Tecnova) e Sebrae (capacitação).";}
+ else if(A.includes("ict")){rec="Embrapii";why="Projeto de pesquisa aplicada em parceria empresa↔ICT, com compartilhamento de risco e contrapartida. Ideal para TRL intermediário em co-desenvolvimento.";alt="Considere também PIPE (se empresa de SP) ou Finep.";}
+ else if(A.includes("equity")){rec="Finep Startup";why="Investimento direto (equity, até R$2 mi) em startup de base tecnológica com alto potencial de crescimento.";alt="Compare com fundos de venture e PIPE Invest.";}
+ else if(A.includes("credito")||A.includes("escala")||A.includes("grande")){rec="BNDES / Desenvolve SP";why="Para investimento, produção e escala com retorno de mercado, o caminho é crédito de longo prazo: BNDES (nacional) ou Desenvolve SP (estadual).";alt="Se ainda há risco tecnológico de pesquisa, reconsidere PIPE/Finep antes.";}
+ else if(A.includes("br")&&A.includes("grant")){rec="Finep (subvenção federal)";why="Empresa fora de SP buscando subvenção: a Finep opera grants nacionais por chamadas públicas (Centelha, Tecnova, subvenção econômica).";alt="FAPs estaduais do seu estado também podem ter linhas próprias.";}
+ else{rec="FAPESP — PIPE";why="Pelo seu perfil, o PIPE tende a ser o melhor encaixe para pesquisa inovativa de alto risco em pequena empresa.";alt="Use o Mapa do Ecossistema (Aula 1) para comparar fontes.";}
+ p.innerHTML=`<div class="res"><div class="prog"><div style="width:100%"></div></div>
+  <small>Recomendação para o seu projeto:</small><div class="big">${rec}</div>
+  <div class="why">${why}</div><div class="alt">${alt}</div>
+  <button class="btn" onclick="i=0;A=[];render()">↺ Refazer</button></div>`;
+}
+render();
+</script>
+</body>
+</html>

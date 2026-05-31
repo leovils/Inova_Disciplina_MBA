@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Oslo — O que é Inovação</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1020px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:800px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:18px;margin-bottom:12px}
+.def{background:var(--soft);border-left:5px solid var(--accent);border-radius:10px;padding:16px;font-size:15px;line-height:1.55;font-style:italic}
+.toggle{display:inline-flex;background:var(--soft);border-radius:10px;padding:4px;margin-bottom:14px}
+.toggle button{border:none;background:none;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer;color:var(--muted);font-size:12.5px}
+.toggle button.on{background:var(--brand);color:#fff}
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.type{border:1.5px solid var(--line);border-radius:12px;padding:14px}
+.type .ic{font-size:22px}.type h3{font-size:15px;margin:4px 0}.type p{font-size:13px;color:var(--muted);line-height:1.45}
+.q{border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.q p{font-size:14.5px;margin-bottom:10px}
+.q .btns{display:flex;gap:8px}
+.q button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:8px 16px;font-weight:600;cursor:pointer;font-size:13px}
+.fb{margin-top:10px;font-size:13.5px;padding:10px;border-radius:8px;display:none}
+.fb.show{display:block}
+.score{text-align:center;font-weight:800;font-size:16px;margin-top:8px;color:var(--brand)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">BIBLIOTECA DE CONCEITOS · AULA 6</span>
+  <h1>📘 Manual de Oslo — O que conta como inovação?</h1>
+  <p>O Manual de Oslo (OCDE/Eurostat) é a referência mundial para definir e medir inovação. Entenda a definição, os tipos e teste seu faro: nem toda novidade é inovação.</p></div>
+
+ <div class="panel">
+  <h2>A definição (Manual de Oslo, 4ª edição, 2018)</h2>
+  <div class="def">“Uma inovação é um produto ou processo (ou combinação dos dois) novo ou aprimorado que difere significativamente dos produtos ou processos anteriores da unidade e que foi disponibilizado a usuários potenciais (produto) ou colocado em uso pela unidade (processo).”</div>
+  <p style="margin-top:12px;font-size:14px;color:var(--muted)">Três palavras-chave: <b>novo ou aprimorado</b>, <b>diferença significativa</b> e <b>implementado/disponibilizado</b> (ideia na gaveta não é inovação — precisa chegar ao uso ou ao mercado).</p>
+ </div>
+
+ <div class="panel">
+  <h2>Tipos de inovação</h2>
+  <div class="toggle"><button id="b3" class="on" onclick="setEd(3)">3ª ed. (2005) — 4 tipos</button><button id="b4" onclick="setEd(4)">4ª ed. (2018) — 2 categorias</button></div>
+  <div class="types" id="types"></div>
+  <small id="ednote" style="display:block;margin-top:10px"></small>
+ </div>
+
+ <div class="panel">
+  <h2>Quiz: isto é inovação?</h2>
+  <div id="quiz"></div>
+  <div class="score" id="score"></div>
+ </div>
+</div>
+<div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+<script>
+const ED3=[
+ {ic:"📦",n:"Produto",d:"Bem ou serviço novo ou significativamente melhorado (especificações, componentes, usabilidade)."},
+ {ic:"⚙️",n:"Processo",d:"Método de produção ou distribuição novo ou aprimorado."},
+ {ic:"📣",n:"Marketing",d:"Novo método de marketing: design, posicionamento, promoção ou preço."},
+ {ic:"🏗️",n:"Organizacional",d:"Novo método nas práticas de negócio, organização do trabalho ou relações externas."}];
+const ED4=[
+ {ic:"📦",n:"Inovação de Produto",d:"Bem ou serviço novo/aprimorado disponibilizado a usuários. Difere significativamente dos anteriores."},
+ {ic:"🔧",n:"Inovação de Processo de Negócio",d:"Processo novo/aprimorado para uma ou mais funções do negócio — absorve produção, distribuição, marketing, organização e TI da edição anterior."}];
+function setEd(e){document.getElementById("b3").classList.toggle("on",e===3);document.getElementById("b4").classList.toggle("on",e===4);
+ const arr=e===3?ED3:ED4;document.getElementById("types").innerHTML=arr.map(t=>`<div class="type"><div class="ic">${t.ic}</div><h3>${t.n}</h3><p>${t.d}</p></div>`).join("");
+ document.getElementById("ednote").innerHTML=e===3?"A 3ª edição (2005) consagrou os 4 tipos — ainda muito usados no Brasil (inclusive na PINTEC)."
+  :"A 4ª edição (2018) <b>simplificou</b> para 2 categorias amplas: produto e processo de negócio. Marketing e organizacional foram absorvidos em ‘processo de negócio’.";}
+const Q=[
+ {t:"Uma padaria troca o forno antigo por um modelo idêntico, só que novo.",inov:false,e:"Não. Repor um equipamento igual não traz diferença significativa — é manutenção, não inovação."},
+ {t:"Um banco lança um app que aprova crédito em segundos usando um modelo próprio de IA.",inov:true,e:"Sim. Processo de negócio novo e significativamente melhor, implementado e em uso."},
+ {t:"Uma startup tem uma ideia brilhante anotada, mas nunca a colocou no mercado.",inov:false,e:"Não. Sem implementação/disponibilização, é invenção ou ideia — não inovação (Oslo exige o uso)."},
+ {t:"Uma fábrica adota um novo método de produção que reduz desperdício em 30%.",inov:true,e:"Sim. Inovação de processo: método novo, diferença significativa, em uso."},
+ {t:"Uma loja muda a cor do logo e a fonte do cartaz de promoção.",inov:false,e:"Em geral não. Mudança cosmética sem diferença significativa não caracteriza inovação de marketing."}];
+let answered=0,correct=0;
+function render(){document.getElementById("quiz").innerHTML=Q.map((q,i)=>`<div class="q"><p>${i+1}. ${q.t}</p>
+  <div class="btns"><button onclick="ans(${i},true)">É inovação</button><button onclick="ans(${i},false)">Não é</button></div>
+  <div class="fb" id="fb${i}"></div></div>`).join("");}
+function ans(i,v){const q=Q[i],fb=document.getElementById("fb"+i);if(fb.dataset.done){return}fb.dataset.done=1;answered++;
+ const ok=v===q.inov;if(ok)correct++;fb.classList.add("show");
+ fb.style.background=ok?"#ecfdf5":"#fef2f2";fb.style.color=ok?"var(--ok)":"var(--danger)";
+ fb.innerHTML=(ok?"✅ Correto. ":"❌ Não exatamente. ")+q.e;
+ if(answered===Q.length)document.getElementById("score").textContent=`Você acertou ${correct} de ${Q.length}.`;}
+setEd(3);render();
+</script>
+</body>
+</html>

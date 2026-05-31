@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa da Jornada PIPE — Modo Game</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981;--gold:#f59e0b;--locked:#cbd5e1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(165deg,#1e1b4b,#0f172a 55%,#042f2e);min-height:100vh;padding:26px 16px}
+.wrap{max-width:1100px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:24px 28px;box-shadow:var(--shadow)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px;letter-spacing:.5px}
+.hero h1{font-size:26px;margin-bottom:4px}
+.hero p{opacity:.92;font-size:14.5px;max-width:680px}
+.hud{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:12px;margin-top:16px}
+@media(max-width:720px){.hud{grid-template-columns:1fr}}
+.hud .cell{background:rgba(255,255,255,.14);border-radius:12px;padding:12px 14px;backdrop-filter:blur(4px)}
+.hud .lab{font-size:11px;text-transform:uppercase;letter-spacing:.5px;opacity:.85;font-weight:700}
+.hud .val{font-size:20px;font-weight:800;margin-top:2px}
+.xpbar{height:10px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden;margin-top:8px}
+.xpbar>div{height:100%;background:#fff;border-radius:999px;transition:.5s}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.tb{background:#fff;border:none;border-radius:10px;padding:10px 16px;font-weight:700;font-size:13px;cursor:pointer;color:var(--brand);box-shadow:var(--shadow)}
+.tb.ghost{background:rgba(255,255,255,.14);color:#fff}
+.phase{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:16px;position:relative;overflow:hidden}
+.phase .phead{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:6px}
+.phase .ptitle{font-size:16px;font-weight:800}
+.phase .ptitle small{display:block;font-weight:600;color:var(--muted);font-size:12px}
+.pstat{font-size:12px;font-weight:700;padding:4px 12px;border-radius:999px;background:var(--soft);color:var(--muted)}
+.pstat.done{background:#ecfdf5;color:var(--ok)}
+.nodes{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.node{flex:1;min-width:130px;max-width:200px;text-align:center;cursor:pointer;border:1.5px solid var(--line);border-radius:14px;padding:14px 10px;transition:.16s;background:#fff}
+.node:hover{transform:translateY(-3px);border-color:var(--brand)}
+.node.locked{opacity:.55;cursor:not-allowed;background:var(--soft)}
+.node.locked:hover{transform:none;border-color:var(--line)}
+.node .ring{width:46px;height:46px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:#fff;background:var(--locked)}
+.node.avail .ring{background:linear-gradient(135deg,var(--brand),var(--brand2))}
+.node.done .ring{background:var(--ok)}
+.node h4{font-size:13px;line-height:1.25}
+.node .st{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600}
+.finale{text-align:center;color:#fff;padding:14px;font-size:14px;font-weight:700;opacity:.9}
+.shelf{background:#fff;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);margin-bottom:16px}
+.shelf h2{font-size:16px;margin-bottom:12px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.bdg{text-align:center;border:1.5px solid var(--line);border-radius:12px;padding:12px 6px}
+.bdg.earned{border-color:var(--gold);background:#fffbeb}
+.bdg .em{font-size:26px;filter:grayscale(1);opacity:.4}
+.bdg.earned .em{filter:none;opacity:1}
+.bdg .bn{font-size:11.5px;font-weight:700;margin-top:4px}
+.bdg.earned .bn{color:var(--gold)}
+.store{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.perk{border:1.5px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px}
+.perk .pn{font-size:13.5px;font-weight:700}
+.perk .pc{font-size:12px;color:var(--gold);font-weight:800}
+.perk button{margin-top:auto;border:none;background:var(--brand);color:#fff;border-radius:8px;padding:8px;font-weight:700;cursor:pointer;font-size:12.5px}
+.perk button:disabled{background:var(--line);color:var(--muted);cursor:not-allowed}
+.modal{position:fixed;inset:0;background:rgba(8,11,25,.7);display:none;align-items:center;justify-content:center;padding:18px;z-index:60}
+.modal.open{display:flex}
+.box{background:#fff;border-radius:var(--radius);max-width:520px;width:100%;padding:26px;max-height:88vh;overflow:auto}
+.box .ph{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent)}
+.box h2{font-size:21px;margin:4px 0 8px}
+.box p{font-size:14px;color:var(--muted);line-height:1.5;margin-bottom:14px}
+.box .links{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.box .links a{text-decoration:none;background:var(--soft);color:var(--ink);font-weight:700;font-size:13.5px;padding:11px 14px;border-radius:10px;border:1.5px solid var(--line)}
+.box .links a.slide{color:var(--brand)}
+.box .act{display:flex;gap:8px}
+.box .act button{flex:1;border:none;border-radius:10px;padding:12px;font-weight:800;cursor:pointer;font-size:14px}
+.btn-done{background:var(--ok);color:#fff}.btn-undo{background:var(--soft);color:var(--muted)}
+.close{float:right;border:none;background:var(--soft);width:34px;height:34px;border-radius:10px;cursor:pointer;font-size:18px;color:var(--muted)}
+.card-evt{text-align:center}
+.card-evt .em{font-size:40px}
+.card-evt h2{font-size:20px;margin:8px 0}
+.foot{text-align:center;color:rgba(255,255,255,.7);font-size:12px;margin-top:18px}
+.foot a{color:#fff}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f172a;color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:var(--shadow);transition:.3s;z-index:70;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="hero">
+  <span class="badge">MODO GAME · TRAVESSIA DO VALE DA MORTE</span>
+  <h1 id="title">🗺️ Mapa da Jornada PIPE</h1>
+  <p id="sub">Sua startup precisa atravessar o Vale da Morte — o trecho onde as ideias morrem por falta de recurso — até conquistar o financiamento no Demo Day. Cada missão concluída dá XP e Capital Semente.</p>
+  <div class="hud">
+   <div class="cell"><div class="lab">Nível</div><div class="val" id="lvl">🌱 Garagem</div><div class="xpbar"><div id="xpfill"></div></div></div>
+   <div class="cell"><div class="lab">XP</div><div class="val" id="xp">0 / 1200</div></div>
+   <div class="cell"><div class="lab">💰 Capital Semente</div><div class="val" id="coins">0</div></div>
+  </div>
+ </div>
+
+ <div class="toolbar">
+  <button class="tb" onclick="exportBoletim()">📤 Exportar boletim</button>
+  <button class="tb" onclick="importBoletim()">📂 Importar boletim</button>
+  <button class="tb" onclick="drawCard()">🃏 Sortear carta</button>
+  <button class="tb ghost" id="freebtn" onclick="toggleFree()">🔓 Modo livre: off</button>
+  <a class="tb ghost" href="index_jornada_pipe.html" style="text-decoration:none">← Hub</a>
+  <button class="tb ghost" onclick="resetAll()">↺ Zerar</button>
+ </div>
+
+ <div class="phase" id="cloudPanel">
+  <div class="phead"><div class="ptitle">☁️ Sincronizar com a nuvem<small>Google Sheets — salva e recupera em qualquer computador</small></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+   <label style="font-size:12px;font-weight:700;color:var(--muted)">URL da API (termina em /exec)
+    <input id="cfgApi" placeholder="https://script.google.com/.../exec" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
+   <label style="font-size:12px;font-weight:700;color:var(--muted)">Código da turma
+    <input id="cfgTurma" placeholder="ex.: MBA-2026-1" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
+   <label style="font-size:12px;font-weight:700;color:var(--muted)">Nome da startup
+    <input id="cfgStartup" placeholder="(puxa do Termo de Abertura)" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
+   <label style="font-size:13px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;margin-top:22px">
+    <input type="checkbox" id="cfgAuto" style="width:18px;height:18px"> Salvar automaticamente ao concluir missões</label>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+   <button class="tb" style="background:var(--brand);color:#fff" onclick="saveCfg()">Salvar configuração</button>
+   <button class="tb" style="background:var(--accent);color:#fff" onclick="cloudSave(false)">☁️ Salvar na nuvem agora</button>
+   <button class="tb" style="background:#fff;color:var(--brand);border:1.5px solid var(--line)" onclick="cloudRestore()">⬇️ Restaurar desta startup</button>
+  </div>
+  <small style="color:var(--muted);display:block;margin-top:8px">Configuração one-time: ver <b>google_sheets/COMO_CONFIGURAR.md</b>. Sem URL configurada, o jogo funciona normalmente só no navegador.</small>
+ </div>
+
+ <div id="board"></div>
+ <div class="finale">🏁 Do outro lado do vale: Demo Day — o financiamento espera por quem chegar.</div>
+
+ <div class="shelf"><h2>🏅 Conquistas</h2><div class="badges" id="badges"></div></div>
+
+ <div class="shelf"><h2>🛒 Loja de Capital Semente <small style="font-weight:600;color:var(--muted)">— sugestões; o professor define as regras</small></h2>
+  <div class="store" id="store"></div></div>
+
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação · progresso salvo neste navegador e sincronizado com o hub.</div>
+</div>
+
+<div class="modal" id="modal"><div class="box" id="boxc"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const PHASES=[
+ {nome:"Fase 1 · Descobrir",sub:"Encontre o problema que vale a pena",aulas:[1,2]},
+ {nome:"Fase 2 · Idear",sub:"Gere e escolha a solução",aulas:[3,4,5]},
+ {nome:"Fase 3 · Validar",sub:"Prove valor e inovação",aulas:[6,7,8]},
+ {nome:"Fase 4 · Financiar",sub:"Encontre o tesouro (o edital certo)",aulas:[9,10,11]},
+ {nome:"Fase 5 · Defender",sub:"A batalha final",aulas:[12]}
+];
+const M={
+ 1:{t:"Ecossistema & Origem",d:"Conheça quem financia inovação e funde sua startup.",w:[["🗺️ Mapa do Ecossistema","widgets/01_mapa_ecossistema_fomento.html"],["🚀 Termo de Abertura","widgets/13_termo_abertura_startup.html"]],s:"slides/aula01_ecossistema.html"},
+ 2:{t:"Caça ao Problema",d:"Rastreie dores reais e priorize a mais promissora.",w:[["🎯 Radar de Oportunidades","widgets/02_radar_oportunidades.html"]],s:"slides/aula02_problema.html"},
+ 3:{t:"Forja de Ideias (Osborn)",d:"Gere volume de ideias atributo por atributo.",w:[["🧩 Listagem de Osborn","widgets/03_listagem_osborn.html"]],s:"slides/aula03_osborn.html"},
+ 4:{t:"Expansão (SCAMPER)",d:"Reinvente a ideia com sete lentes.",w:[["🔀 Painel SCAMPER","widgets/04_scamper.html"]],s:"slides/aula04_scamper.html"},
+ 5:{t:"Seleção da Arma",d:"Escolha UMA ideia com critérios ponderados.",w:[["⚖️ Matriz de Priorização","widgets/05_matriz_priorizacao.html"]],s:"slides/aula05_priorizacao.html"},
+ 6:{t:"Prova de Inovação (TRL)",d:"Posicione o TRL e teste o caráter inovador.",w:[["🚦 TRL & Caráter Inovador","widgets/06_trl_carater_inovador.html"]],s:"slides/aula06_trl.html"},
+ 7:{t:"Prova de Valor",d:"Encaixe necessidade do cliente e solução.",w:[["💎 Value Proposition Canvas","widgets/07_value_proposition_canvas.html"]],s:"slides/aula07_proposta_valor.html"},
+ 8:{t:"Prova de Negócio",d:"Modele a empresa em nove blocos.",w:[["🧱 Business Model Canvas","widgets/08_business_model_canvas.html"]],s:"slides/aula08_bmc.html"},
+ 9:{t:"Mapa do Tesouro",d:"Escolha o edital e domine o PIPE.",w:[["🧭 Seletor de Edital","widgets/09_seletor_edital.html"],["🎓 Tutorial PIPE & FAQ","widgets/19_tutorial_pipe_faq.html"]],s:"slides/aula09_pipe.html"},
+ 10:{t:"Plano & Riscos",d:"Cronograma de 9 meses e gestão de riscos.",w:[["📅 Cronograma & Riscos","widgets/10_cronograma_riscos.html"]],s:"slides/aula10_cronograma.html"},
+ 11:{t:"Tesouro & Tropa",d:"Orçamento dentro do teto e equipe.",w:[["💰 Orçamento & Equipe","widgets/11_orcamento_equipe.html"]],s:"slides/aula11_orcamento.html"},
+ 12:{t:"Batalha Final (Pitch)",d:"Defenda a proposta diante da banca.",w:[["🎤 Rubrica & Checklist","widgets/12_rubrica_pitch_submissao.html"]],s:"slides/aula12_pitch.html"}
+};
+const XP_PER=100, COIN_PER=50, MAXXP=1200;
+const LEVELS=[[0,"🌱 Garagem"],[200,"🔧 Bancada (MVP)"],[500,"🚀 Tração"],[800,"📈 Escala"],[1100,"🏆 Pronto pro Demo Day"]];
+const BADGES=[
+ {em:"🏁",n:"Fundador",test:d=>d[1]},
+ {em:"🎯",n:"Caçador de Dores",test:d=>d[2]},
+ {em:"💡",n:"Mestre da Ideação",test:d=>d[3]&&d[4]&&d[5]},
+ {em:"🔬",n:"Validador de Valor",test:d=>d[6]&&d[7]&&d[8]},
+ {em:"🧭",n:"Caça-Editais",test:d=>d[9]},
+ {em:"🛠️",n:"Engenheiro do Plano",test:d=>d[10]&&d[11]},
+ {em:"🎤",n:"Pitch Master",test:d=>d[12]},
+ {em:"🌉",n:"Travessia Completa",test:d=>[1,2,3,4,5,6,7,8,9,10,11,12].every(n=>d[n])}
+];
+const PERKS=[
+ {n:"☕ Mentoria-relâmpago (15 min)",c:150},
+ {n:"🔎 Feedback extra do professor",c:200},
+ {n:"💡 Pista numa missão travada",c:100},
+ {n:"⏳ Extensão de prazo (1 entrega)",c:250},
+ {n:"🎟️ Passe-livre numa carta ruim",c:120}
+];
+const CARDS=[
+ {em:"💰",t:"Investidor-anjo curtiu!",d:"Sua tração impressionou. +120 Capital Semente.",bonus:120},
+ {em:"📰",t:"Concorrente entrou no mercado",d:"Revise seu diferencial agora: por que escolher você?",bonus:0},
+ {em:"🔄",t:"Pivô forçado",d:"O mercado mudou. Justifique uma mudança na sua solução em 2 minutos.",bonus:0},
+ {em:"🐛",t:"Bug no protótipo",d:"Descreva um risco técnico do projeto e seu plano de mitigação.",bonus:0},
+ {em:"🏆",t:"Prêmio de inovação",d:"Reconhecimento público! +80 Capital Semente.",bonus:80},
+ {em:"📉",t:"Corte de orçamento",d:"Refaça uma rubrica do orçamento com 20% a menos.",bonus:0},
+ {em:"🤝",t:"Parceria com uma ICT",d:"Uma universidade topou colaborar. +60 Capital Semente.",bonus:60},
+ {em:"⏰",t:"Edital fechando",d:"Acelere: revise seu checklist de submissão antes do prazo.",bonus:0}
+];
+
+function getDone(){const a=JSON.parse(localStorage.getItem("jornada_done")||"[]");const d={};for(let n=1;n<=12;n++)d[n]=!!a[n-1];return d;}
+function setDone(n,v){const a=JSON.parse(localStorage.getItem("jornada_done")||"[]");a[n-1]=v;localStorage.setItem("jornada_done",JSON.stringify(a));}
+function bonus(){return +(localStorage.getItem("jornada_bonus")||0);}
+function spent(){return +(localStorage.getItem("jornada_spent")||0);}
+function isFree(){return localStorage.getItem("jornada_free")==="1";}
+
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2200);}
+
+function level(xp){let l=LEVELS[0][1];for(const[th,nm]of LEVELS)if(xp>=th)l=nm;return l;}
+
+function render(){
+ const d=getDone();const count=Object.values(d).filter(Boolean).length;
+ const xp=count*XP_PER;const coins=count*COIN_PER+bonus()-spent();
+ // personalize from Termo
+ try{const termo=JSON.parse(localStorage.getItem("termo")||"null");if(termo&&termo.f&&termo.f.nome){document.getElementById("title").textContent="🗺️ Mapa da Jornada — "+termo.f.nome;}}catch(e){}
+ document.getElementById("xp").textContent=xp+" / "+MAXXP;
+ document.getElementById("xpfill").style.width=(xp/MAXXP*100)+"%";
+ document.getElementById("lvl").textContent=level(xp);
+ document.getElementById("coins").textContent=coins;
+ document.getElementById("freebtn").textContent="🔓 Modo livre: "+(isFree()?"on":"off");
+ // board
+ let order=[];PHASES.forEach(p=>p.aulas.forEach(a=>order.push(a)));
+ document.getElementById("board").innerHTML=PHASES.map(p=>{
+   const allDone=p.aulas.every(a=>d[a]);
+   const nodes=p.aulas.map(a=>{
+     const idx=order.indexOf(a);const prev=idx===0?true:d[order[idx-1]];
+     const avail=isFree()||prev||d[a];
+     const cls=d[a]?"done":(avail?"avail":"locked");
+     const icon=d[a]?"✓":(avail?a:"🔒");
+     const st=d[a]?"Concluída ✓":(avail?"Disponível":"Bloqueada");
+     return `<div class="node ${cls}" onclick="${avail?`openM(${a})`:`toast('Conclua a missão anterior primeiro (ou ative o Modo livre).')`}">
+       <div class="ring">${icon}</div><h4>Aula ${a}<br>${M[a].t}</h4><div class="st">${st}</div></div>`;
+   }).join("");
+   return `<div class="phase"><div class="phead"><div class="ptitle">${p.nome}<small>${p.sub}</small></div>
+     <span class="pstat ${allDone?'done':''}">${p.aulas.filter(a=>d[a]).length}/${p.aulas.length} ${allDone?'✓':''}</span></div>
+     <div class="nodes">${nodes}</div></div>`;
+ }).join("");
+ // badges
+ document.getElementById("badges").innerHTML=BADGES.map(b=>{const e=b.test(d);
+   return `<div class="bdg ${e?'earned':''}"><div class="em">${b.em}</div><div class="bn">${b.n}</div></div>`;}).join("");
+ // store
+ document.getElementById("store").innerHTML=PERKS.map((p,i)=>`<div class="perk"><div class="pn">${p.n}</div><div class="pc">${p.c} 💰</div>
+   <button ${coins<p.c?'disabled':''} onclick="buy(${p.c},'${p.n.replace(/'/g,"")}')">Resgatar</button></div>`).join("");
+}
+function openM(a){const m=M[a];const d=getDone();
+ document.getElementById("boxc").innerHTML=`<button class="close" onclick="closeM()">×</button>
+  <span class="ph">Missão · Aula ${a}</span><h2>${m.t}</h2><p>${m.d}</p>
+  <div class="links">
+   <a class="slide" href="${m.s}" target="_blank">🖥️ Abrir slides da aula</a>
+   ${m.w.map(w=>`<a href="${w[1]}" target="_blank">${w[0]}</a>`).join("")}
+  </div>
+  <div class="act">${d[a]
+    ?`<button class="btn-undo" onclick="complete(${a},false)">↩ Desmarcar missão</button>`
+    :`<button class="btn-done" onclick="complete(${a},true)">✅ Concluir missão (+${XP_PER} XP · +${COIN_PER} 💰)</button>`}</div>`;
+ document.getElementById("modal").classList.add("open");
+}
+function closeM(){document.getElementById("modal").classList.remove("open");}
+function complete(a,v){const was=getDone()[a];setDone(a,v);closeM();render();
+ if(v&&!was)toast(`Missão "${M[a].t}" concluída! +${XP_PER} XP`);
+ if(autosync()&&api()&&startupName())cloudSave(true);}
+function buy(c,n){if((getDone()&&true)){const d=getDone();const coins=Object.values(d).filter(Boolean).length*COIN_PER+bonus()-spent();
+ if(coins<c){toast("Capital Semente insuficiente.");return;}
+ localStorage.setItem("jornada_spent",spent()+c);render();toast("Resgatado: "+n);}}
+function drawCard(){const c=CARDS[Math.floor(Math.random()*CARDS.length)];
+ if(c.bonus){localStorage.setItem("jornada_bonus",bonus()+c.bonus);}
+ document.getElementById("boxc").innerHTML=`<button class="close" onclick="closeM()">×</button>
+  <div class="card-evt"><div class="em">${c.em}</div><span class="ph">Carta de Evento</span><h2>${c.t}</h2><p>${c.d}</p>
+  ${c.bonus?`<p style="color:var(--gold);font-weight:800">+${c.bonus} 💰 creditados!</p>`:""}
+  <button class="btn-done" style="width:100%;border:none;border-radius:10px;padding:12px;color:#fff;font-weight:800;cursor:pointer" onclick="closeM()">Ok, bora!</button></div>`;
+ document.getElementById("modal").classList.add("open");render();}
+function toggleFree(){localStorage.setItem("jornada_free",isFree()?"0":"1");render();toast("Modo livre "+(isFree()?"ativado":"desativado"));}
+const BUNDLE_KEYS=["jornada_done","jornada_bonus","jornada_spent","jornada_free","termo","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
+function startupName(){try{const t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
+function slug(s){return (s||"startup").toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")||"startup";}
+function buildBoletim(){
+ const d=getDone();const count=Object.values(d).filter(Boolean).length;
+ const xp=count*XP_PER;const coins=count*COIN_PER+bonus()-spent();
+ const earned=BADGES.filter(b=>b.test(d)).map(b=>b.n);
+ const dados={};BUNDLE_KEYS.forEach(k=>{const v=localStorage.getItem(k);if(v!==null)dados[k]=v;});
+ return {tipo:"boletim_jornada_pipe",versao:1,startup:startupName()||"(sem nome)",exportadoEm:new Date().toISOString(),
+   resumo:{nivel:level(xp),xp,capitalSemente:coins,missoes:count+"/12",missoesConcluidas:[1,2,3,4,5,6,7,8,9,10,11,12].filter(n=>d[n]),conquistas:earned},dados};
+}
+function exportBoletim(){
+ const obj=buildBoletim();
+ const b=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="boletim_"+slug(startupName())+".json";a.click();
+ toast("Boletim exportado! Envie o arquivo ao professor.");}
+
+/* ----- Sincronização com a nuvem (Google Sheets via Apps Script) ----- */
+function api(){return (localStorage.getItem("jornada_api")||"").trim();}
+function turma(){return (localStorage.getItem("jornada_turma")||"").trim();}
+function autosync(){return localStorage.getItem("jornada_autosync")==="1";}
+function cloudSave(silent){
+ const url=api();if(!url){if(!silent)toast("Configure a URL da API primeiro.");return;}
+ const obj=buildBoletim();
+ if(!startupName()){if(!silent)toast("Defina o nome da startup primeiro.");return;}
+ if(!silent)toast("Salvando na nuvem...");
+ fetch(url,{method:"POST",body:JSON.stringify({action:"save",turma:turma(),startup:obj.startup,boletim:obj})})
+  .then(r=>r.json()).then(j=>{toast(j&&j.ok?"☁️ Salvo na nuvem ✓":"Erro: "+((j&&j.error)||"desconhecido"));})
+  .catch(()=>{if(!silent)toast("Enviado (sem confirmação de leitura).");});
+}
+function jsonp(params,cb){
+ const url=api();if(!url){toast("Configure a URL da API primeiro.");return;}
+ const name="__cb"+Date.now();window[name]=function(data){cb(data);try{delete window[name];}catch(e){}s.remove();};
+ const q=Object.entries(params).map(([k,v])=>k+"="+encodeURIComponent(v)).join("&");
+ const s=document.createElement("script");
+ s.src=url+(url.indexOf("?")>=0?"&":"?")+q+"&callback="+name;
+ s.onerror=function(){toast("Falha ao acessar a nuvem.");try{delete window[name];}catch(e){}s.remove();};
+ document.body.appendChild(s);
+}
+function cloudRestore(){
+ if(!startupName()){toast("Defina o nome da startup primeiro.");return;}
+ if(!confirm("Restaurar da nuvem vai sobrescrever o progresso deste navegador com a versão salva da startup \""+startupName()+"\". Continuar?"))return;
+ toast("Buscando na nuvem...");
+ jsonp({action:"load",turma:turma(),startup:startupName()},function(data){
+  if(data&&data.ok&&data.boletim&&data.boletim.dados){
+   BUNDLE_KEYS.forEach(k=>{if(data.boletim.dados[k]!==undefined)localStorage.setItem(k,data.boletim.dados[k]);});
+   location.reload();
+  }else toast("Nada encontrado na nuvem para esta startup/turma.");
+ });
+}
+function saveCfg(){
+ localStorage.setItem("jornada_api",document.getElementById("cfgApi").value.trim());
+ localStorage.setItem("jornada_turma",document.getElementById("cfgTurma").value.trim());
+ localStorage.setItem("jornada_startup_nome",document.getElementById("cfgStartup").value.trim());
+ localStorage.setItem("jornada_autosync",document.getElementById("cfgAuto").checked?"1":"0");
+ toast("Configuração salva.");
+}
+function initCfg(){
+ const qs=new URLSearchParams(location.search);
+ if(qs.get("api"))localStorage.setItem("jornada_api",qs.get("api"));
+ if(qs.get("turma"))localStorage.setItem("jornada_turma",qs.get("turma"));
+ document.getElementById("cfgApi").value=api();
+ document.getElementById("cfgTurma").value=turma();
+ document.getElementById("cfgStartup").value=startupName();
+ document.getElementById("cfgAuto").checked=autosync();
+}
+function importBoletim(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";
+ i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);if(!o.dados)throw 0;
+   if(!confirm("Importar este boletim vai sobrescrever o progresso atual deste navegador. Continuar?"))return;
+   BUNDLE_KEYS.forEach(k=>{if(o.dados[k]!==undefined)localStorage.setItem(k,o.dados[k]);});
+   location.reload();}catch(err){alert("Arquivo de boletim inválido.");}};r.readAsText(f);};i.click();}
+function resetAll(){if(confirm("Zerar todo o progresso do jogo (XP, missões, Capital Semente)?")){
+ localStorage.removeItem("jornada_done");localStorage.removeItem("jornada_bonus");localStorage.removeItem("jornada_spent");render();toast("Progresso zerado.");}}
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")closeM();};
+render();initCfg();
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Taxonomia da Inovação</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1020px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:800px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:17px;margin-bottom:6px}.panel .desc{font-size:13px;color:var(--muted);margin-bottom:12px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:9px 14px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--muted)}
+.opt.on{border-color:var(--brand);background:#eef2ff;color:var(--brand)}
+.hc{display:grid;grid-template-columns:120px 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-top:8px}
+.hc .lbl{font-size:11px;color:var(--muted);font-weight:700;display:flex;align-items:center;justify-content:center;text-align:center}
+.hc .q{border-radius:10px;padding:14px;text-align:center;cursor:pointer;border:2px solid var(--line);font-size:13px;font-weight:700;color:var(--muted)}
+.hc .q.on{border-color:var(--brand);background:#eef2ff;color:var(--brand)}
+.hc .q small{display:block;font-weight:400;color:var(--muted);font-size:11px;margin-top:4px}
+input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:14px;margin-bottom:10px}
+.result{background:linear-gradient(120deg,#eef2ff,#f0fdfa);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-top:18px}
+.result h2{font-size:18px;margin-bottom:10px}
+.tagline{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.rt{background:var(--brand);color:#fff;padding:5px 12px;border-radius:999px;font-size:12.5px;font-weight:700}
+.rtxt{font-size:14.5px;line-height:1.55}
+.btn{background:#fff;color:var(--muted);border:1.5px solid var(--line);border-radius:10px;padding:10px 16px;font-weight:600;cursor:pointer;margin-top:12px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">BIBLIOTECA DE CONCEITOS · AULAS 5–6</span>
+  <h1>🧬 Taxonomia da Inovação</h1>
+  <p>“Inovação” é guarda-chuva para coisas muito diferentes. Classifique o projeto do seu grupo em quatro dimensões clássicas e receba um diagnóstico — útil para defender o caráter inovador no PIPE.</p></div>
+
+ <div class="panel">
+  <input id="proj" type="text" placeholder="Nome do projeto/solução do grupo">
+  <h2>1. Grau de novidade</h2><div class="desc">O quanto rompe com o que existe.</div>
+  <div class="opts" id="grau"></div>
+ </div>
+
+ <div class="panel">
+  <h2>2. Matriz de Henderson-Clark</h2><div class="desc">Cruza mudança nos <b>componentes</b> (a tecnologia em si) com mudança na <b>arquitetura</b> (como as partes se ligam).</div>
+  <div class="hc" id="hc"></div>
+ </div>
+
+ <div class="panel">
+  <h2>3. Lente de Christensen</h2><div class="desc">A inovação sustenta o mercado atual ou cria um novo, mais simples/barato?</div>
+  <div class="opts" id="chris"></div>
+ </div>
+
+ <div class="panel">
+  <h2>4. Grau de abertura</h2><div class="desc">O conhecimento vem só de dentro (fechada) ou de parcerias e fontes externas (aberta)?</div>
+  <div class="opts" id="abert"></div>
+ </div>
+
+ <div class="result" id="result"></div>
+ <div style="text-align:center"><button class="btn" onclick="exportTxt()">⬇ Exportar classificação</button></div>
+</div>
+<div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const GRAU=["Incremental","Semi-radical","Radical / disruptiva"];
+const HC=[["Incremental","mantém componentes e arquitetura"],["Modular","muda componentes, mantém arquitetura"],["Arquitetural","mantém componentes, muda arquitetura"],["Radical","muda componentes e arquitetura"]];
+const CHRIS=["Sustentadora (sustaining)","Disruptiva (disruptive)"];
+const ABERT=["Fechada","Híbrida","Aberta (open innovation)"];
+let S=JSON.parse(localStorage.getItem("taxonomia")||"null")||{proj:"",grau:0,hc:0,chris:0,abert:0};
+function save(){localStorage.setItem("taxonomia",JSON.stringify(S))}
+document.getElementById("proj").addEventListener("input",e=>{S.proj=e.target.value;save();result()});
+function chips(id,arr,key){document.getElementById(id).innerHTML=arr.map((x,i)=>`<div class="opt ${S[key]===i?'on':''}" onclick="set('${key}',${i})">${x}</div>`).join("")}
+function set(k,i){S[k]=i;save();render()}
+function render(){
+ document.getElementById("proj").value=S.proj;
+ chips("grau",GRAU,"grau");chips("chris",CHRIS,"chris");chips("abert",ABERT,"abert");
+ document.getElementById("hc").innerHTML=`
+  <div class="lbl"></div><div class="lbl">Arquitetura mantida</div><div class="lbl">Arquitetura mudada</div>
+  <div class="lbl">Componentes<br>mantidos</div>
+   <div class="q ${S.hc===0?'on':''}" onclick="set('hc',0)">Incremental<small>${HC[0][1]}</small></div>
+   <div class="q ${S.hc===2?'on':''}" onclick="set('hc',2)">Arquitetural<small>${HC[2][1]}</small></div>
+  <div class="lbl">Componentes<br>mudados</div>
+   <div class="q ${S.hc===1?'on':''}" onclick="set('hc',1)">Modular<small>${HC[1][1]}</small></div>
+   <div class="q ${S.hc===3?'on':''}" onclick="set('hc',3)">Radical<small>${HC[3][1]}</small></div>`;
+ result();
+}
+function result(){
+ const r=document.getElementById("result");
+ const radical=(S.grau===2||S.hc===3||S.chris===1);
+ let msg=radical
+  ? "Perfil de <b>alto risco e alta novidade</b> — combina bem com a lógica do PIPE (risco tecnológico). Capriche na busca de anterioridade e no estado da arte para sustentar o caráter inovador."
+  : "Perfil mais <b>incremental</b>. Atenção: o PIPE valoriza risco tecnológico. Verifique se há incerteza real a resolver — ou aumente a ambição do escopo.";
+ r.innerHTML=`<h2>🔎 Diagnóstico${S.proj?": "+S.proj:""}</h2>
+  <div class="tagline"><span class="rt">${GRAU[S.grau]}</span><span class="rt">${HC[S.hc][0]}</span><span class="rt">${CHRIS[S.chris]}</span><span class="rt">${ABERT[S.abert]}</span></div>
+  <div class="rtxt">${msg}</div>`;
+}
+function exportTxt(){let s=`TAXONOMIA DA INOVAÇÃO — ${S.proj||"(projeto)"}\n\n`;
+ s+=`Grau: ${GRAU[S.grau]}\nHenderson-Clark: ${HC[S.hc][0]} (${HC[S.hc][1]})\nChristensen: ${CHRIS[S.chris]}\nAbertura: ${ABERT[S.abert]}\n`;
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="taxonomia_inovacao.txt";a.click()}
+const _KEY="taxonomia",_FN="taxonomia_inovacao";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matriz de Priorização de Ideias</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--ok:#10b981}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1100px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-top:18px;overflow-x:auto}
+.panel h2{font-size:17px;margin-bottom:12px}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border:1px solid var(--line);padding:8px;text-align:center}
+th{background:var(--soft);font-weight:700}
+td:first-child,th:first-child{text-align:left}
+input[type=text]{border:1.5px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;width:100%}
+input[type=number]{width:56px;border:1.5px solid var(--line);border-radius:8px;padding:6px;text-align:center;font-size:13px}
+.score-input{width:44px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:13px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.del{border:none;background:none;color:#f59e0b;cursor:pointer;font-weight:700}
+.total{font-weight:800;color:var(--brand)}
+.win{background:#ecfdf5}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+.rank{font-weight:800;border-radius:999px;background:var(--soft);padding:2px 8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 5 · JORNADA PIPE</span>
+  <h1>⚖️ Matriz de Priorização Ponderada</h1>
+  <p>Brainstorm gera muitas ideias — agora é hora de escolher UMA para o projeto PIPE. Defina o peso de cada critério (devem somar 100), dê notas de 1 a 5 para cada ideia e deixe a matemática revelar a campeã. Decisão transparente é decisão defensável.</p></div>
+
+ <div class="panel">
+  <h2>Critérios e pesos <small>(soma atual: <span id="sumw">0</span>%)</small></h2>
+  <table><thead><tr><th>Critério</th><th>Peso (%)</th><th></th></tr></thead><tbody id="crit"></tbody></table>
+  <div class="bar"><input id="ncrit" type="text" placeholder="Novo critério" style="max-width:260px">
+   <button class="btn" onclick="addCrit()">+ Critério</button></div>
+ </div>
+
+ <div class="panel">
+  <h2>Ideias e notas (1–5)</h2>
+  <table id="mtx"></table>
+  <div class="bar"><input id="nidea" type="text" placeholder="Nova ideia" style="max-width:260px">
+   <button class="btn" onclick="addIdea()">+ Ideia</button>
+   <button class="btn alt" onclick="exportTxt()">⬇ Exportar ranking</button></div>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+
+<script>
+let S=JSON.parse(localStorage.getItem("matriz")||"null")||{
+ crit:[{n:"Caráter inovador",w:25},{n:"Viabilidade técnica",w:20},{n:"Tamanho da dor/mercado",w:20},{n:"Aderência ao PIPE",w:20},{n:"Capacidade da equipe",w:15}],
+ ideas:[{n:"Ideia A",s:{}}]};
+function save(){localStorage.setItem("matriz",JSON.stringify(S))}
+function addCrit(){const v=document.getElementById("ncrit").value.trim();if(!v)return;S.crit.push({n:v,w:0});document.getElementById("ncrit").value="";save();render()}
+function addIdea(){const v=document.getElementById("nidea").value.trim();if(!v)return;S.ideas.push({n:v,s:{}});document.getElementById("nidea").value="";save();render()}
+function delCrit(i){S.crit.splice(i,1);save();render()}
+function delIdea(i){S.ideas.splice(i,1);save();render()}
+function setW(i,v){S.crit[i].w=+v||0;save();render()}
+function setN(i,c,v){S.ideas[i].s[c]=Math.max(0,Math.min(5,+v||0));save();render()}
+function total(idea){return S.crit.reduce((a,c)=>a+(idea.s[c.n]||0)*c.w/100,0)}
+function render(){
+ document.getElementById("crit").innerHTML=S.crit.map((c,i)=>`<tr><td><input type="text" value="${c.n}" onchange="S.crit[${i}].n=this.value;save();render()"></td>
+  <td><input type="number" value="${c.w}" onchange="setW(${i},this.value)"></td><td><span class="del" onclick="delCrit(${i})">✕</span></td></tr>`).join("");
+ const sum=S.crit.reduce((a,c)=>a+c.w,0);document.getElementById("sumw").textContent=sum;document.getElementById("sumw").style.color=sum===100?"var(--ok)":"#ef4444";
+ const ranked=[...S.ideas].sort((a,b)=>total(b)-total(a));const best=ranked[0];
+ let h="<thead><tr><th>Ideia</th>"+S.crit.map(c=>`<th>${c.n}<br><small>${c.w}%</small></th>`).join("")+"<th>Score</th><th>Rank</th><th></th></tr></thead><tbody>";
+ S.ideas.forEach((idea,i)=>{const t=total(idea);const r=ranked.indexOf(idea)+1;
+  h+=`<tr class="${idea===best&&t>0?'win':''}"><td><input type="text" value="${idea.n}" onchange="S.ideas[${i}].n=this.value;save();render()"></td>`;
+  S.crit.forEach(c=>h+=`<td><input class="score-input" type="number" min="0" max="5" value="${idea.s[c.n]||""}" onchange="setN(${i},'${c.n.replace(/'/g,"")}',this.value)"></td>`);
+  h+=`<td class="total">${t.toFixed(2)}</td><td><span class="rank">${r}º</span></td><td><span class="del" onclick="delIdea(${i})">✕</span></td></tr>`;});
+ h+="</tbody>";document.getElementById("mtx").innerHTML=h;
+}
+function exportTxt(){const ranked=[...S.ideas].sort((a,b)=>total(b)-total(a));
+ let s="MATRIZ DE PRIORIZAÇÃO — Jornada PIPE\n\nPesos:\n"+S.crit.map(c=>`  ${c.n}: ${c.w}%`).join("\n")+"\n\nRanking:\n";
+ ranked.forEach((idea,i)=>s+=`  ${i+1}º ${idea.n} — score ${total(idea).toFixed(2)}\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="matriz_priorizacao.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="matriz",_FN="matriz_priorizacao";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>

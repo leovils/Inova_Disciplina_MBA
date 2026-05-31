@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Listagem de Atributos de Osborn</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 18px}
+.wrap{max-width:1080px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:600;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.92;font-size:15px;max-width:780px}
+.panel{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+input,select{border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px}
+input[type=text]{flex:1;min-width:180px}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-weight:600;cursor:pointer}
+.btn.alt{background:var(--soft);color:var(--muted)}
+.attr{border:1.5px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+.attr h4{font-size:15px;margin-bottom:4px}.attr .cat{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase}
+.prov{background:var(--soft);border-radius:8px;padding:10px;font-size:13.5px;color:var(--ink);margin-top:8px}
+.prov b{color:var(--brand2)}
+textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:14px;margin-top:8px;resize:vertical}
+.del{border:none;background:none;color:#f59e0b;cursor:pointer;font-weight:700;float:right}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 3 · JORNADA PIPE</span>
+  <h1>🧩 Listagem de Atributos de Osborn</h1>
+  <p>Criado por Alex Osborn nos anos 1950. A ideia: <b>nada se inova no todo — inova-se nos atributos</b>. Decomponha sua solução em atributos (forma, material, função, uso...) e ataque cada um com os verbos manipuladores. Pequenas variações geram grandes ideias.</p></div>
+
+ <div class="panel">
+  <div class="row"><input id="obj" type="text" placeholder="Objeto/solução a inovar (ex.: sensor de geada para vinhedos)">
+   <button class="btn" onclick="setObj()">Definir foco</button></div>
+  <div id="objlabel"></div>
+  <div class="row" style="margin-top:8px"><input id="attr" type="text" placeholder="Atributo (ex.: material da carcaça)">
+   <select id="cat"><option>Forma</option><option>Material</option><option>Função</option><option>Uso/contexto</option><option>Custo</option><option>Cor/estética</option></select>
+   <button class="btn" onclick="addAttr()">+ Atributo</button>
+   <button class="btn alt" onclick="exportTxt()">⬇ Exportar</button></div>
+ </div>
+ <div id="attrs"></div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+
+<script>
+const VERBOS=["Aumentar / ampliar","Diminuir / miniaturizar","Substituir por outro material/princípio","Combinar com outra função","Inverter (fazer o oposto)","Rearranjar a ordem/sequência","Adaptar de outra indústria","Dar outro uso"];
+let S=JSON.parse(localStorage.getItem("osborn")||'{"obj":"","attrs":[]}');
+function save(){localStorage.setItem("osborn",JSON.stringify(S))}
+function setObj(){S.obj=document.getElementById("obj").value.trim();save();render()}
+function addAttr(){const a=document.getElementById("attr").value.trim();if(!a)return;
+ S.attrs.push({a,c:document.getElementById("cat").value,nota:""});document.getElementById("attr").value="";save();render()}
+function del(i){S.attrs.splice(i,1);save();render()}
+function nota(i,v){S.attrs[i].nota=v;save()}
+function render(){
+ document.getElementById("obj").value=S.obj;
+ document.getElementById("objlabel").innerHTML=S.obj?`<small>Foco da inovação:</small> <b>${S.obj}</b>`:"<small>Defina o foco para começar.</small>";
+ document.getElementById("attrs").innerHTML=S.attrs.map((x,i)=>{
+  const v=VERBOS[Math.floor(Math.random()*VERBOS.length)];
+  const v2=VERBOS[Math.floor(Math.random()*VERBOS.length)];
+  return `<div class="panel attr"><button class="del" onclick="del(${i})">remover</button>
+   <span class="cat">${x.c}</span><h4>${x.a}</h4>
+   <div class="prov">Provocações: <b>${v}</b> · <b>${v2}</b><br><small>E se este atributo fosse radicalmente diferente? O que mudaria para o cliente?</small></div>
+   <textarea rows="2" placeholder="Ideias geradas a partir deste atributo..." oninput="nota(${i},this.value)">${x.nota}</textarea></div>`;
+ }).join("")||'<div class="panel"><small>Adicione atributos da sua solução acima.</small></div>';
+}
+function exportTxt(){let s="LISTAGEM DE ATRIBUTOS — "+(S.obj||"(sem foco)")+"\n\n";
+ S.attrs.forEach((x,i)=>s+=`[${x.c}] ${x.a}\n  → ${x.nota||"(sem ideia registrada)"}\n\n`);
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="listagem_osborn.txt";a.click()}
+render();
+</script>
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="osborn",_FN="listagem_osborn";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+</body>
+</html>
