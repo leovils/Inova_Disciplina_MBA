@@ -21,13 +21,21 @@ Com isto, o progresso de cada startup é salvo na nuvem automaticamente. O grupo
 5. Copie a **URL do app da Web** (termina em **`/exec`**). É essa URL que você vai colar na Jornada.
 
 ## 4. Ligar a Jornada à planilha
-1. Abra o **Mapa da Jornada** (`mapa_jornada.html`).
-2. No painel **"☁️ Sincronizar com a nuvem"**, cole a **URL `/exec`** e defina o **Código da turma** (ex.: `MBA-2026-1`).
-3. Faça o mesmo no **Painel do Professor** (`painel_professor.html`).
+A URL `/exec` e o código da turma já podem ficar **embutidos no arquivo** (recomendado):
+1. Abra `mapa_jornada.html` num editor de texto e, no topo do `<script>`, ajuste as duas linhas:
+   - `const API_FIXA="...sua URL /exec...";`
+   - `const TURMA_FIXA="MBA-2026-1";`
+2. Pronto: ao abrir o mapa, os campos de URL e turma ficam **ocultos**; o aluno só preenche **nome da startup** e **PIN do grupo**.
+3. No **Painel do Professor** (`painel_professor.html`), cole a mesma URL `/exec` e a turma uma vez (ou use `?api=...&turma=...` no link).
 
-> 💡 Atalho: você pode distribuir um link já configurado para os alunos, assim:
+> 💡 Alternativa sem editar o arquivo: distribua um link já configurado —
 > `mapa_jornada.html?api=SUA_URL_EXEC&turma=MBA-2026-1`
-> Os campos vêm preenchidos automaticamente.
+
+### PIN por grupo (anti-colisão)
+Cada grupo escolhe um **PIN** (ex.: `4729`) na primeira aula e o guarda. O identificador na planilha é **turma + nome da startup + PIN** — assim dois grupos nunca sobrescrevem o boletim um do outro, e só recupera quem souber o PIN.
+
+### Ao atualizar o código do script
+Se você trocar o `apps_script.gs` (como na versão com PIN), **apague as abas `Placar` e `Historico`** antigas (elas têm o layout anterior) — o script recria com as colunas novas — e **republique**: Implantar → Gerenciar implantações → ✏️ → Versão: **Nova versão** → Implantar (a URL `/exec` não muda).
 
 ## 5. Usar no dia a dia
 - **Aluno:** marca o "Salvar automático" no painel da nuvem. A cada missão concluída, o boletim sobe para a planilha. Em outro computador, ele clica em **"⬇️ Restaurar desta startup"** e recupera tudo.

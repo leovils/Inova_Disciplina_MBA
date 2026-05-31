@@ -99,15 +99,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:lin
  </div>
 
  <div class="phase" id="cloudPanel">
-  <div class="phead"><div class="ptitle">☁️ Sincronizar com a nuvem<small>Google Sheets — salva e recupera em qualquer computador</small></div></div>
+  <div class="phead"><div class="ptitle">☁️ Sincronizar com a nuvem<small id="cloudTurma">Google Sheets — salva e recupera em qualquer computador</small></div></div>
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-   <label style="font-size:12px;font-weight:700;color:var(--muted)">URL da API (termina em /exec)
+   <label id="rowApi" style="font-size:12px;font-weight:700;color:var(--muted)">URL da API (termina em /exec)
     <input id="cfgApi" placeholder="https://script.google.com/.../exec" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
-   <label style="font-size:12px;font-weight:700;color:var(--muted)">Código da turma
+   <label id="rowTurma" style="font-size:12px;font-weight:700;color:var(--muted)">Código da turma
     <input id="cfgTurma" placeholder="ex.: MBA-2026-1" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
    <label style="font-size:12px;font-weight:700;color:var(--muted)">Nome da startup
     <input id="cfgStartup" placeholder="(puxa do Termo de Abertura)" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
-   <label style="font-size:13px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;margin-top:22px">
+   <label style="font-size:12px;font-weight:700;color:var(--muted)">PIN do grupo <span style="font-weight:400">(escolham um código e guardem)</span>
+    <input id="cfgPin" placeholder="ex.: 4729" style="width:100%;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:13px;margin-top:4px"></label>
+   <label style="font-size:13px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:8px;margin-top:6px">
     <input type="checkbox" id="cfgAuto" style="width:18px;height:18px"> Salvar automaticamente ao concluir missões</label>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
@@ -255,7 +257,7 @@ function drawCard(){const c=CARDS[Math.floor(Math.random()*CARDS.length)];
   <button class="btn-done" style="width:100%;border:none;border-radius:10px;padding:12px;color:#fff;font-weight:800;cursor:pointer" onclick="closeM()">Ok, bora!</button></div>`;
  document.getElementById("modal").classList.add("open");render();}
 function toggleFree(){localStorage.setItem("jornada_free",isFree()?"0":"1");render();toast("Modo livre "+(isFree()?"ativado":"desativado"));}
-const BUNDLE_KEYS=["jornada_done","jornada_bonus","jornada_spent","jornada_free","termo","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
+const BUNDLE_KEYS=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
 function startupName(){try{const t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
 function slug(s){return (s||"startup").toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")||"startup";}
 function buildBoletim(){
@@ -272,16 +274,22 @@ function exportBoletim(){
  const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="boletim_"+slug(startupName())+".json";a.click();
  toast("Boletim exportado! Envie o arquivo ao professor.");}
 
-/* ----- Sincronização com a nuvem (Google Sheets via Apps Script) ----- */
+/* ----- Sincronização com a nuvem (Google Sheets via Apps Script) -----
+   >>> CONFIG FIXA DA TURMA: edite as duas linhas abaixo. <<<
+   Deixe API_FIXA com a sua URL terminada em /exec e TURMA_FIXA com o código da turma.
+   Assim os alunos não precisam digitar nada (os campos ficam ocultos). */
+const API_FIXA="https://script.google.com/macros/s/AKfycbzc0dabdL6Gg3qGKQAyEtYyAohQfErSsizfD5TwfSWwnTbgP_aPbzzfKx3glycpsX1a6A/exec";
+const TURMA_FIXA="MBA-2026-1";
 function api(){return (localStorage.getItem("jornada_api")||"").trim();}
 function turma(){return (localStorage.getItem("jornada_turma")||"").trim();}
+function pin(){return (localStorage.getItem("jornada_pin")||"").trim();}
 function autosync(){return localStorage.getItem("jornada_autosync")==="1";}
 function cloudSave(silent){
  const url=api();if(!url){if(!silent)toast("Configure a URL da API primeiro.");return;}
  const obj=buildBoletim();
  if(!startupName()){if(!silent)toast("Defina o nome da startup primeiro.");return;}
  if(!silent)toast("Salvando na nuvem...");
- fetch(url,{method:"POST",body:JSON.stringify({action:"save",turma:turma(),startup:obj.startup,boletim:obj})})
+ fetch(url,{method:"POST",body:JSON.stringify({action:"save",turma:turma(),startup:obj.startup,pin:pin(),boletim:obj})})
   .then(r=>r.json()).then(j=>{toast(j&&j.ok?"☁️ Salvo na nuvem ✓":"Erro: "+((j&&j.error)||"desconhecido"));})
   .catch(()=>{if(!silent)toast("Enviado (sem confirmação de leitura).");});
 }
@@ -298,7 +306,7 @@ function cloudRestore(){
  if(!startupName()){toast("Defina o nome da startup primeiro.");return;}
  if(!confirm("Restaurar da nuvem vai sobrescrever o progresso deste navegador com a versão salva da startup \""+startupName()+"\". Continuar?"))return;
  toast("Buscando na nuvem...");
- jsonp({action:"load",turma:turma(),startup:startupName()},function(data){
+ jsonp({action:"load",turma:turma(),startup:startupName(),pin:pin()},function(data){
   if(data&&data.ok&&data.boletim&&data.boletim.dados){
    BUNDLE_KEYS.forEach(k=>{if(data.boletim.dados[k]!==undefined)localStorage.setItem(k,data.boletim.dados[k]);});
    location.reload();
@@ -306,19 +314,28 @@ function cloudRestore(){
  });
 }
 function saveCfg(){
- localStorage.setItem("jornada_api",document.getElementById("cfgApi").value.trim());
- localStorage.setItem("jornada_turma",document.getElementById("cfgTurma").value.trim());
+ if(!API_FIXA)localStorage.setItem("jornada_api",document.getElementById("cfgApi").value.trim());
+ if(!TURMA_FIXA)localStorage.setItem("jornada_turma",document.getElementById("cfgTurma").value.trim());
  localStorage.setItem("jornada_startup_nome",document.getElementById("cfgStartup").value.trim());
+ localStorage.setItem("jornada_pin",document.getElementById("cfgPin").value.trim());
  localStorage.setItem("jornada_autosync",document.getElementById("cfgAuto").checked?"1":"0");
  toast("Configuração salva.");
 }
 function initCfg(){
  const qs=new URLSearchParams(location.search);
- if(qs.get("api"))localStorage.setItem("jornada_api",qs.get("api"));
- if(qs.get("turma"))localStorage.setItem("jornada_turma",qs.get("turma"));
+ // Config fixa embutida tem prioridade; senão, aceita via link (?api=&turma=)
+ if(API_FIXA)localStorage.setItem("jornada_api",API_FIXA);
+ else if(qs.get("api"))localStorage.setItem("jornada_api",qs.get("api"));
+ if(TURMA_FIXA)localStorage.setItem("jornada_turma",TURMA_FIXA);
+ else if(qs.get("turma"))localStorage.setItem("jornada_turma",qs.get("turma"));
+ // Esconde os campos de URL/turma quando estão fixos
+ if(API_FIXA)document.getElementById("rowApi").style.display="none";
+ if(TURMA_FIXA)document.getElementById("rowTurma").style.display="none";
+ if(turma())document.getElementById("cloudTurma").textContent="Turma "+turma()+" · configurado — preencha só nome da startup e PIN";
  document.getElementById("cfgApi").value=api();
  document.getElementById("cfgTurma").value=turma();
  document.getElementById("cfgStartup").value=startupName();
+ document.getElementById("cfgPin").value=pin();
  document.getElementById("cfgAuto").checked=autosync();
 }
 function importBoletim(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";

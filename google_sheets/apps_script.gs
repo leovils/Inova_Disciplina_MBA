@@ -1,19 +1,18 @@
 /**
- * Jornada PIPE — backend Google Sheets (Apps Script)
- * Recebe os boletins das startups, grava na planilha e devolve para
- * recuperação (load) e para o Painel do Professor (list).
- *
- * Como instalar: veja COMO_CONFIGURAR.md (mesma pasta).
+ * Jornada PIPE - backend Google Sheets (Apps Script)
+ * Identificador de cada grupo: turma + startup + PIN (blinda contra colisao).
+ * Instalacao: veja COMO_CONFIGURAR.md (mesma pasta).
  *
  * Endpoints:
- *   POST  body JSON {action:"save", turma, startup, boletim}   -> grava
- *   GET   ?action=load&turma=..&startup=..[&callback=cb]        -> 1 boletim
- *   GET   ?action=list&turma=..[&callback=cb]                   -> todos da turma
+ *   POST  body JSON {action:"save", turma, startup, pin, boletim}   -> grava
+ *   GET   ?action=load&turma=..&startup=..&pin=..[&callback=cb]      -> 1 boletim
+ *   GET   ?action=list&turma=..[&callback=cb]                        -> todos da turma
  */
 
 var SHEET_PLACAR = "Placar";
 var SHEET_HIST   = "Historico";
-var HEADERS = ["timestamp","turma","startup","xp","missoes","capital","conquistas","boletim_json"];
+var HEADERS = ["timestamp","turma","startup","pin","xp","missoes","capital","conquistas","boletim_json"];
+var COL_JSON = 8;
 
 function doPost(e){
   try{
@@ -28,7 +27,7 @@ function doPost(e){
 function doGet(e){
   var p = (e && e.parameter) ? e.parameter : {};
   var res;
-  if(p.action === "load")      res = load_(p.turma, p.startup);
+  if(p.action === "load")      res = load_(p.turma, p.startup, p.pin);
   else if(p.action === "list") res = list_(p.turma);
   else                         res = {ok:true, msg:"Jornada PIPE API online"};
   return out_(res, p.callback);
@@ -51,10 +50,16 @@ function sheet_(name){
   return sh;
 }
 
-function rowFrom_(turma, b){
+function rowFrom_(turma, pin, b){
   var r = b.resumo || {};
-  return [ new Date(), turma, (b.startup||""), (r.xp||0), (r.missoes||""),
+  return [ new Date(), turma, (b.startup||""), pin, (r.xp||0), (r.missoes||""),
            (r.capitalSemente||0), ((r.conquistas||[]).join(" | ")), JSON.stringify(b) ];
+}
+
+function match_(rowVals, turma, startupLower, pin){
+  return String(rowVals[1]).trim()===turma &&
+         String(rowVals[2]).trim().toLowerCase()===startupLower &&
+         String(rowVals[3]).trim()===pin;
 }
 
 function save_(body){
@@ -62,43 +67,39 @@ function save_(body){
   try{ lock.waitLock(20000); }catch(e){ return {ok:false, error:"sistema ocupado, tente de novo"}; }
   try{
     var b = body.boletim || {};
-    var turma = (body.turma || "").toString().trim();
+    var turma   = (body.turma || "").toString().trim();
     var startup = ((b.startup || body.startup || "")).toString().trim();
+    var pin     = (body.pin || "").toString().trim();
     if(!startup) return {ok:false, error:"startup sem nome"};
+    if(!pin)     return {ok:false, error:"informe o PIN do grupo"};
     b.startup = startup;
-    var row = rowFrom_(turma, b);
-
-    // histórico: registra toda gravação (auditoria / recuperação)
+    var row = rowFrom_(turma, pin, b);
     sheet_(SHEET_HIST).appendRow(row);
-
-    // placar: 1 linha por (turma + startup), sempre a mais recente
     var pl = sheet_(SHEET_PLACAR);
     var data = pl.getDataRange().getValues();
     var found = -1;
     for(var i=1;i<data.length;i++){
-      if(String(data[i][1]).trim()===turma &&
-         String(data[i][2]).trim().toLowerCase()===startup.toLowerCase()){ found = i+1; break; }
+      if(match_(data[i], turma, startup.toLowerCase(), pin)){ found = i+1; break; }
     }
     if(found>0) pl.getRange(found,1,1,row.length).setValues([row]);
     else        pl.appendRow(row);
-
     return {ok:true, startup:startup, savedAt:new Date().toISOString()};
   } finally { lock.releaseLock(); }
 }
 
-function load_(turma, startup){
-  turma = (turma||"").toString().trim();
+function load_(turma, startup, pin){
+  turma   = (turma||"").toString().trim();
   startup = (startup||"").toString().trim().toLowerCase();
+  pin     = (pin||"").toString().trim();
   var pl = sheet_(SHEET_PLACAR);
   var data = pl.getDataRange().getValues();
   for(var i=1;i<data.length;i++){
-    if(String(data[i][1]).trim()===turma &&
-       String(data[i][2]).trim().toLowerCase()===startup){
-      try{ return {ok:true, boletim: JSON.parse(data[i][7])}; }
+    if(match_(data[i], turma, startup, pin)){
+      try{ return {ok:true, boletim: JSON.parse(data[i][COL_JSON])}; }
       catch(e){ return {ok:false, error:"json invalido"}; }
     }
   }
-  return {ok:false, error:"nao encontrado"};
+  return {ok:false, error:"nao encontrado (confira nome da startup e PIN)"};
 }
 
 function list_(turma){
@@ -108,7 +109,7 @@ function list_(turma){
   var arr = [];
   for(var i=1;i<data.length;i++){
     if(!turma || String(data[i][1]).trim()===turma){
-      try{ arr.push(JSON.parse(data[i][7])); }catch(e){}
+      try{ arr.push(JSON.parse(data[i][COL_JSON])); }catch(e){}
     }
   }
   return {ok:true, boletins: arr};
