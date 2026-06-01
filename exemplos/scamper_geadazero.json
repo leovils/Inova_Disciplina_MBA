@@ -1,0 +1,12 @@
+{
+ "ideia":"Sensor-estaca que prevê geada e alerta o produtor por SMS",
+ "n":{
+  "S":"Trocar a previsão genérica do clima por um modelo treinado com microdados do próprio vinhedo.",
+  "C":"Juntar com um sensor de doenças fúngicas: um só dispositivo para geada + míldio.",
+  "A":"Adaptar a tecnologia de proteção contra geada já usada na citricultura da Flórida.",
+  "M":"Ampliar a antecedência do alerta de 1h para 6h, dando tempo de ligar os aspersores.",
+  "P":"O mesmo sensor serve para cafeicultura e fruticultura sensíveis a geada.",
+  "E":"Eliminar o app: alerta por ligação de voz automática, sem precisar de smartphone.",
+  "R":"Inverter o fluxo: em vez de alertar e o produtor agir, integrar à irrigação que liga sozinha."
+ }
+}

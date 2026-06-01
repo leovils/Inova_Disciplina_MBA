@@ -1,0 +1,8 @@
+{
+ "prod":["Sensor-estaca solar com previsão local de geada","Serviço de alerta por SMS e ligação de voz","Painel de risco de geada por hectare (assinatura)"],
+ "alivio":["Alerta com 6h de antecedência: tempo de ligar a aspersão","Previsão do próprio talhão (modelo treinado com dados do vinhedo)","Funciona sem internet no campo (rede LoRa)","Aviso automático de madrugada: ninguém precisa acordar para checar"],
+ "ganho":["Safra mais estável e menos perdas","Tranquilidade: o produtor é avisado a tempo","Decisão automática integrada à irrigação","Custo previsível por hectare"],
+ "jobs":["Proteger a safra contra geada","Decidir a hora certa de ligar a aspersão","Reduzir perdas e estabilizar a produção","Planejar a colheita"],
+ "dores":["Perde até 30% da safra com geada inesperada","Previsão de clima é regional, não do seu vinhedo","Tem de acordar de madrugada para medir a temperatura","Falta de internet no campo"],
+ "gdesejo":["Dormir tranquilo sabendo que será avisado","Previsão precisa do próprio talhão","Reduzir o custo das perdas","Uma decisão simples e automática"]
+}

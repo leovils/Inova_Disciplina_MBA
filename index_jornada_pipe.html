@@ -46,6 +46,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:lin
    <a href="apresentacao_game.html" style="background:#fff;color:var(--brand);font-weight:800;text-decoration:none;padding:12px 22px;border-radius:12px;box-shadow:var(--shadow)">▶️ Apresentação do Game (1ª aula)</a>
    <a href="mapa_jornada.html" style="background:#fff;color:var(--brand);font-weight:800;text-decoration:none;padding:12px 22px;border-radius:12px;box-shadow:var(--shadow)">🎮 Mapa da Jornada</a>
    <a href="guia_do_jogador.html" style="background:rgba(255,255,255,.18);color:#fff;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:12px">📖 Guia do Jogador</a>
+   <a href="exemplos.html" style="background:rgba(255,255,255,.18);color:#fff;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:12px">🧪 Exemplos</a>
    <a href="painel_professor.html" style="background:rgba(255,255,255,.18);color:#fff;font-weight:700;text-decoration:none;padding:12px 20px;border-radius:12px">📊 Painel do Professor</a>
   </div>
  </div>
@@ -84,6 +85,7 @@ const A=[
  {ph:"Bloco 5 · Defender",t:"Pitch Day & Submissão",d:"Banca avaliadora, rubrica de pitch e checklist final de submissão no SAGe.",w:[["🎤 Rubrica & Checklist","widgets/12_rubrica_pitch_submissao.html"]]}
 ];
 const SLIDES=["slides/aula01_ecossistema.html","slides/aula02_problema.html","slides/aula03_osborn.html","slides/aula04_scamper.html","slides/aula05_priorizacao.html","slides/aula06_trl.html","slides/aula07_proposta_valor.html","slides/aula08_bmc.html","slides/aula09_pipe.html","slides/aula10_cronograma.html","slides/aula11_orcamento.html","slides/aula12_pitch.html"];
+const EX={2:"ex-radar",3:"ex-osborn",4:"ex-scamper",6:"ex-trl",7:"ex-vpc",8:"ex-bmc",10:"ex-crono",11:"ex-orc"};
 let done=JSON.parse(localStorage.getItem("jornada_done")||"[]");
 function tog(i){done[i]=!done[i];localStorage.setItem("jornada_done",JSON.stringify(done));render()}
 function render(){
@@ -93,6 +95,7 @@ function render(){
    <a class="tool sec" href="${SLIDES[i]}" target="_blank">🖥️ Slides</a>
    ${a.w.map(w=>`<a class="tool" href="${w[1]}" target="_blank">${w[0]}</a>`).join("")}
    ${a.w.map(w=>`<a class="tool guide" href="guias/${w[1].split('/').pop().replace('.html','.md')}" target="_blank">📖 Guia</a>`).join("")}
+   ${EX[i+1]?`<a class="tool" style="background:#fff;color:#0F766E;border:1.5px solid var(--line)" href="exemplos.html#${EX[i+1]}" target="_blank">📋 Exemplo</a>`:""}
   </div>
   <label class="chkrow"><input type="checkbox" ${done[i]?"checked":""} onchange="tog(${i})"> marcar como concluída</label>
  </div></div>`).join("");

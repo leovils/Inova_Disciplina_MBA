@@ -1,0 +1,11 @@
+{
+ "seg":"Pequenas e médias vinícolas do interior de SP; depois, cafeicultores e fruticultores sensíveis a geada.",
+ "valor":"Previsão local de geada com 6h de antecedência e alerta automático — reduz perdas de safra, sem depender de internet.",
+ "can":"Venda direta + cooperativas vinícolas; parceria com Sebrae e sindicatos rurais; indicação entre produtores.",
+ "rel":"Onboarding assistido + suporte por WhatsApp; comunidade de produtores usuários.",
+ "rec$":"Assinatura mensal por hectare (hardware como serviço); planos por número de sensores instalados.",
+ "rec":"Modelo de machine learning treinado, hardware do sensor, base de dados climáticos locais, equipe de P&D.",
+ "ativ":"P&D do sensor e do modelo; calibração em campo; operação da rede de alertas.",
+ "parc":"ICT/universidade (ex.: IAC/Embrapa), fabricante de hardware, cooperativas e a FAPESP (fomento via PIPE).",
+ "custo":"Desenvolvimento de hardware e do modelo; produção dos sensores; conectividade; equipe técnica."
+}

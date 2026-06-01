@@ -1,0 +1,16 @@
+{
+ "acts":[
+  {"n":"Revisão do estado da arte e busca de anterioridade","s":1,"d":2},
+  {"n":"Coleta de microdados climáticos em 3 vinhedos-piloto","s":1,"d":4},
+  {"n":"Desenvolvimento do protótipo do sensor (estaca solar + LoRa)","s":2,"d":4},
+  {"n":"Treino e validação do modelo de previsão de geada","s":4,"d":4},
+  {"n":"Teste de campo do alerta com 6h de antecedência","s":6,"d":3},
+  {"n":"Análise de viabilidade técnica e relatório final","s":8,"d":2}
+ ],
+ "risks":[
+  {"n":"Sensor não atinge a precisão de previsão necessária","p":2,"im":3,"mit":"Validar em 3 vinhedos e ajustar o modelo; fusão de sensores."},
+  {"n":"Conectividade LoRa instável em relevo acidentado","p":2,"im":2,"mit":"Gateways redundantes; fallback por satélite."},
+  {"n":"Geadas insuficientes na janela do projeto para validar","p":3,"im":3,"mit":"Usar dados históricos + câmara fria para simulação controlada."},
+  {"n":"Baixa adesão dos produtores ao piloto","p":2,"im":2,"mit":"Piloto gratuito e demonstração da redução de perdas."}
+ ]
+}

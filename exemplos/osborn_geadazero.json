@@ -1,0 +1,12 @@
+{
+ "obj":"Sensor de previsão de geada para vinhedos",
+ "attrs":[
+  {"a":"Fonte de energia","c":"Material","nota":"Trocar bateria por painel solar + supercapacitor: autonomia no campo, sem manutenção."},
+  {"a":"Conectividade","c":"Função","nota":"Substituir Wi-Fi por LoRa/satélite: funciona em vinhedo sem internet."},
+  {"a":"Forma física","c":"Forma","nota":"Miniaturizar numa estaca fincável; reduz custo e tempo de instalação."},
+  {"a":"Sensores embarcados","c":"Função","nota":"Combinar temperatura + umidade + ponto de orvalho: previsão muito mais precisa."},
+  {"a":"Forma de alertar","c":"Uso/contexto","nota":"Inverter: em vez de app, ligação/SMS automático de madrugada."},
+  {"a":"Modelo de cobrança","c":"Custo","nota":"Vender como serviço (assinatura por hectare) em vez de vender hardware."},
+  {"a":"Visibilidade da carcaça","c":"Cor/estética","nota":"Cor refletiva para achar o sensor no meio da plantação."}
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "fase":1,
+ "v":{
+  "Material de consumo":35000,
+  "Serviços de terceiros (PJ)":60000,
+  "Equipamentos / material permanente":70000,
+  "Bolsas (FAPESP)":110000,
+  "Diárias e viagens":12000,
+  "Reserva técnica":13000
+ },
+ "team":[
+  {"n":"Dra. Helena Vinhas","r":"Pesquisadora responsável (ML/agro)","d":"20h/sem"},
+  {"n":"Eng. Caio Lopes","r":"Engenheiro eletrônico (hardware)","d":"30h/sem"},
+  {"n":"Bolsista TT-III","r":"Desenvolvimento e testes de campo","d":"40h/sem"},
+  {"n":"Consultor de viticultura","r":"Validação agronômica","d":"sob demanda"}
+ ]
+}

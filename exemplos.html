@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exemplos Didáticos — Jornada PIPE</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px}
+.wrap{max-width:1040px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:8px}
+.hero h1{font-size:26px;margin-bottom:6px}.hero p{opacity:.93;font-size:15px;max-width:780px}
+.case{background:#fff;border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-top:18px}
+.case h2{font-size:19px;color:var(--brand);margin-bottom:4px}
+.case .lead{font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 14px}
+.btn{border:none;border-radius:9px;padding:10px 16px;font-weight:700;font-size:13px;cursor:pointer;color:#fff;background:var(--brand)}
+.btn.alt{background:#fff;color:var(--brand);border:1.5px solid var(--line)}
+.lesson{background:var(--soft);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;font-size:13.5px;line-height:1.5;margin-top:6px}
+.matrix{position:relative;height:300px;border:1.5px solid var(--line);border-radius:12px;background:linear-gradient(135deg,#fff,#f0fdfa);margin-top:6px}
+.axis{position:absolute;color:var(--muted);font-size:11px;font-weight:600}
+.quad{position:absolute;font-size:10.5px;color:#94a3b8;font-weight:700}
+.dot{position:absolute;transform:translate(-50%,50%);background:var(--brand);color:#fff;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:600;box-shadow:var(--shadow);white-space:nowrap;max-width:230px;overflow:hidden;text-overflow:ellipsis}
+.attrs,.lenses{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.attr{border:1.5px solid var(--line);border-radius:10px;padding:12px}
+.attr .cat{font-size:10.5px;font-weight:800;color:var(--accent);text-transform:uppercase}
+.attr h4{font-size:14px;margin:3px 0}.attr p{font-size:12.5px;color:var(--muted);line-height:1.45}
+.lens{border:1.5px solid var(--line);border-radius:10px;padding:12px;border-left:5px solid var(--brand)}
+.lens .L{display:inline-flex;width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;align-items:center;justify-content:center;font-weight:800;margin-right:6px}
+.lens b{font-size:13.5px}.lens p{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45}
+.vpc{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:680px){.vpc{grid-template-columns:1fr}}
+.vside{border:1.5px solid var(--line);border-radius:12px;padding:14px}
+.vside h3{font-size:14px;margin-bottom:8px}
+.vblock{margin-bottom:10px}.vblock .vt{font-size:11px;font-weight:800;text-transform:uppercase;color:var(--accent)}
+.vblock ul{margin:4px 0 0 16px}.vblock li{font-size:12.5px;color:var(--ink);line-height:1.4;margin-bottom:3px}
+.bmc{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+@media(max-width:680px){.bmc{grid-template-columns:1fr 1fr}}
+.bcell{border:1.5px solid var(--line);border-radius:10px;padding:10px;font-size:11.5px}
+.bcell h4{font-size:10.5px;text-transform:uppercase;color:var(--brand);margin-bottom:5px;letter-spacing:.3px}
+.bcell p{color:var(--muted);line-height:1.4}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+small.hint{color:var(--muted);font-size:11.5px;display:block;margin-top:4px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#0f172a;color:#fff;padding:12px 20px;border-radius:12px;font-weight:700;font-size:14px;box-shadow:var(--shadow);transition:.3s;z-index:70;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="hero">
+  <span class="badge">EXEMPLOS DIDÁTICOS</span>
+  <h1>🧪 Caso GeadaZero — do problema ao modelo de negócio</h1>
+  <p>Um caso fictício que percorre o ciclo completo da Jornada — do problema à proposta PIPE pronta para submeter. Use os botões para carregar cada exemplo direto no widget.</p>
+ </div>
+
+ <div class="case" id="ex-radar">
+  <h2>1) Radar de Oportunidades</h2>
+  <div class="lead">Uma dupla de enólogos mapeou 7 dores da viticultura no interior de SP.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('radar',RADAR,'widgets/02_radar_oportunidades.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('radar_geadazero.json',RADAR)">⬇️ Baixar .json</button>
+   <button class="btn alt" onclick="carregar('radar',RADAR_CLINICA,'widgets/02_radar_oportunidades.html')">▶️ Exemplo bônus (clínica)</button>
+  </div>
+  <div class="matrix" id="matrix">
+   <div class="axis" style="left:8px;top:6px">↑ Intensidade</div>
+   <div class="axis" style="right:8px;bottom:6px">Frequência →</div>
+   <div class="quad" style="right:14px;top:12px">🔥 PRIORIDADE</div>
+   <div class="quad" style="left:14px;top:12px">nicho intenso</div>
+   <div class="quad" style="left:14px;bottom:22px">descartar</div>
+   <div class="quad" style="right:14px;bottom:22px">incômodo comum</div>
+  </div>
+  <div class="lesson">💡 A dor da <b>geada</b> (5×5) salta para o canto 🔥 PRIORIDADE. <b>Lição:</b> a matriz transforma achismo em critério.</div>
+ </div>
+
+ <div class="case" id="ex-osborn">
+  <h2>2) Listagem de Atributos de Osborn</h2>
+  <div class="lead">Escolhida a dor da geada, o foco vira <b id="osbObj"></b>.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('osborn',OSBORN,'widgets/03_listagem_osborn.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('osborn_geadazero.json',OSBORN)">⬇️ Baixar .json</button>
+  </div>
+  <div class="attrs" id="attrs"></div>
+  <div class="lesson">💡 Trocar a <b>energia</b> ou a <b>conectividade</b> muda o produto; mudar o <b>modelo de cobrança</b> muda o negócio. <b>Lição:</b> inovação mora nos atributos.</div>
+ </div>
+
+ <div class="case" id="ex-scamper">
+  <h2>3) SCAMPER</h2>
+  <div class="lead">Partindo do conceito <b id="scIdeia"></b>, passamos pelas sete lentes.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('scamper',SCAMPER,'widgets/04_scamper.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('scamper_geadazero.json',SCAMPER)">⬇️ Baixar .json</button>
+  </div>
+  <div class="lenses" id="lenses"></div>
+  <div class="lesson">💡 <b>Eliminar</b> e <b>Reverter</b> geram os saltos mais disruptivos — e levam a uma pergunta com risco tecnológico, o que o PIPE valoriza.</div>
+ </div>
+
+ <div class="case" id="ex-vpc">
+  <h2>4) Value Proposition Canvas</h2>
+  <div class="lead">Definida a solução, testamos o <b>encaixe</b>: o que o viticultor precisa × o que a GeadaZero entrega.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('vpc',VPC,'widgets/07_value_proposition_canvas.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('vpc_geadazero.json',VPC)">⬇️ Baixar .json</button>
+  </div>
+  <div class="vpc">
+   <div class="vside">
+    <h3 style="color:var(--brand)">👤 Perfil do cliente</h3>
+    <div class="vblock"><div class="vt">Tarefas</div><ul id="v_jobs"></ul></div>
+    <div class="vblock"><div class="vt">Dores</div><ul id="v_dores"></ul></div>
+    <div class="vblock"><div class="vt">Ganhos desejados</div><ul id="v_gdesejo"></ul></div>
+   </div>
+   <div class="vside">
+    <h3 style="color:var(--accent)">🎁 Mapa de valor</h3>
+    <div class="vblock"><div class="vt">Produtos & serviços</div><ul id="v_prod"></ul></div>
+    <div class="vblock"><div class="vt">Aliviadores de dor</div><ul id="v_alivio"></ul></div>
+    <div class="vblock"><div class="vt">Geradores de ganho</div><ul id="v_ganho"></ul></div>
+   </div>
+  </div>
+  <div class="lesson">💡 Cada <b>dor</b> tem um aliviador correspondente e cada <b>ganho desejado</b> um gerador (ex.: "acordar de madrugada" → "aviso automático"). <b>Lição:</b> esse é o teste de encaixe (fit).</div>
+ </div>
+
+ <div class="case" id="ex-bmc">
+  <h2>5) Business Model Canvas</h2>
+  <div class="lead">Por fim, a tecnologia vira empresa: como a GeadaZero cria, entrega e captura valor.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('bmc',BMC,'widgets/08_business_model_canvas.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('bmc_geadazero.json',BMC)">⬇️ Baixar .json</button>
+  </div>
+  <div class="bmc" id="bmc"></div>
+  <div class="lesson">💡 Receita por <b>assinatura/hectare</b>, parceria com <b>ICT</b> e <b>FAPESP</b> no fomento. <b>Lição:</b> a FAPESP quer ver não só a tecnologia, mas o caminho até virar negócio sustentável.</div>
+ </div>
+
+
+ <div class="case" id="ex-trl">
+  <h2>6) TRL & Caráter Inovador</h2>
+  <div class="lead">Onde a tecnologia está e por que tem caráter inovador — o critério que mais reprova no PIPE.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('trl',TRL,'widgets/06_trl_carater_inovador.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('trl_geadazero.json',TRL)">⬇️ Baixar .json</button>
+  </div>
+  <div id="trlrow" style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px"></div>
+  <ul id="trlchk" style="margin-left:18px"></ul>
+  <div class="lesson">💡 TRL 3 (prova de conceito) é típico de uma Fase 1 de viabilidade. Os 6 itens marcados sustentam o caráter inovador. <b>Lição:</b> a FAPESP financia risco, não produto pronto.</div>
+ </div>
+
+ <div class="case" id="ex-crono">
+  <h2>7) Cronograma & Riscos</h2>
+  <div class="lead">Plano de 9 meses (Fase 1) com marcos e gestão de riscos.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('crono',CRONO,'widgets/10_cronograma_riscos.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('crono_geadazero.json',CRONO)">⬇️ Baixar .json</button>
+  </div>
+  <div id="cronoActs"></div>
+  <div id="cronoRisks" style="margin-top:10px"></div>
+  <div class="lesson">💡 Cada atividade cabe nos 9 meses e cada risco tem mitigação. <b>Lição:</b> avaliador valoriza um plano realista que enxerga o que pode dar errado.</div>
+ </div>
+
+ <div class="case" id="ex-orc">
+  <h2>8) Orçamento & Equipe</h2>
+  <div class="lead">Recursos por rubricas, dentro do teto de R$300 mil (Fase 1).</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('orc',ORC,'widgets/11_orcamento_equipe.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('orc_geadazero.json',ORC)">⬇️ Baixar .json</button>
+  </div>
+  <table id="orcTab" style="width:100%;border-collapse:collapse;font-size:13px"></table>
+  <div id="orcTeam" style="margin-top:10px"></div>
+  <div class="lesson">💡 Orçamento coerente com o cronograma e dentro do teto. <b>Lição:</b> orçamento é metade da aprovação.</div>
+ </div>
+
+ <small class="hint" style="text-align:center;display:block;margin-top:14px">⚠️ "Carregar no widget" substitui o conteúdo daquele navegador. Use uma aba limpa para demonstrar; recarregue a página do widget para zerar.</small>
+ <div class="foot"><a href="index_jornada_pipe.html" style="color:var(--brand)">← Voltar ao hub</a> · Jornada PIPE FAPESP</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const RADAR=[
+ {t:"Geada destrói até 30% da safra e o produtor não tem previsão local confiável",f:5,i:5},
+ {t:"Doenças fúngicas (míldio) exigem pulverização na hora certa",f:4,i:4},
+ {t:"Vinho nacional pressionado por importados mais baratos",f:4,i:4},
+ {t:"Pequenas vinícolas sem acesso a crédito para tecnologia",f:3,i:3},
+ {t:"Falta de mão de obra qualificada na colheita",f:4,i:3},
+ {t:"Desperdício de água na irrigação",f:3,i:3},
+ {t:"Turismo enológico concentrado só na alta temporada",f:3,i:2}
+];
+const RADAR_CLINICA=[
+ {t:"Baixa adesão ao tratamento de doenças crônicas",f:4,i:5},
+ {t:"No-show: pacientes faltam sem avisar",f:5,i:4},
+ {t:"Filas longas na recepção no pico",f:5,i:3},
+ {t:"Prontuários em papel se perdem",f:3,i:4},
+ {t:"Retrabalho com convênios",f:4,i:3},
+ {t:"Falta lembrete de retorno",f:4,i:3}
+];
+const OSBORN={obj:"Sensor de previsão de geada para vinhedos",attrs:[
+ {a:"Fonte de energia",c:"Material",nota:"Bateria → painel solar + supercapacitor: autonomia sem manutenção."},
+ {a:"Conectividade",c:"Função",nota:"Wi-Fi → LoRa/satélite: funciona em vinhedo sem internet."},
+ {a:"Forma física",c:"Forma",nota:"Estaca fincável miniaturizada: instalação rápida e barata."},
+ {a:"Sensores embarcados",c:"Função",nota:"Temperatura + umidade + ponto de orvalho: previsão mais precisa."},
+ {a:"Forma de alertar",c:"Uso/contexto",nota:"Inverter: ligação/SMS automático de madrugada, não um app."},
+ {a:"Modelo de cobrança",c:"Custo",nota:"Assinatura por hectare (serviço) em vez de vender hardware."},
+ {a:"Visibilidade da carcaça",c:"Cor/estética",nota:"Cor refletiva para achar o sensor na plantação."}
+]};
+const SCAMPER={ideia:"Sensor-estaca que prevê geada e alerta o produtor por SMS",n:{
+ S:"Trocar a previsão genérica por modelo treinado com microdados do próprio vinhedo.",
+ C:"Juntar com sensor de doenças fúngicas: um dispositivo para geada + míldio.",
+ A:"Adaptar a tecnologia antigeada já usada na citricultura da Flórida.",
+ M:"Ampliar a antecedência do alerta de 1h para 6h: dá tempo de ligar aspersores.",
+ P:"Mesmo sensor serve para café e frutas sensíveis a geada.",
+ E:"Eliminar o app: alerta por ligação de voz, sem precisar de smartphone.",
+ R:"Inverter: em vez de avisar, integrar à irrigação que liga sozinha."
+}};
+const VPC={
+ prod:["Sensor-estaca solar com previsão local de geada","Serviço de alerta por SMS e ligação de voz","Painel de risco de geada por hectare (assinatura)"],
+ alivio:["Alerta com 6h de antecedência: tempo de ligar a aspersão","Previsão do próprio talhão (modelo treinado com dados do vinhedo)","Funciona sem internet no campo (rede LoRa)","Aviso automático de madrugada: ninguém precisa acordar para checar"],
+ ganho:["Safra mais estável e menos perdas","Tranquilidade: o produtor é avisado a tempo","Decisão automática integrada à irrigação","Custo previsível por hectare"],
+ jobs:["Proteger a safra contra geada","Decidir a hora certa de ligar a aspersão","Reduzir perdas e estabilizar a produção","Planejar a colheita"],
+ dores:["Perde até 30% da safra com geada inesperada","Previsão de clima é regional, não do seu vinhedo","Tem de acordar de madrugada para medir a temperatura","Falta de internet no campo"],
+ gdesejo:["Dormir tranquilo sabendo que será avisado","Previsão precisa do próprio talhão","Reduzir o custo das perdas","Uma decisão simples e automática"]
+};
+const BMC={
+ seg:"Pequenas e médias vinícolas do interior de SP; depois, cafeicultores e fruticultores sensíveis a geada.",
+ valor:"Previsão local de geada com 6h de antecedência e alerta automático — reduz perdas de safra, sem depender de internet.",
+ can:"Venda direta + cooperativas vinícolas; parceria com Sebrae e sindicatos rurais; indicação entre produtores.",
+ rel:"Onboarding assistido + suporte por WhatsApp; comunidade de produtores usuários.",
+ "rec$":"Assinatura mensal por hectare (hardware como serviço); planos por número de sensores instalados.",
+ rec:"Modelo de machine learning treinado, hardware do sensor, base de dados climáticos locais, equipe de P&D.",
+ ativ:"P&D do sensor e do modelo; calibração em campo; operação da rede de alertas.",
+ parc:"ICT/universidade (ex.: IAC/Embrapa), fabricante de hardware, cooperativas e a FAPESP (fomento via PIPE).",
+ custo:"Desenvolvimento de hardware e do modelo; produção dos sensores; conectividade; equipe técnica."
+};
+const LET=[["S","Substituir"],["C","Combinar"],["A","Adaptar"],["M","Modificar/Magnificar"],["P","Propor outros usos"],["E","Eliminar"],["R","Reverter/Reorganizar"]];
+const BMCLBL=[["parc","🤝 Parcerias-chave"],["ativ","⚙️ Atividades-chave"],["valor","💎 Proposta de valor"],["rel","❤️ Relacionamento"],["seg","🎯 Segmentos"],["rec","🔑 Recursos-chave"],["can","📣 Canais"],["custo","💸 Custos"],["rec$","💰 Receitas"]];
+
+function renderMatrix(){
+ const m=document.getElementById("matrix");[...m.querySelectorAll(".dot")].forEach(e=>e.remove());
+ RADAR.forEach((d,idx)=>{const x=8+(d.f-1)/4*84,y=8+(d.i-1)/4*84;const el=document.createElement("div");
+  el.className="dot";el.style.left=x+"%";el.style.bottom=y+"%";
+  el.style.background=(d.f>=4&&d.i>=4)?"var(--danger)":"var(--brand)";
+  el.textContent=(idx+1)+". "+d.t.slice(0,26)+(d.t.length>26?"…":"");m.appendChild(el);});
+}
+document.getElementById("osbObj").textContent='"'+OSBORN.obj+'"';
+document.getElementById("attrs").innerHTML=OSBORN.attrs.map(x=>`<div class="attr"><span class="cat">${x.c}</span><h4>${x.a}</h4><p>${x.nota}</p></div>`).join("");
+document.getElementById("scIdeia").textContent='"'+SCAMPER.ideia+'"';
+document.getElementById("lenses").innerHTML=LET.map(l=>`<div class="lens"><b><span class="L">${l[0]}</span>${l[1]}</b><p>${SCAMPER.n[l[0]]}</p></div>`).join("");
+["jobs","dores","gdesejo","prod","alivio","ganho"].forEach(k=>{document.getElementById("v_"+k).innerHTML=VPC[k].map(x=>`<li>${x}</li>`).join("");});
+document.getElementById("bmc").innerHTML=BMCLBL.map(b=>`<div class="bcell"><h4>${b[1]}</h4><p>${BMC[b[0]]}</p></div>`).join("");
+renderMatrix();
+
+const TRL={trl:3,chk:[true,true,true,true,true,true]};
+const TRLDESC=["Princípios básicos","Conceito formulado","Prova de conceito","Validação em lab","Ambiente relevante","Demonstração","Ambiente operacional","Sistema qualificado","Comprovado em operação"];
+const TRLCHK=["Novidade real frente ao mercado","Busca de anterioridade feita","Há risco/incerteza técnica a resolver","Solução protegível (PI/know-how)","Resolve dor relevante de mercado","Tecnicamente plausível no prazo e equipe"];
+const CRONO={acts:[
+ {n:"Revisão do estado da arte e busca de anterioridade",s:1,d:2},
+ {n:"Coleta de microdados climáticos em 3 vinhedos-piloto",s:1,d:4},
+ {n:"Desenvolvimento do protótipo do sensor (estaca solar + LoRa)",s:2,d:4},
+ {n:"Treino e validação do modelo de previsão de geada",s:4,d:4},
+ {n:"Teste de campo do alerta com 6h de antecedência",s:6,d:3},
+ {n:"Análise de viabilidade técnica e relatório final",s:8,d:2}
+],risks:[
+ {n:"Sensor não atinge a precisão necessária",p:2,im:3,mit:"Validar em 3 vinhedos e ajustar modelo; fusão de sensores."},
+ {n:"Conectividade LoRa instável em relevo acidentado",p:2,im:2,mit:"Gateways redundantes; fallback por satélite."},
+ {n:"Geadas insuficientes para validar na janela",p:3,im:3,mit:"Dados históricos + câmara fria para simulação."},
+ {n:"Baixa adesão dos produtores ao piloto",p:2,im:2,mit:"Piloto gratuito e demonstração de redução de perdas."}
+]};
+const ORC={fase:1,v:{"Material de consumo":35000,"Serviços de terceiros (PJ)":60000,"Equipamentos / material permanente":70000,"Bolsas (FAPESP)":110000,"Diárias e viagens":12000,"Reserva técnica":13000},team:[
+ {n:"Dra. Helena Vinhas",r:"Pesquisadora responsável (ML/agro)",d:"20h/sem"},
+ {n:"Eng. Caio Lopes",r:"Engenheiro eletrônico (hardware)",d:"30h/sem"},
+ {n:"Bolsista TT-III",r:"Desenvolvimento e testes de campo",d:"40h/sem"},
+ {n:"Consultor de viticultura",r:"Validação agronômica",d:"sob demanda"}
+]};
+function fmtR(n){return "R$ "+n.toLocaleString("pt-BR");}
+document.getElementById("trlrow").innerHTML=TRLDESC.map((tt,i)=>{const n=i+1;const on=n===TRL.trl;return `<div style="flex:1;min-width:78px;text-align:center;border:2px solid ${on?'var(--brand)':'var(--line)'};background:${on?'#eef2ff':'#fff'};border-radius:8px;padding:6px"><b style="color:var(--brand)">${n}</b><br><small style="font-size:9px;color:var(--muted)">${tt}</small></div>`;}).join("");
+document.getElementById("trlchk").innerHTML=TRLCHK.map((c,i)=>`<li style="font-size:13px;margin-bottom:3px">${TRL.chk[i]?"✅":"⬜"} ${c}</li>`).join("");
+document.getElementById("cronoActs").innerHTML="<b style='font-size:13px'>Atividades</b>"+CRONO.acts.map(a=>`<div style="font-size:12.5px;color:var(--muted);padding:3px 0;border-bottom:1px solid var(--line)"><b style="color:var(--brand)">M${a.s}–M${a.s+a.d-1}</b> · ${a.n}</div>`).join("");
+document.getElementById("cronoRisks").innerHTML="<b style='font-size:13px'>Riscos</b>"+CRONO.risks.map(r=>{const sc=r.p*r.im;const col=sc>=6?'var(--danger)':sc>=3?'#f59e0b':'#10b981';return `<div style="font-size:12.5px;padding:3px 0"><b style="color:${col}">●</b> ${r.n} <small style="color:var(--muted)">(P${r.p}×I${r.im}) — ${r.mit}</small></div>`;}).join("");
+var _tot=Object.values(ORC.v).reduce((s,x)=>s+x,0);
+document.getElementById("orcTab").innerHTML="<tr style='color:var(--muted);font-size:11px;text-align:left'><th style='padding:6px;border-bottom:1px solid var(--line)'>Rubrica</th><th style='padding:6px;border-bottom:1px solid var(--line);text-align:right'>Valor</th></tr>"+Object.keys(ORC.v).map(k=>`<tr><td style="padding:6px;border-bottom:1px solid var(--line)">${k}</td><td style="padding:6px;border-bottom:1px solid var(--line);text-align:right">${fmtR(ORC.v[k])}</td></tr>`).join("")+`<tr><td style="padding:6px;font-weight:800">TOTAL</td><td style="padding:6px;text-align:right;font-weight:800;color:var(--brand)">${fmtR(_tot)}</td></tr>`;
+document.getElementById("orcTeam").innerHTML="<b style='font-size:13px'>Equipe</b>"+ORC.team.map(m=>`<div style="font-size:12.5px;color:var(--muted);padding:2px 0">${m.n} — ${m.r} (${m.d})</div>`).join("");
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),2200);}
+function carregar(key,data,file){try{localStorage.setItem(key,JSON.stringify(data));toast("Exemplo carregado! Abrindo o widget...");setTimeout(()=>window.open(file,"_blank"),500);}catch(e){alert("Não foi possível carregar.");}}
+function baixar(nome,data){const b=new Blob([JSON.stringify(data,null,1)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=nome;a.click();}
+</script>
+</body>
+</html>
