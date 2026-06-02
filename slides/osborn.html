@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Listagem de Osborn — Slides</title><style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--gold:#f59e0b;--ok:#10b981;--danger:#ef4444;--soft:#f1f5f9}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:#0b1020;overflow:hidden}
+#deck{position:relative;height:100vh;width:100vw}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;padding:6vh 7vw;background:linear-gradient(160deg,#eef2ff,#f0fdfa 70%);animation:fade .35s;overflow:auto}
+.slide.on{display:flex}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.slide.brand{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff}
+.slide.dark{background:linear-gradient(160deg,#1e1b4b,#0f172a 60%,#042f2e);color:#fff}
+.kick{font-size:1.1vw;font-weight:800;letter-spacing:3px;opacity:.85;margin-bottom:14px;text-transform:uppercase}
+h1{font-size:4.4vw;line-height:1.08;max-width:92%}
+h2{font-size:2.9vw;line-height:1.16;max-width:94%;margin-bottom:6px}
+.sub{margin-top:14px;font-size:1.35vw;opacity:.92;max-width:86%}
+.tag{display:inline-flex;align-items:center;background:#fff;border:1.5px solid #e2e8f0;color:var(--brand);font-weight:800;font-size:1vw;padding:6px 15px;border-radius:999px;margin-bottom:18px;width:fit-content;box-shadow:0 6px 20px rgba(2,6,23,.06)}
+.tag.light{background:rgba(255,255,255,.16);color:#fff;border-color:transparent}
+.def{font-size:1.45vw;line-height:1.5;max-width:88%;margin-top:8px}
+.exg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:16px}
+.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(2,6,23,.08);border-top:5px solid var(--brand)}
+.slide.dark .card,.slide.brand .card{color:var(--ink)}
+.card .lbl{font-size:1vw;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--brand)}
+.card h3{font-size:1.45vw;margin:6px 0}
+.card p{font-size:1.12vw;color:var(--muted);line-height:1.45}
+.card .ex{font-size:1.12vw;margin-top:8px}.card .ex b{color:var(--accent)}
+.scale{display:flex;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap;font-size:1.35vw;font-weight:800}
+.scale .ar{color:var(--brand);opacity:.6}
+.matrix{display:grid;grid-template-columns:130px 1fr 1fr;gap:8px;margin-top:14px;max-width:900px}
+.mh{display:flex;align-items:center;justify-content:center;text-align:center;font-size:1vw;font-weight:800;color:var(--muted)}
+.q{border-radius:14px;padding:16px;color:#fff;min-height:11vh}
+.q b{font-size:1.4vw}.q p{font-size:1.02vw;opacity:.95;margin-top:5px;line-height:1.4}
+.q .exq{font-size:1.02vw;margin-top:8px;background:rgba(255,255,255,.18);border-radius:8px;padding:6px 9px}
+.tiles{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
+.tile{flex:1;min-width:150px;background:#fff;border-radius:14px;padding:14px;box-shadow:0 8px 24px rgba(2,6,23,.08);text-align:center}
+.tile .em{font-size:2.2vw}.tile .v{font-size:1.2vw;font-weight:800;margin-top:4px}.tile small{font-size:.95vw;color:var(--muted);display:block;margin-top:3px}
+.bignum{display:inline-flex;width:2.6vw;height:2.6vw;min-width:38px;min-height:38px;border-radius:10px;background:var(--brand);color:#fff;align-items:center;justify-content:center;font-size:1.4vw;font-weight:800;margin-right:10px}
+.ladder{display:flex;flex-direction:column;gap:4px;margin-top:12px;max-width:860px}
+.rung{display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:8px 12px;box-shadow:0 6px 18px rgba(2,6,23,.06)}
+.rung .n{width:34px;height:34px;border-radius:8px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+.rung b{font-size:1.05vw}.rung small{color:var(--muted);font-size:.95vw}
+.cta a{display:inline-block;background:#fff;color:var(--brand);font-weight:800;text-decoration:none;padding:14px 28px;border-radius:14px;font-size:1.35vw;margin-top:20px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+#bar{position:fixed;bottom:0;left:0;right:0;display:flex;align-items:center;gap:14px;padding:11px 20px;background:rgba(11,16,32,.8);backdrop-filter:blur(6px);color:#fff;z-index:10}
+#bar button{background:rgba(255,255,255,.14);color:#fff;border:none;width:38px;height:38px;border-radius:10px;font-size:18px;cursor:pointer}
+#dots{display:flex;gap:6px;flex:1;justify-content:center;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer}
+.dot.on{background:#fff;transform:scale(1.3)}
+#count{font-size:13px;opacity:.85;min-width:52px;text-align:right}
+.brandlbl{font-size:13px;font-weight:700;opacity:.85}
+@media(max-width:820px){
+ h1{font-size:8.5vw}h2{font-size:6.2vw}.kick,.tag{font-size:3.2vw}.sub,.def{font-size:4.2vw}
+ .card .lbl{font-size:3vw}.card h3{font-size:4.6vw}.card p,.card .ex{font-size:3.7vw}
+ .matrix{grid-template-columns:1fr}.mh{display:none}.q b{font-size:5vw}.q p,.q .exq{font-size:3.7vw}
+ .tile .em{font-size:8vw}.tile .v{font-size:4.4vw}.tile small{font-size:3vw}.scale{font-size:4.4vw}.bignum{font-size:5vw}
+ .rung b,.rung small{font-size:3.6vw}.cta a{font-size:4.4vw}}
+</style></head><body><div id="deck"><section class="slide brand on"><span class="kick">Aula 3 · Jornada PIPE</span><h1>🧩 Listagem de<br>Atributos de Osborn</h1><p class="sub">Uma técnica simples e poderosa para gerar dezenas de ideias — criada por Alex Osborn nos anos 1950, o mesmo "pai" do brainstorming.</p></section>
+<section class="slide"><span class="tag">💡 A grande sacada</span><h2>Ninguém inova "o todo". Inova-se os atributos.</h2><p class="def">Todo produto é feito de atributos: forma, material, função, custo, cor, modo de uso… Se você atacar <b>um atributo de cada vez</b>, as ideias aparecem quase sozinhas.</p></section>
+<section class="slide dark"><span class="tag light">🛠️ Os verbos manipuladores</span><div class="exg"><div class="card"><h3>Aumentar / Diminuir</h3><p>Mudar tamanho, escala, frequência.</p></div><div class="card" style="border-top-color:var(--accent)"><h3>Substituir</h3><p>Trocar material, princípio, peça.</p></div><div class="card" style="border-top-color:var(--gold)"><h3>Combinar</h3><p>Unir com outra função/produto.</p></div><div class="card" style="border-top-color:var(--danger)"><h3>Inverter / Rearranjar</h3><p>Fazer o oposto, mudar a ordem.</p></div></div></section>
+<section class="slide"><span class="tag">🎒 Exemplo do dia a dia: uma mochila</span><div class="exg"><div class="card"><div class="lbl">Material</div><div class="ex">Lona → tecido <b>impermeável e reciclado</b>.</div></div><div class="card" style="border-top-color:var(--accent)"><div class="lbl">Função</div><div class="ex">Combinar com <b>carregador solar</b> embutido.</div></div><div class="card" style="border-top-color:var(--gold)"><div class="lbl">Forma</div><div class="ex">Alças que viram <b>cadeira dobrável</b>.</div></div><div class="card" style="border-top-color:var(--danger)"><div class="lbl">Uso</div><div class="ex">Inverter: abre <b>pelas costas</b>, anti-furto.</div></div></div></section>
+<section class="slide"><span class="tag">🌱 Exemplo aplicado: sensor de geada</span><div class="exg"><div class="card"><div class="lbl">Energia</div><div class="ex">Bateria → <b>painel solar</b>: sem manutenção.</div></div><div class="card" style="border-top-color:var(--accent)"><div class="lbl">Conectividade</div><div class="ex">Wi-Fi → <b>LoRa</b>: funciona sem internet.</div></div><div class="card" style="border-top-color:var(--gold)"><div class="lbl">Cobrança</div><div class="ex">Vender hardware → <b>assinatura por hectare</b>.</div></div></div></section>
+<section class="slide dark"><span class="tag light">📏 Regra de ouro</span><h2>Quantidade primeiro, julgamento depois</h2><p class="def">Não critique as ideias enquanto gera. Quanto mais específico o atributo (ex.: "material da carcaça" em vez de "design"), mais ideias surgem.</p></section>
+<section class="slide brand"><span class="kick">Sua vez</span><h1>Decomponham e inovem 🧩</h1><div class="cta"><a href="../widgets/03_listagem_osborn.html">🧰 Abrir a ferramenta</a></div></section></div><div id="bar"><span class="brandlbl">🧩 Listagem de Osborn</span><button onclick="go(-1)">‹</button><div id="dots"></div><button onclick="go(1)">›</button><span id="count"></span></div><script>
+const slides=[...document.querySelectorAll(".slide")];let i=0;
+const dots=document.getElementById("dots");
+slides.forEach((_,k)=>{const d=document.createElement("div");d.className="dot";d.onclick=()=>show(k);dots.appendChild(d);});
+function show(n){i=Math.max(0,Math.min(slides.length-1,n));
+ slides.forEach((s,k)=>s.classList.toggle("on",k===i));
+ [...dots.children].forEach((d,k)=>d.classList.toggle("on",k===i));
+ document.getElementById("count").textContent=(i+1)+" / "+slides.length;}
+function go(d){show(i+d);}
+document.addEventListener("keydown",e=>{
+ if(["ArrowRight","PageDown"," "].includes(e.key)){e.preventDefault();go(1);}
+ if(["ArrowLeft","PageUp"].includes(e.key)){e.preventDefault();go(-1);}
+ if(e.key==="Home")show(0);if(e.key==="End")show(slides.length-1);
+ if(e.key.toLowerCase()==="f"){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen();}});
+let sx=0;document.addEventListener("touchstart",e=>sx=e.touches[0].clientX);
+document.addEventListener("touchend",e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1);});
+show(0);
+</script></body></html>

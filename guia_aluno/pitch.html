@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pitch & Checklist de Submissão</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--gold:#f59e0b;--ok:#10b981;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px}
+.wrap{max-width:880px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}
+.hero h1{font-size:26px;margin-bottom:6px}.hero p{opacity:.94;font-size:15.5px;line-height:1.5}
+section{background:#fff;border-radius:var(--radius);padding:22px 26px;box-shadow:var(--shadow);margin-top:18px}
+section h2{font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--brand)}
+.steps{counter-reset:s;list-style:none}
+.steps li{position:relative;padding:11px 0 11px 42px;font-size:15px;line-height:1.55;border-bottom:1px solid var(--line)}
+.steps li:last-child{border-bottom:none}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:9px;width:28px;height:28px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px}
+.steps b{color:var(--ink)}
+.ex{background:var(--soft);border-left:5px solid var(--accent);border-radius:10px;padding:14px 16px;font-size:14.5px;line-height:1.55}
+.ex b{color:var(--accent)}
+ul.plain{list-style:none}.plain li{font-size:14.5px;line-height:1.5;padding:7px 0 7px 26px;position:relative}
+.plain li::before{content:"•";position:absolute;left:6px;color:var(--brand);font-weight:800}
+.erros li::before{content:"⚠️";left:0}
+.erros li{padding-left:30px}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:4px}
+th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}
+th{background:var(--soft);font-weight:700;font-size:12px;text-transform:uppercase;color:var(--muted)}
+.cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.cta a{text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px}
+.cta a.go{background:var(--brand);color:#fff}
+.cta a.alt{background:#fff;color:var(--brand);border:1.5px solid var(--line)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+</style></head>
+<body><div class="wrap">
+ <div class="hero"><span class="badge">AULA 12 · COMO PREENCHER</span><h1>🎤 Pitch & Checklist de Submissão</h1><p>Prepara e autoavalia o pitch final como um parecerista FAPESP faria, e checa a prontidão para submissão.</p></div>
+
+ <section><h2>📝 Passo a passo do preenchimento</h2><ol class="steps"><li>Use a <b>rubrica</b> para se autoavaliar nos critérios (problema, caráter inovador, viabilidade, mercado, equipe, clareza).</li><li>Veja a <b>nota ponderada</b> e identifique as fragilidades.</li><li>Rode o <b>checklist de submissão</b> antes do Pitch Day.</li></ol></section>
+ 
+ <section><h2>💡 Exemplo preenchido — GeadaZero</h2><div class="ex">Estrutura sugerida do pitch de 8 min: problema → solução → por que é inovador (risco tecnológico) → mercado/modelo → equipe → o que pedimos (a Fase 1).</div></section>
+ <section><h2>✅ Dicas</h2><ul class="plain"><li>Ensaiem o tempo: 8 minutos passam rápido.</li><li>Comecem pelo problema, mas não gastem mais que 1–2 min nele.</li></ul></section>
+ <section><h2>🚫 Erros comuns</h2><ul class="plain erros"><li>Falar muito do problema e pouco do diferencial/solução.</li></ul></section>
+
+ <section><div class="cta"><a class="go" href="../widgets/12_rubrica_pitch_submissao.html" target="_blank">🧰 Abrir a ferramenta</a></div></section>
+ <div class="foot"><a href="../index_jornada_pipe.html" style="color:var(--brand)">← Voltar ao hub</a> · Jornada PIPE FAPESP</div>
+</div></body></html>
