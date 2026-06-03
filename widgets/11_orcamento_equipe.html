@@ -98,7 +98,7 @@ function carregarArquivo(){const i=document.createElement("input");i.type="file"
 <script>
 (function(){
 var A="https://script.google.com/macros/s/AKfycbzc0dabdL6Gg3qGKQAyEtYyAohQfErSsizfD5TwfSWwnTbgP_aPbzzfKx3glycpsX1a6A/exec",T="MBA-2026-1-Inova";
-var B=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
+var B=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","dores","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
 function sn(){try{var t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
 window.salvarNuvem=function(){
  var nome=sn();if(!nome){nome=prompt("Nome da sua startup:");if(!nome)return;nome=nome.trim();localStorage.setItem("jornada_startup_nome",nome);}

@@ -54,6 +54,17 @@ small.hint{color:var(--muted);font-size:11.5px;display:block;margin-top:4px}
   <p>Um caso fictício que percorre o ciclo completo da Jornada — do problema à proposta PIPE pronta para submeter. Use os botões para carregar cada exemplo direto no widget.</p>
  </div>
 
+ <div class="case" id="ex-dores">
+  <h2>0) Agregador de Dores</h2>
+  <div class="lead">Antes de tudo, a dupla despejou 6 dores da viticultura e classificou cada uma por frequência e intensidade.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('dores',DORES,'widgets/01_agregador_dores.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('dores_geadazero.json',DORES)">⬇️ Baixar .json</button>
+  </div>
+  <div class="attrs" id="doresList"></div>
+  <div class="lesson">💡 A dor da <b>geada</b> (★25) lidera e aponta o público: <b>pequenas vinícolas familiares</b>. Daí nasce o nome <b>GeadaZero</b>. <b>Lição:</b> o nome e o público vêm da dor mais forte — não do palpite.</div>
+ </div>
+
  <div class="case" id="ex-radar">
   <h2>1) Radar de Oportunidades</h2>
   <div class="lead">Uma dupla de enólogos mapeou 7 dores da viticultura no interior de SP.</div>
@@ -173,6 +184,14 @@ small.hint{color:var(--muted);font-size:11.5px;display:block;margin-top:4px}
 <div class="toast" id="toast"></div>
 
 <script>
+const DORES={dores:[
+ {id:"d1",d:"Geada destrói até 30% da safra e o produtor não tem previsão local confiável",pub:"Pequenas vinícolas do interior de SP",f:5,i:5},
+ {id:"d2",d:"A previsão do tempo é regional e não enxerga o microclima do vinhedo",pub:"Viticultores familiares",f:5,i:4},
+ {id:"d3",d:"Proteção antigeada (aspersão/aquecedores) é cara e acionada tarde demais",pub:"Produtores médios",f:3,i:4},
+ {id:"d4",d:"Alguém precisa acordar de madrugada para medir a temperatura no campo",pub:"Vinícolas com pouca mão de obra",f:4,i:3},
+ {id:"d5",d:"O seguro agrícola cobre mal as perdas causadas por geada",pub:"Produtores rurais",f:2,i:3},
+ {id:"d6",d:"Falta internet no campo para rodar sistemas de monitoramento",pub:"Propriedades remotas",f:3,i:2}
+],escolhida:"d1",f:{publico:"Pequenas vinícolas do interior de SP (até 20 hectares), de produção familiar, que já perderam safra para geada",decisao:"GeadaZero — protege a safra de pequenas vinícolas com previsão local de geada e alerta automático com horas de antecedência."},nomes:["GeadaZero","VinhaSegura","AlertaFrio"],favorito:0};
 const RADAR=[
  {t:"Geada destrói até 30% da safra e o produtor não tem previsão local confiável",f:5,i:5},
  {t:"Doenças fúngicas (míldio) exigem pulverização na hora certa",f:4,i:4},
@@ -244,6 +263,7 @@ document.getElementById("lenses").innerHTML=LET.map(l=>`<div class="lens"><b><sp
 ["jobs","dores","gdesejo","prod","alivio","ganho"].forEach(k=>{document.getElementById("v_"+k).innerHTML=VPC[k].map(x=>`<li>${x}</li>`).join("");});
 document.getElementById("bmc").innerHTML=BMCLBL.map(b=>`<div class="bcell"><h4>${b[1]}</h4><p>${BMC[b[0]]}</p></div>`).join("");
 renderMatrix();
+document.getElementById("doresList").innerHTML=[...DORES.dores].sort((a,b)=>b.f*b.i-a.f*a.i).map(d=>`<div class="attr"><span class="cat">★ ${d.f*d.i} · freq ${d.f}/5 · int ${d.i}/5</span><h4>${d.d}</h4><p>Quem sente: ${d.pub}</p></div>`).join("");
 
 const TRL={trl:3,chk:[true,true,true,true,true,true]};
 const TRLDESC=["Princípios básicos","Conceito formulado","Prova de conceito","Validação em lab","Ambiente relevante","Demonstração","Ambiente operacional","Sistema qualificado","Comprovado em operação"];

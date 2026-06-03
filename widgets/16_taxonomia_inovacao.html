@@ -112,7 +112,7 @@ render();
 <script>
 /* Botão de salvar na nuvem (mesmo backend do Mapa) */
 var _API_N="https://script.google.com/macros/s/AKfycbzc0dabdL6Gg3qGKQAyEtYyAohQfErSsizfD5TwfSWwnTbgP_aPbzzfKx3glycpsX1a6A/exec",_TURMA_N="MBA-2026-1-Inova";
-var _BUNDLE_N=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
+var _BUNDLE_N=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","dores","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
 function _startupN(){try{var t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
 function salvarNuvem(){
  var nome=_startupN();

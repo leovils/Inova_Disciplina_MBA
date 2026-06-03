@@ -1,0 +1,17 @@
+{
+ "dores": [
+  {"id":"d1","d":"Geada destrói até 30% da safra e o produtor não tem previsão local confiável","pub":"Pequenas vinícolas do interior de SP","f":5,"i":5},
+  {"id":"d2","d":"A previsão do tempo é regional e não enxerga o microclima do vinhedo","pub":"Viticultores familiares","f":5,"i":4},
+  {"id":"d3","d":"Proteção antigeada (aspersão/aquecedores) é cara e acionada tarde demais","pub":"Produtores médios","f":3,"i":4},
+  {"id":"d4","d":"Alguém precisa acordar de madrugada para medir a temperatura no campo","pub":"Vinícolas com pouca mão de obra","f":4,"i":3},
+  {"id":"d5","d":"O seguro agrícola cobre mal as perdas causadas por geada","pub":"Produtores rurais","f":2,"i":3},
+  {"id":"d6","d":"Falta internet no campo para rodar sistemas de monitoramento","pub":"Propriedades remotas","f":3,"i":2}
+ ],
+ "escolhida": "d1",
+ "f": {
+  "publico": "Pequenas vinícolas do interior de SP (até 20 hectares), de produção familiar, que já perderam safra para geada",
+  "decisao": "GeadaZero — protege a safra de pequenas vinícolas com previsão local de geada e alerta automático com horas de antecedência."
+ },
+ "nomes": ["GeadaZero","VinhaSegura","AlertaFrio"],
+ "favorito": 0
+}

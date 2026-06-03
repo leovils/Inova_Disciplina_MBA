@@ -71,8 +71,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:lin
 </div>
 <script>
 const A=[
- {ph:"Bloco 1 · Descobrir",t:"Boas-vindas & Ecossistema de Fomento",d:"Por que o governo financia inovação, quem são os players e como formar as startups da turma.",w:[["🗺️ Mapa do Ecossistema","widgets/01_mapa_ecossistema_fomento.html"],["🚀 Termo de Abertura","widgets/13_termo_abertura_startup.html"]]},
- {ph:"Bloco 1 · Descobrir",t:"Caça ao Problema",d:"Encontrar dores reais e relevantes. Sem problema bom, não há projeto financiável.",w:[["🎯 Radar de Oportunidades","widgets/02_radar_oportunidades.html"]]},
+ {ph:"Bloco 1 · Descobrir",t:"Boas-vindas & Ecossistema de Fomento",d:"Por que o governo financia inovação, quem são os players e como formar as startups da turma.",w:[["🗺️ Mapa do Ecossistema","widgets/01_mapa_ecossistema_fomento.html"],["🧲 Agregador de Dores","widgets/01_agregador_dores.html"],["🚀 Termo de Abertura","widgets/13_termo_abertura_startup.html"]]},
+ {ph:"Bloco 1 · Descobrir",t:"Caça ao Problema",d:"Encontrar dores reais e relevantes. Sem problema bom, não há projeto financiável.",w:[["🧲 Agregador de Dores","widgets/01_agregador_dores.html"],["🎯 Radar de Oportunidades","widgets/02_radar_oportunidades.html"]]},
  {ph:"Bloco 2 · Idear",t:"Geração de Ideias — Osborn",d:"Listagem de Atributos: inovar atributo por atributo. Volume de ideias antes do filtro.",w:[["🧩 Listagem de Osborn","widgets/03_listagem_osborn.html"]]},
  {ph:"Bloco 2 · Idear",t:"Expansão Criativa — SCAMPER",d:"Sete lentes para reinventar a ideia e fugir do óbvio incremental.",w:[["🔀 Painel SCAMPER","widgets/04_scamper.html"]]},
  {ph:"Bloco 2 · Idear",t:"Seleção & Priorização",d:"Escolher UMA ideia com critérios ponderados e transparentes.",w:[["⚖️ Matriz de Priorização","widgets/05_matriz_priorizacao.html"]]},
@@ -85,8 +85,9 @@ const A=[
  {ph:"Bloco 5 · Defender",t:"Pitch Day & Submissão",d:"Banca avaliadora, rubrica de pitch e checklist final de submissão no SAGe.",w:[["🎤 Rubrica & Checklist","widgets/12_rubrica_pitch_submissao.html"]]}
 ];
 const SLIDES=["slides/aula01_ecossistema.html","slides/aula02_problema.html","slides/aula03_osborn.html","slides/aula04_scamper.html","slides/aula05_priorizacao.html","slides/aula06_trl.html","slides/aula07_proposta_valor.html","slides/aula08_bmc.html","slides/aula09_pipe.html","slides/aula10_cronograma.html","slides/aula11_orcamento.html","slides/aula12_pitch.html"];
-const EX={2:"ex-radar",3:"ex-osborn",4:"ex-scamper",6:"ex-trl",7:"ex-vpc",8:"ex-bmc",10:"ex-crono",11:"ex-orc"};
+const EX={1:"ex-dores",2:"ex-radar",3:"ex-osborn",4:"ex-scamper",6:"ex-trl",7:"ex-vpc",8:"ex-bmc",10:"ex-crono",11:"ex-orc"};
 const GA={1:"termo",2:"radar",3:"osborn",4:"scamper",5:"matriz",6:"trl",7:"vpc",8:"bmc",10:"cronograma",11:"orcamento",12:"pitch"};
+const TEC={1:["descobrir_dores","🔍 Descobrir dores"],2:["descobrir_dores","🔍 Descobrir dores"],5:["tecnica_priorizacao","🧠 Técnicas"],10:["tecnica_riscos","🧠 Técnicas"],11:["tecnica_orcamento","🧠 Técnicas"],12:["tecnica_pitch","🧠 Técnicas"]};
 let done=JSON.parse(localStorage.getItem("jornada_done")||"[]");
 function tog(i){done[i]=!done[i];localStorage.setItem("jornada_done",JSON.stringify(done));render()}
 function render(){
@@ -95,6 +96,7 @@ function render(){
   <div class="tools">
    <a class="tool sec" href="${SLIDES[i]}" target="_blank">🖥️ Slides</a>
    ${GA[i+1]?`<a class="tool" style="background:#5B5BD6;color:#fff" href="guia_aluno/${GA[i+1]}.html" target="_blank">❓ Como preencher</a>`:""}
+   ${TEC[i+1]?`<a class="tool" style="background:#0F766E;color:#fff" href="guia_aluno/${TEC[i+1][0]}.html" target="_blank">${TEC[i+1][1]}</a>`:""}
    ${a.w.map(w=>`<a class="tool" href="${w[1]}" target="_blank">${w[0]}</a>`).join("")}
    ${a.w.map(w=>`<a class="tool guide" href="guias/${w[1].split('/').pop().replace('.html','.md')}" target="_blank">📖 Guia</a>`).join("")}
    ${EX[i+1]?`<a class="tool" style="background:#fff;color:#0F766E;border:1.5px solid var(--line)" href="exemplos.html#${EX[i+1]}" target="_blank">📋 Exemplo</a>`:""}

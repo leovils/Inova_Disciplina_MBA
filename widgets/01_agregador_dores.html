@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agregador de Dores</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--gold:#f59e0b;--ok:#10b981;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px}
+.wrap{max-width:920px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.93;font-size:15px;line-height:1.5}
+.panel{background:#fff;border-radius:var(--radius);padding:22px 24px;box-shadow:var(--shadow);margin-top:18px}
+.panel h2{font-size:17px;color:var(--brand);display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.panel .hint{font-size:13.5px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+.addrow{display:flex;gap:8px;flex-wrap:wrap}
+.addrow input{flex:1;min-width:240px;border:1.5px solid var(--line);border-radius:10px;padding:11px;font-size:14.5px;font-family:inherit}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;font-size:14px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.btn.teal{background:var(--accent)}
+.dor{border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:12px;background:var(--soft)}
+.dor .top{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.dor .top .txt{flex:1;font-weight:600;font-size:15px;border:none;background:transparent;width:100%}
+.dor .score{font-weight:800;font-size:13px;color:#fff;background:var(--accent);border-radius:999px;padding:4px 11px;white-space:nowrap}
+.dor .score.lo{background:#94a3b8}.dor .score.mid{background:var(--gold)}.dor .score.hi{background:var(--danger)}
+.del{border:none;background:none;color:var(--gold);cursor:pointer;font-weight:800;font-size:16px}
+.grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.f label{display:block;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}
+.f input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:8px;padding:8px;font-size:13.5px;font-family:inherit}
+.f .range{display:flex;align-items:center;gap:8px}
+.f input[type=range]{flex:1}
+.f .val{font-weight:800;color:var(--brand);min-width:18px;text-align:center}
+.empty{color:var(--muted);font-size:14px;text-align:center;padding:18px 0}
+/* matriz */
+.matrix-wrap{position:relative;margin-top:8px}
+.matrix{position:relative;height:340px;border-left:2px solid var(--line);border-bottom:2px solid var(--line);margin:10px 0 8px 4px}
+.matrix .q{position:absolute;font-size:11px;font-weight:700;color:var(--muted);padding:6px 8px}
+.matrix .qtr{top:6px;right:8px;color:var(--danger);text-align:right}
+.matrix .qtl{top:6px;left:8px}
+.matrix .qbr{bottom:6px;right:8px;text-align:right}
+.matrix .qbl{bottom:6px;left:8px}
+.matrix .vline,.matrix .hline{position:absolute;background:var(--line)}
+.matrix .vline{left:50%;top:0;bottom:0;width:1px;border-left:1px dashed var(--line)}
+.matrix .hline{top:50%;left:0;right:0;height:1px;border-top:1px dashed var(--line)}
+.dot{position:absolute;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;transform:translate(-50%,50%);box-shadow:0 4px 12px rgba(2,6,23,.25);cursor:default}
+.dot.sel{background:var(--danger);outline:3px solid #fecaca}
+.axlbl{font-size:12px;color:var(--muted);font-weight:700}
+.axx{text-align:center;margin-top:2px}.axy{position:absolute;left:-8px;top:50%;transform:rotate(-90deg) translateX(50%);transform-origin:left}
+.choose{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:6px;flex-wrap:wrap}
+.choose select{flex:1;min-width:220px;border:1.5px solid var(--line);border-radius:8px;padding:9px;font-size:14px;font-family:inherit}
+.field{margin-top:14px}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--brand);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px}
+.field input,.field textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px;font-size:14.5px;font-family:inherit;resize:vertical}
+.names{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:640px){.names{grid-template-columns:1fr}}
+.nameopt{position:relative}
+.nameopt input{padding-right:38px}
+.star{position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;font-size:18px;opacity:.35}
+.star.on{opacity:1}
+.bar{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+.foot a{color:var(--brand)}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULAS 1–2 · JORNADA PIPE</span>
+  <h1>🧲 Agregador de Dores</h1>
+  <p>Antes de inventar a solução, cacem dores reais. Despejem tudo que incomoda o mundo lá fora, classifiquem por <b>frequência</b> e <b>intensidade</b>, e deixem a dor mais forte apontar o <b>público-alvo</b> e o <b>nome</b> da startup.</p></div>
+
+ <div class="panel">
+  <h2>1 · Despeje as dores 🧠</h2>
+  <p class="hint">Brainstorm sem filtro: uma dor por linha. Pense em tempo perdido, dinheiro perdido, reclamações e gambiarras. Quantidade primeiro — depois a gente filtra.</p>
+  <div class="addrow">
+   <input id="novaDor" placeholder="Ex.: pequeno produtor perde safra com geada e não tem previsão local" onkeydown="if(event.key==='Enter')addDor()">
+   <button class="btn" onclick="addDor()">+ Adicionar dor</button>
+  </div>
+  <div id="lista"></div>
+ </div>
+
+ <div class="panel">
+  <h2>2 · Mapa das dores 🎯</h2>
+  <p class="hint">Cada bolinha é uma dor. Quanto mais para a <b>direita</b>, mais frequente; quanto mais para <b>cima</b>, mais dói. O canto superior direito é o seu alvo: dores frequentes <i>e</i> intensas.</p>
+  <div class="matrix-wrap">
+   <span class="axlbl axy">Intensidade →</span>
+   <div class="matrix" id="matrix">
+    <div class="vline"></div><div class="hline"></div>
+    <div class="q qtr">🎯 FOCO<br>frequente + dói muito</div>
+    <div class="q qtl">dói muito,<br>mas raro</div>
+    <div class="q qbr">frequente,<br>mas leve</div>
+    <div class="q qbl">leve e raro</div>
+   </div>
+   <div class="axlbl axx">Frequência →</div>
+  </div>
+ </div>
+
+ <div class="panel">
+  <h2>3 · Convergência: nome e público 🚀</h2>
+  <p class="hint">Escolham a dor que vai virar o coração da startup. A partir dela, definam para quem vocês resolvem e batizem a empresa.</p>
+  <div class="choose"><b>Dor escolhida:</b>
+   <select id="selEscolhida" onchange="setEscolhida(this.value)"><option value="">— selecione uma dor da lista —</option></select>
+  </div>
+  <div class="field"><label>Público-alvo (quem mais sente essa dor)</label><input data-k="publico" placeholder="Ex.: pequenas vinícolas do interior de SP, com até 20 hectares"></div>
+  <div class="field"><label>Candidatos a nome — marquem ⭐ o favorito</label>
+   <div class="names" id="names"></div>
+  </div>
+  <div class="field"><label>Decisão final (nome + frase de 1 linha)</label><textarea data-k="decisao" rows="2" placeholder="Ex.: GeadaZero — protege a safra de pequenas vinícolas com previsão de geada acessível."></textarea></div>
+  <div class="bar">
+   <button class="btn teal" onclick="exportTxt()">⬇ Exportar resumo</button>
+   <button class="btn alt" onclick="window.print()">🖨️ Imprimir / PDF</button>
+  </div>
+ </div>
+
+ <div class="foot"><a href="../index_jornada_pipe.html">← Voltar ao hub</a> · Próximo passo: leve a dor escolhida e o público para o <a href="13_termo_abertura_startup.html">Termo de Abertura</a> · Jornada PIPE FAPESP</div>
+</div>
+
+<script>
+const KEY="dores";
+let S=JSON.parse(localStorage.getItem(KEY)||"null")||{dores:[],escolhida:null,f:{publico:"",decisao:""},nomes:["","",""],favorito:null};
+if(!S.f)S.f={publico:"",decisao:""};if(!S.nomes)S.nomes=["","",""];
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+function uid(){return Date.now()+""+Math.floor(Math.random()*999)}
+function addDor(){const i=document.getElementById("novaDor");const t=i.value.trim();if(!t)return;S.dores.push({id:uid(),d:t,pub:"",f:3,i:3});i.value="";save();render()}
+function delDor(id){S.dores=S.dores.filter(x=>x.id!==id);if(S.escolhida===id)S.escolhida=null;save();render()}
+function upd(id,k,v){const d=S.dores.find(x=>x.id===id);if(!d)return;d[k]=k==="d"||k==="pub"?v:+v;save();renderMatrix();renderScores();renderSelect()}
+function setEscolhida(id){S.escolhida=id||null;const d=S.dores.find(x=>x.id===id);if(d&&d.pub&&!S.f.publico){S.f.publico=d.pub;document.querySelector('[data-k=publico]').value=d.pub;}save();renderMatrix()}
+function scoreClass(s){return s<=6?"lo":s<=15?"mid":"hi"}
+
+function render(){
+ const L=document.getElementById("lista");
+ if(!S.dores.length){L.innerHTML='<div class="empty">Nenhuma dor ainda. Comece despejando acima ☝️</div>';}
+ else{L.innerHTML=S.dores.map(d=>{const sc=d.f*d.i;return `<div class="dor">
+  <div class="top">
+   <input class="txt" value="${(d.d||'').replace(/"/g,'&quot;')}" oninput="upd('${d.id}','d',this.value)">
+   <span class="score ${scoreClass(sc)}">★ ${sc}</span>
+   <button class="del" onclick="delDor('${d.id}')" title="Remover">✕</button>
+  </div>
+  <div class="grid">
+   <div class="f"><label>Quem sente</label><input type="text" value="${(d.pub||'').replace(/"/g,'&quot;')}" placeholder="público / persona" oninput="upd('${d.id}','pub',this.value)"></div>
+   <div class="f"><label>Frequência</label><div class="range"><input type="range" min="1" max="5" value="${d.f}" oninput="upd('${d.id}','f',this.value);this.nextElementSibling.textContent=this.value"><span class="val">${d.f}</span></div></div>
+   <div class="f"><label>Intensidade</label><div class="range"><input type="range" min="1" max="5" value="${d.i}" oninput="upd('${d.id}','i',this.value);this.nextElementSibling.textContent=this.value"><span class="val">${d.i}</span></div></div>
+  </div></div>`}).join("")}
+ renderMatrix();renderSelect();renderNames();
+}
+function renderScores(){document.querySelectorAll(".dor").forEach((el,k)=>{const d=S.dores[k];if(!d)return;const sc=d.f*d.i;const b=el.querySelector(".score");b.textContent="★ "+sc;b.className="score "+scoreClass(sc)})}
+function renderMatrix(){
+ const m=document.getElementById("matrix");[...m.querySelectorAll(".dot")].forEach(e=>e.remove());
+ S.dores.forEach((d,k)=>{const dot=document.createElement("div");dot.className="dot"+(S.escolhida===d.id?" sel":"");
+  dot.style.left=((d.f-1)/4*100)+"%";dot.style.bottom=((d.i-1)/4*100)+"%";dot.textContent=k+1;
+  dot.title=(d.d||"")+" — freq "+d.f+", intens "+d.i+" (★"+(d.f*d.i)+")";m.appendChild(dot)})
+}
+function renderSelect(){const s=document.getElementById("selEscolhida");const cur=S.escolhida||"";
+ s.innerHTML='<option value="">— selecione uma dor da lista —</option>'+S.dores.map((d,k)=>`<option value="${d.id}">#${k+1} (★${d.f*d.i}) ${(d.d||'').slice(0,60).replace(/"/g,'&quot;')}</option>`).join("");
+ s.value=cur}
+function renderNames(){const c=document.getElementById("names");c.innerHTML=S.nomes.map((n,k)=>`<div class="nameopt">
+  <input type="text" value="${(n||'').replace(/"/g,'&quot;')}" placeholder="Nome ${k+1}" oninput="S.nomes[${k}]=this.value;save()">
+  <span class="star ${S.favorito===k?'on':''}" onclick="S.favorito=${k};save();renderNames()" title="Favorito">⭐</span></div>`).join("")}
+
+document.querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;el.value=S.f[k]||"";el.addEventListener("input",()=>{S.f[k]=el.value;save()})});
+
+function exportTxt(){let s="AGREGADOR DE DORES — Jornada PIPE\n\n== Dores levantadas (ordenadas por força) ==\n";
+ [...S.dores].sort((a,b)=>b.f*b.i-a.f*a.i).forEach((d,k)=>{s+=`${k+1}. [★${d.f*d.i}] ${d.d||"?"} — quem sente: ${d.pub||"?"} (freq ${d.f}/5, intens ${d.i}/5)\n`});
+ const e=S.dores.find(x=>x.id===S.escolhida);
+ s+="\n== Convergência ==\n";
+ s+="Dor escolhida: "+(e?e.d:"—")+"\n";
+ s+="Público-alvo: "+(S.f.publico||"—")+"\n";
+ s+="Nomes candidatos: "+S.nomes.filter(Boolean).join(", ")+(S.favorito!=null&&S.nomes[S.favorito]?(" | favorito: "+S.nomes[S.favorito]):"")+"\n";
+ s+="Decisão final: "+(S.f.decisao||"—")+"\n";
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="agregador_dores.txt";a.click()}
+
+render();
+</script>
+
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="dores",_FN="agregador_dores";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+<script>
+(function(){
+var A="https://script.google.com/macros/s/AKfycbzc0dabdL6Gg3qGKQAyEtYyAohQfErSsizfD5TwfSWwnTbgP_aPbzzfKx3glycpsX1a6A/exec",T="MBA-2026-1-Inova";
+var B=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","dores","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
+function sn(){try{var t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
+window.salvarNuvem=function(){
+ var nome=sn();if(!nome){nome=prompt("Nome da sua startup:");if(!nome)return;nome=nome.trim();localStorage.setItem("jornada_startup_nome",nome);}
+ var pin=(localStorage.getItem("jornada_pin")||"").trim();if(!pin){pin=prompt("PIN do grupo:");if(!pin)return;pin=pin.trim();localStorage.setItem("jornada_pin",pin);}
+ var d={};B.forEach(function(k){var v=localStorage.getItem(k);if(v!==null)d[k]=v;});
+ var rs={};try{var dn=JSON.parse(localStorage.getItem("jornada_done")||"[]");var c=dn.filter(Boolean).length;rs={xp:c*100,capitalSemente:c*50,missoes:c+"/12",conquistas:[]};}catch(e){}
+ var bo={tipo:"boletim_jornada_pipe",versao:1,startup:nome,exportadoEm:new Date().toISOString(),resumo:rs,dados:d};
+ fetch(A,{method:"POST",body:JSON.stringify({action:"save",turma:T,startup:nome,pin:pin,boletim:bo})}).then(function(r){return r.json();}).then(function(j){alert(j&&j.ok?"☁️ Trabalho salvo na nuvem!":"Erro: "+((j&&j.error)||"?"));}).catch(function(){alert("Enviado para a nuvem.");});
+};
+var bar=document.getElementById("ioBar");
+if(bar){var b=document.createElement("button");b.textContent="☁️ Salvar na nuvem";b.title="Envia todo o trabalho do grupo para a planilha da turma";b.setAttribute("style","background:#0F766E;border:none;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)");b.onclick=window.salvarNuvem;bar.insertBefore(b,bar.firstChild);}
+})();
+</script>
+</body>
+</html>
