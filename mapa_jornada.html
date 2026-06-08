@@ -257,7 +257,7 @@ function drawCard(){const c=CARDS[Math.floor(Math.random()*CARDS.length)];
   <button class="btn-done" style="width:100%;border:none;border-radius:10px;padding:12px;color:#fff;font-weight:800;cursor:pointer" onclick="closeM()">Ok, bora!</button></div>`;
  document.getElementById("modal").classList.add("open");render();}
 function toggleFree(){localStorage.setItem("jornada_free",isFree()?"0":"1");render();toast("Modo livre "+(isFree()?"ativado":"desativado"));}
-const BUNDLE_KEYS=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
+const BUNDLE_KEYS=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","dores","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","taxonomia","indicadores","pi"];
 function startupName(){try{const t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
 function slug(s){return (s||"startup").toLowerCase().normalize("NFD").replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")||"startup";}
 function buildBoletim(){

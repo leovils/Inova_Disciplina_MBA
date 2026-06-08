@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banco de Ideias — Ponto de Partida</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--gold:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px}
+.wrap{max-width:1080px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}
+.hero h1{font-size:26px;margin-bottom:6px}.hero p{opacity:.94;font-size:15px;line-height:1.5;max-width:760px}
+.note{background:#fff;border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin-top:16px;font-size:14px;line-height:1.55;color:var(--muted);border-left:5px solid var(--gold)}
+.note b{color:var(--ink)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+.chip{font-size:12.5px;font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:7px 14px;cursor:pointer}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;margin-top:14px}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;border-top:5px solid var(--brand);display:flex;flex-direction:column}
+.card .sec{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent);margin-bottom:4px}
+.card h3{font-size:17px;margin-bottom:8px;line-height:1.2}
+.card .lab{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);margin:8px 0 3px}
+.card .pub{font-size:13.5px;color:var(--ink)}
+.card ul{list-style:none;margin-top:2px}
+.card li{font-size:13.5px;line-height:1.45;padding:4px 0 4px 18px;position:relative;color:var(--ink)}
+.card li::before{content:"\1f525";position:absolute;left:0;font-size:11px;top:5px}
+.card .inov{background:var(--soft);border-radius:10px;padding:10px 12px;font-size:13px;line-height:1.45;margin-top:10px}
+.card .inov b{color:var(--brand)}
+.n{align-self:flex-start;background:var(--soft);color:var(--muted);font-weight:800;font-size:12px;border-radius:8px;padding:3px 9px;margin-bottom:8px}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}.foot a{color:var(--brand)}
+.cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.cta a{text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px}
+.cta a.go{background:var(--brand);color:#fff}.cta a.alt{background:#fff;color:var(--accent);border:1.5px solid var(--line)}
+</style></head>
+<body><div class="wrap">
+ <div class="hero"><span class="badge">AULAS 1–2 · PONTO DE PARTIDA</span>
+  <h1>💡 Banco de Ideias</h1>
+  <p>20 territórios de inovação para destravar o grupo travado. Não copiem — usem como trampolim: peguem uma dor, levem para o Agregador, conversem com gente real e transformem em algo seu.</p></div>
+
+ <div class="note">⚠️ <b>Estas não são respostas prontas.</b> O PIPE FAPESP financia projetos com <b>risco tecnológico/pesquisa</b> — por isso cada ideia traz um "ângulo de inovação". A dor é o convite; a inovação é o que torna o projeto financiável. <b>Validem a dor com pessoas reais antes de se apaixonar.</b></div>
+
+ <div class="filters" id="filters"></div>
+ <div class="grid" id="grid"></div>
+
+ <div class="cta">
+  <a class="go" href="widgets/01_agregador_dores.html" target="_blank">🧲 Levar uma dor para o Agregador</a>
+  <a class="alt" href="guia_aluno/descobrir_dores.html" target="_blank">🔍 Técnicas para descobrir dores</a>
+ </div>
+ <div class="foot"><a href="index_jornada_pipe.html">← Voltar ao hub</a> · Jornada PIPE FAPESP</div>
+</div>
+<script>
+const IDEIAS=[
+ {s:"AgTech",t:"Sensoriamento de pragas na lavoura",pub:"Pequenos produtores de hortaliças e frutas",d:["Descobrem a praga tarde, quando já se espalhou","Pulverizam no escuro, sem saber o momento certo","Perdem parte da lavoura todo ciclo"],i:"Visão computacional em armadilha inteligente que identifica a praga e prevê o surto na borda (sem internet)."},
+ {s:"AgTech",t:"Irrigação preditiva por talhão",pub:"Fruticultores e cafeicultores médios",d:["Desperdício de água e de energia bombeando à toa","Regam no horário errado","Conta de luz alta e solo mal manejado"],i:"Modelo de evapotranspiração local com sensores de solo e clima, decidindo quando e quanto irrigar."},
+ {s:"HealthTech",t:"Adesão ao tratamento crônico",pub:"Idosos com hipertensão ou diabetes e suas famílias",d:["Esquecem de tomar o remédio na hora","A família não consegue acompanhar à distância","Reinternações que seriam evitáveis"],i:"Dispenser inteligente + modelo que prevê risco de não-adesão e alerta a tempo."},
+ {s:"HealthTech",t:"Triagem de feridas crônicas",pub:"Enfermagem da atenção básica (UBS)",d:["Avaliação da ferida é subjetiva e varia por profissional","Demora no encaminhamento dos casos graves","Infecções que evoluem por falta de acompanhamento"],i:"Foto + IA que classifica a evolução da ferida e prioriza o encaminhamento."},
+ {s:"HealthTech",t:"Saúde mental no trabalho",pub:"RH de pequenas e médias empresas",d:["Burnout silencioso até virar afastamento","Não há métrica de risco antes da crise","Custo alto de absenteísmo e turnover"],i:"Sinais agregados e anônimos + protocolo validado de bem-estar, preservando a privacidade."},
+ {s:"EdTech",t:"Diagnóstico de defasagem escolar",pub:"Escolas públicas de ensino fundamental",d:["O professor não sabe exatamente onde cada aluno trava","Reforço genérico que não resolve","Defasagem que se acumula ano a ano"],i:"Teste adaptativo (Teoria da Resposta ao Item) que mapeia a lacuna de cada aluno."},
+ {s:"EdTech",t:"Acessibilidade para estudantes surdos",pub:"Alunos surdos no ensino médio e superior",d:["Falta intérprete de Libras na maioria das aulas","Legendas automáticas erram muito","Conteúdo técnico fica inacessível"],i:"Tradução automática Português→Libras com avatar 3D treinado em contexto educacional."},
+ {s:"ClimaTech",t:"Alerta de enchente urbana",pub:"Prefeituras de cidades pequenas e médias",d:["Alagamento pega a população sem aviso","Prejuízo material e risco à vida","Não há monitoramento da microbacia"],i:"Rede de sensores de nível + modelo hidrológico que antecipa o alagamento por bairro."},
+ {s:"EnergiaTech",t:"Dimensionamento solar inteligente",pub:"Pequenos comércios e indústrias",d:["Não sabem se energia solar compensa para o caso deles","Payback incerto trava a decisão","Propostas de fornecedores são opacas"],i:"Gêmeo digital do consumo que dimensiona o sistema e simula o retorno com dados reais."},
+ {s:"WaterTech",t:"Detecção de perdas de água",pub:"Companhias de saneamento de cidades médias",d:["Vazamento invisível na rede por meses","Água tratada perdida antes de chegar","Perda de receita e de recurso escasso"],i:"Sensores acústicos + machine learning que localizam o vazamento na tubulação."},
+ {s:"LogTech",t:"Roteirização de entregas locais",pub:"Pequenos e-commerces e mercados de bairro",d:["Rotas ineficientes encarecem o frete","Atrasos e janelas de entrega furadas","Sem otimização, o motoboy decide no olho"],i:"Otimização com restrições reais (trânsito, janelas) + previsão de tempo de entrega."},
+ {s:"RetailTech",t:"Previsão de demanda para food service",pub:"Padarias, restaurantes e lanchonetes",d:["Sobra que vira desperdício no fim do dia","Falta de produto e cliente insatisfeito","Compra de insumo no chute"],i:"Modelo de demanda que cruza histórico com clima, dia da semana e eventos locais."},
+ {s:"Fintech",t:"Crédito para empreendedores informais",pub:"Microempreendedores sem histórico bancário",d:["Sem histórico, não conseguem crédito","Recorrem a juros abusivos","Não conseguem investir para crescer"],i:"Score alternativo, explicável, a partir de dados de fluxo (vendas, pagamentos)."},
+ {s:"BioTech",t:"Bioinsumos para o solo",pub:"Agricultores que querem reduzir químicos",d:["Defensivo e fertilizante químico caro","Solo degradado ao longo dos anos","Pressão regulatória e de mercado por sustentável"],i:"Microorganismos/biodefensivos com eficácia validada em campo para a cultura-alvo."},
+ {s:"Materiais",t:"Embalagem compostável de resíduo agro",pub:"Marcas de alimentos e bebidas",d:["Plástico sob pressão regulatória e de imagem","Alternativas atuais são caras ou frágeis","Custo crescente de logística reversa"],i:"Biopolímero feito de resíduo agroindustrial com barreira adequada a alimentos."},
+ {s:"AssistiveTech",t:"Mobilidade para cadeirantes",pub:"Pessoas com deficiência motora",d:["Cidade cheia de rotas inacessíveis","Cadeira padrão não vence certos terrenos","Falta informação confiável de acessibilidade"],i:"Cadeira adaptativa ao terreno + mapa colaborativo de rotas acessíveis."},
+ {s:"ElderTech",t:"Detecção de queda em idosos",pub:"Idosos que moram sozinhos e seus filhos",d:["Queda sem ninguém para socorrer","Medo constante da família","Soluções com câmera invadem a privacidade"],i:"Sensor de ambiente por radar (sem câmera) + modelo que detecta a queda e aciona socorro."},
+ {s:"FoodTech",t:"Redução de perda pós-colheita",pub:"Cooperativas de hortifruti",d:["Alimento estraga no transporte e na espera","Perda de margem do pequeno produtor","Falta controle da maturação na cadeia"],i:"Revestimento comestível + sensor de maturação que estende a vida útil e orienta a logística."},
+ {s:"ConstruTech",t:"Inspeção de estruturas por drone",pub:"Prefeituras e construtoras",d:["Rachaduras e patologias detectadas tarde demais","Vistoria manual é cara, lenta e arriscada","Risco estrutural sem monitoramento"],i:"Drone + visão computacional que mapeia e classifica patologias em fachadas e pontes."},
+ {s:"RecicloTech",t:"Triagem inteligente de resíduos",pub:"Cooperativas de catadores",d:["Separação manual é lenta e insalubre","Material mal triado vale menos","Baixa renda para os cooperados"],i:"Visão computacional + automação simples que acelera e melhora a triagem do material."}
+];
+const grid=document.getElementById("grid"),fil=document.getElementById("filters");
+const secs=["Todas",...[...new Set(IDEIAS.map(x=>x.s))]];
+let cur="Todas";
+fil.innerHTML=secs.map(s=>`<span class="chip${s===cur?' on':''}" data-s="${s}">${s}</span>`).join("");
+fil.addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;cur=c.dataset.s;[...fil.children].forEach(x=>x.classList.toggle("on",x.dataset.s===cur));render();});
+function render(){
+ const list=IDEIAS.map((x,i)=>({...x,n:i+1})).filter(x=>cur==="Todas"||x.s===cur);
+ grid.innerHTML=list.map(x=>`<div class="card">
+  <span class="n">Ideia ${x.n}</span>
+  <div class="sec">${x.s}</div><h3>${x.t}</h3>
+  <div class="lab">Quem sente</div><div class="pub">${x.pub}</div>
+  <div class="lab">Dores</div><ul>${x.d.map(d=>`<li>${d}</li>`).join("")}</ul>
+  <div class="inov"><b>Ângulo de inovação (PIPE):</b> ${x.i}</div>
+ </div>`).join("");
+}
+render();
+</script>
+</body></html>

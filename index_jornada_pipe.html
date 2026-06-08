@@ -97,6 +97,7 @@ function render(){
    <a class="tool sec" href="${SLIDES[i]}" target="_blank">🖥️ Slides</a>
    ${GA[i+1]?`<a class="tool" style="background:#5B5BD6;color:#fff" href="guia_aluno/${GA[i+1]}.html" target="_blank">❓ Como preencher</a>`:""}
    ${TEC[i+1]?`<a class="tool" style="background:#0F766E;color:#fff" href="guia_aluno/${TEC[i+1][0]}.html" target="_blank">${TEC[i+1][1]}</a>`:""}
+   ${(i+1===1||i+1===2)?`<a class="tool" style="background:#f59e0b;color:#fff" href="ideias_partida.html" target="_blank">💡 Banco de Ideias</a>`:""}
    ${a.w.map(w=>`<a class="tool" href="${w[1]}" target="_blank">${w[0]}</a>`).join("")}
    ${a.w.map(w=>`<a class="tool guide" href="guias/${w[1].split('/').pop().replace('.html','.md')}" target="_blank">📖 Guia</a>`).join("")}
    ${EX[i+1]?`<a class="tool" style="background:#fff;color:#0F766E;border:1.5px solid var(--line)" href="exemplos.html#${EX[i+1]}" target="_blank">📋 Exemplo</a>`:""}
