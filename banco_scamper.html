@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Banco de Ideias — SCAMPER</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--gold:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px}
+.wrap{max-width:1080px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}
+.hero h1{font-size:26px;margin-bottom:6px}.hero p{opacity:.94;font-size:15px;line-height:1.5;max-width:780px}
+.note{background:#fff;border-radius:var(--radius);padding:16px 20px;box-shadow:var(--shadow);margin-top:16px;font-size:14px;line-height:1.55;color:var(--muted);border-left:5px solid var(--gold)}
+.note b{color:var(--ink)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 4px}
+.chip{font-size:12.5px;font-weight:700;border:1.5px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:7px 14px;cursor:pointer}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.concept{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 22px;margin-top:14px;border-top:5px solid var(--accent)}
+.concept .sec{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent)}
+.concept h2{font-size:20px;margin:3px 0 6px}
+.concept .dor{font-size:13.5px;color:var(--muted);line-height:1.5}
+.concept .dor b{color:var(--ink)}
+.concept .base{font-size:13.5px;background:var(--soft);border-radius:10px;padding:10px 12px;margin-top:10px}
+.concept .base b{color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:14px}
+.card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;border-top:4px solid var(--brand);display:flex;flex-direction:column}
+.card .L{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.card .L b{width:30px;height:30px;border-radius:9px;background:var(--brand);color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card .L span{font-size:14.5px;font-weight:800;color:var(--ink)}
+.card p{font-size:13.5px;line-height:1.5;color:var(--ink)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:26px}.foot a{color:var(--brand)}
+.cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.cta a{text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px}
+.cta a.go{background:var(--brand);color:#fff}.cta a.alt{background:#fff;color:var(--accent);border:1.5px solid var(--line)}
+</style></head>
+<body><div class="wrap">
+ <div class="hero"><span class="badge">AULA 4 · EXPANSÃO CRIATIVA</span>
+  <h1>🔀 Banco de Ideias — SCAMPER</h1>
+  <p>Pegue a ideia de partida e passe-a por <b>sete lentes</b> de transformação para fugir do óbvio. São os mesmos 5 conceitos do Banco de Problemas, rodados no SCAMPER — use como inspiração e faça o mesmo com o seu.</p></div>
+
+ <div class="note">⚠️ <b>As sete lentes:</b> <b>S</b>ubstituir · <b>C</b>ombinar · <b>A</b>daptar · <b>M</b>odificar/Magnificar · <b>P</b>ropor outros usos · <b>E</b>liminar · <b>R</b>everter. Para cada lente, force uma pergunta sobre a sua ideia. As respostas mais ousadas costumam vir de <b>Eliminar</b> e <b>Reverter</b> — e levam a perguntas com risco tecnológico, o que o PIPE valoriza.</div>
+
+ <div class="filters" id="filters"></div>
+ <div class="concept" id="concept"></div>
+ <div class="grid" id="grid"></div>
+
+ <div class="cta">
+  <a class="go" href="widgets/04_scamper.html" target="_blank">🔀 Abrir o Painel SCAMPER</a>
+  <a class="alt" href="guia_aluno/scamper.html" target="_blank">❓ Como preencher</a>
+  <a class="alt" href="slides/scamper.html" target="_blank">🖥️ Slides didáticos</a>
+ </div>
+ <div class="foot"><a href="index_jornada_pipe.html">← Voltar ao hub</a> · Jornada PIPE FAPESP</div>
+</div>
+<script>
+const LET=[["S","Substituir"],["C","Combinar"],["A","Adaptar"],["M","Modificar / Magnificar"],["P","Propor outros usos"],["E","Eliminar"],["R","Reverter / Reorganizar"]];
+const C=[
+ {nome:"GeadaZero",sec:"AgTech",dor:"Geada destrói até 30% da safra e o produtor não tem previsão local.",base:"Sensor-estaca que prevê geada e alerta o produtor por SMS",n:{
+  S:"Trocar a previsão genérica por um modelo treinado com os microdados do próprio vinhedo.",
+  C:"Juntar com sensor de doenças fúngicas: um único dispositivo para geada + míldio.",
+  A:"Adaptar a tecnologia antigeada já usada na citricultura da Flórida.",
+  M:"Ampliar a antecedência do alerta de 1h para 6h — dá tempo de ligar a aspersão.",
+  P:"O mesmo sensor serve para café e frutas sensíveis a geada.",
+  E:"Eliminar o app: alerta por ligação de voz, sem precisar de smartphone.",
+  R:"Inverter: em vez de só avisar, integrar à irrigação que liga sozinha."}},
+ {nome:"SOS Idoso",sec:"ElderTech",dor:"Idoso que mora sozinho cai e fica sem socorro; a família vive com medo.",base:"Sensor de ambiente que detecta a queda e aciona socorro",n:{
+  S:"Substituir a câmera por radar: detecta a queda sem filmar (preserva a privacidade).",
+  C:"Combinar detecção de queda + monitor de rotina/sono para prever risco.",
+  A:"Adaptar o sensor de impacto de airbag automotivo para reconhecer a queda.",
+  M:"Ampliar o escopo: detectar também 'parou de se mexer há horas'.",
+  P:"Usar também em hospitais e ILPIs, não só em casa.",
+  E:"Eliminar o wearable: o idoso não precisa vestir nem carregar nada.",
+  R:"Inverter: em vez de detectar a queda, prever o risco e preveni-la."}},
+ {nome:"PadariaPrevê",sec:"RetailTech",dor:"Padaria produz no chute: sobra que vira lixo ou falta que perde cliente.",base:"Sistema que prevê a demanda diária da padaria",n:{
+  S:"Substituir o chute do padeiro por previsão baseada em dados.",
+  C:"Combinar previsão de demanda + pedido automático ao fornecedor.",
+  A:"Adaptar os modelos de previsão do grande varejo para a padaria de bairro.",
+  M:"Ampliar para prever o desperdício e sugerir promoção no fim do dia.",
+  P:"Usar também em lanchonetes, açougues e hortifrúti.",
+  E:"Eliminar a digitação: integra direto à maquininha e à balança.",
+  R:"Inverter: produzir sob demanda real (prevenda) em vez de estoque."}},
+ {nome:"CréditoJusto",sec:"Fintech",dor:"Trabalhador informal não tem histórico bancário e fica sem crédito justo.",base:"Score de crédito alternativo para quem não tem histórico",n:{
+  S:"Substituir o score tradicional por dados de fluxo de caixa (Pix, vendas).",
+  C:"Combinar crédito + educação financeira no mesmo app.",
+  A:"Adaptar os modelos de microcrédito do Grameen (Bangladesh).",
+  M:"Ampliar o limite conforme o bom comportamento de pagamento.",
+  P:"Usar também para crédito a pequenos lojistas e produtores rurais.",
+  E:"Eliminar o fiador: recebíveis futuros como garantia.",
+  R:"Inverter: o cliente 'constrói' o score antes de pedir, com transparência."}},
+ {nome:"ÁguaViva",sec:"WaterTech",dor:"Vazamento invisível faz a companhia perder água tratada por meses.",base:"Sensor acústico que localiza vazamento na rede de água",n:{
+  S:"Substituir a inspeção visual pela escuta acústica do vazamento.",
+  C:"Combinar detecção de vazamento + medição de consumo no mesmo ponto.",
+  A:"Adaptar o sonar/ultrassom industrial para a rede de água.",
+  M:"Ampliar a cobertura com sensores em pontos estratégicos da rede.",
+  P:"Usar a mesma tecnologia em redes de gás e de irrigação.",
+  E:"Eliminar a escavação exploratória: localiza o trecho antes de cavar.",
+  R:"Inverter: monitoramento contínuo no lugar de vistoria pontual."}}
+];
+const fil=document.getElementById("filters"),conc=document.getElementById("concept"),grid=document.getElementById("grid");
+let cur=0;
+fil.innerHTML=C.map((c,k)=>`<span class="chip${k===cur?' on':''}" data-k="${k}">${c.nome}</span>`).join("");
+fil.addEventListener("click",e=>{const c=e.target.closest(".chip");if(!c)return;cur=+c.dataset.k;[...fil.children].forEach((x,k)=>x.classList.toggle("on",k===cur));render();});
+function render(){
+ const c=C[cur];
+ conc.innerHTML=`<div class="sec">${c.sec}</div><h2>${c.nome}</h2>
+  <div class="dor"><b>Dor:</b> ${c.dor}</div>
+  <div class="base"><b>Ideia de partida:</b> ${c.base}</div>`;
+ grid.innerHTML=LET.map(l=>`<div class="card"><div class="L"><b>${l[0]}</b><span>${l[1]}</span></div><p>${c.n[l[0]]}</p></div>`).join("");
+}
+render();
+</script>
+</body></html>
