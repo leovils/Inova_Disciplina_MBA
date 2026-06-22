@@ -90,6 +90,7 @@ const GA={1:"termo",2:"radar",3:"osborn",4:"scamper",5:"matriz",6:"trl",7:"vpc",
 const TEC={1:["descobrir_dores","🔍 Descobrir dores"],2:["descobrir_dores","🔍 Descobrir dores"],5:["tecnica_priorizacao","🧠 Técnicas"],10:["tecnica_riscos","🧠 Técnicas"],11:["tecnica_orcamento","🧠 Técnicas"],12:["tecnica_pitch","🧠 Técnicas"]};
 const BANCO={1:"ideias_partida.html",2:"ideias_partida.html",3:"banco_osborn.html",4:"banco_scamper.html"};
 const ESTUDO={6:"slides/estudo_aula6_trl.html",7:"slides/estudo_aula7_vpc.html",8:"slides/estudo_aula8_bmc.html",9:"slides/estudo_aula9_pipe.html",10:"slides/estudo_aula10_cronograma_riscos.html",11:"slides/estudo_aula11_orcamento.html",12:"slides/estudo_aula12_pitch.html"};
+const CADERNO={10:"caderno_aula10.html"};
 let done=JSON.parse(localStorage.getItem("jornada_done")||"[]");
 function tog(i){done[i]=!done[i];localStorage.setItem("jornada_done",JSON.stringify(done));render()}
 function render(){
@@ -98,6 +99,7 @@ function render(){
   <div class="tools">
    <a class="tool sec" href="${SLIDES[i]}" target="_blank">🖥️ Slides</a>
    ${ESTUDO[i+1]?`<a class="tool" style="background:#8b5cf6;color:#fff" href="${ESTUDO[i+1]}" target="_blank">📚 Material de estudo</a>`:""}
+   ${CADERNO[i+1]?`<a class="tool" style="background:#0F766E;color:#fff" href="${CADERNO[i+1]}" target="_blank">📓 Caderno (exemplos)</a>`:""}
    ${GA[i+1]?`<a class="tool" style="background:#5B5BD6;color:#fff" href="guia_aluno/${GA[i+1]}.html" target="_blank">❓ Como preencher</a>`:""}
    ${TEC[i+1]?`<a class="tool" style="background:#0F766E;color:#fff" href="guia_aluno/${TEC[i+1][0]}.html" target="_blank">${TEC[i+1][1]}</a>`:""}
    ${BANCO[i+1]?`<a class="tool" style="background:#f59e0b;color:#fff" href="${BANCO[i+1]}" target="_blank">💡 Banco de Ideias</a>`:""}

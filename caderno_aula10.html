@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caderno de Estudo — Aula 10: Cronograma & Riscos</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#5B5BD6;--brand2:#8b5cf6;--accent:#0F766E;--line:#e2e8f0;--soft:#f1f5f9;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--gold:#f59e0b;--ok:#10b981;--warn:#f59e0b;--danger:#ef4444}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px;line-height:1.6}
+.wrap{max-width:960px;margin:0 auto}
+.hero{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:28px 32px;box-shadow:var(--shadow)}
+.hero .badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}
+.hero h1{font-size:27px;margin-bottom:8px}.hero p{opacity:.95;font-size:15.5px;max-width:760px}
+.toc{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 22px;margin-top:16px;font-size:14px}
+.toc b{color:var(--brand)}.toc a{color:var(--ink);text-decoration:none}.toc ol{margin:8px 0 0 20px}
+.toc li{padding:3px 0}
+section{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 28px;margin-top:18px}
+.part{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--accent)}
+h2{font-size:21px;margin:4px 0 12px;color:var(--ink)}
+h3{font-size:16.5px;margin:18px 0 8px;color:var(--brand)}
+p{font-size:15px;margin-bottom:10px}
+.lead{font-size:15.5px;color:var(--muted)}
+.box{border-radius:12px;padding:14px 18px;margin:12px 0;font-size:14.5px}
+.box.ex{background:var(--soft);border-left:5px solid var(--accent)}
+.box.tip{background:#ecfdf5;border-left:5px solid var(--ok)}
+.box.warn{background:#fffbeb;border-left:5px solid var(--warn)}
+.box.danger{background:#fef2f2;border-left:5px solid var(--danger)}
+.box b{color:var(--ink)}
+table{width:100%;border-collapse:collapse;font-size:13.8px;margin:10px 0}
+th,td{border:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}
+th{background:var(--soft);font-size:11.5px;text-transform:uppercase;letter-spacing:.3px;color:var(--muted)}
+.bd td{font-weight:700}
+.tag{display:inline-block;font-size:11px;font-weight:800;border-radius:6px;padding:2px 8px;color:#fff}
+.tag.bad{background:var(--danger)}.tag.good{background:var(--ok)}
+/* GANTT */
+.gantt{display:grid;grid-template-columns:240px repeat(9,1fr);gap:4px;margin:14px 0;font-size:12px}
+.gantt .gh{font-weight:800;color:var(--muted);text-align:center;font-size:11px;padding:4px 0}
+.gantt .gl{font-size:12.5px;display:flex;align-items:center;padding-right:6px;line-height:1.25}
+.gantt .cell{height:26px;border-radius:6px;background:#f8fafc;position:relative}
+.gantt .cell.on{background:linear-gradient(120deg,var(--brand),var(--brand2))}
+.gantt .cell.mk{background:#fff;border:1.5px dashed var(--line)}
+.gantt .cell.mk::after{content:"\25c6";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:14px}
+.legend{font-size:12.5px;color:var(--muted);margin-top:4px}
+.legend .sw{display:inline-block;width:14px;height:10px;border-radius:3px;vertical-align:middle;margin-right:4px}
+/* HEATMAP */
+.heatwrap{display:flex;gap:14px;align-items:stretch;flex-wrap:wrap;margin:14px 0}
+.heat{display:grid;grid-template-columns:34px repeat(5,46px);grid-auto-rows:46px;gap:4px}
+.heat .axl{font-size:10.5px;color:var(--muted);display:flex;align-items:center;justify-content:center;text-align:center}
+.heat .hc{border-radius:7px;position:relative;display:flex;align-items:center;justify-content:center}
+.heat .g{background:#dcfce7}.heat .y{background:#fef9c3}.heat .r{background:#fee2e2}
+.heat .dot{position:absolute;background:var(--ink);color:#fff;font-size:11px;font-weight:800;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(2,6,23,.3)}
+.heatkey{font-size:13px;flex:1;min-width:240px}
+.heatkey li{margin:5px 0;list-style:none;padding-left:24px;position:relative}
+.heatkey li b{position:absolute;left:0;top:0;width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:800}
+.steps{counter-reset:s;list-style:none;margin:8px 0}
+.steps li{position:relative;padding:8px 0 8px 40px;font-size:14.5px;border-bottom:1px solid var(--line)}
+.steps li:last-child{border:none}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:7px;width:26px;height:26px;border-radius:50%;background:var(--brand);color:#fff;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center}
+ul.check{list-style:none;margin:6px 0}
+ul.check li{padding:5px 0 5px 28px;position:relative;font-size:14.5px}
+ul.check li::before{content:"\2705";position:absolute;left:0}
+.cta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.cta a{text-decoration:none;font-weight:700;font-size:14px;padding:11px 18px;border-radius:10px}
+.cta a.go{background:var(--brand);color:#fff}.cta a.alt{background:#fff;color:var(--accent);border:1.5px solid var(--line)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin:24px 0}.foot a{color:var(--brand)}
+@media(max-width:680px){.gantt{grid-template-columns:120px repeat(9,1fr);font-size:9px}.gantt .gl{font-size:10px}.heat{grid-template-columns:28px repeat(5,38px);grid-auto-rows:38px}}
+</style></head>
+<body><div class="wrap">
+ <div class="hero"><span class="badge">AULA 10 · CADERNO DE ESTUDO</span>
+  <h1>📓 Plano, Cronograma & Riscos — na prática</h1>
+  <p>Este caderno ensina pelo exemplo. Acompanhe o caso <b>GeadaZero</b> sendo montado peça por peça: metas verificáveis, um cronograma de 9 meses desenhado e um mapa de riscos colorido. Ao final, faça o mesmo com o seu projeto.</p></div>
+
+ <div class="toc"><b>📌 Roteiro deste caderno</b>
+  <ol><li><a href="#p1">Do objetivo às metas verificáveis</a></li><li><a href="#p2">Cronograma de 9 meses (com Gantt pronto)</a></li><li><a href="#p3">Riscos: mapa de calor e mitigações</a></li><li><a href="#p4">Segundo exemplo: outro setor</a></li><li><a href="#p5">Erros comuns e autoavaliação</a></li></ol></div>
+
+ <!-- PARTE 1 -->
+ <section id="p1"><span class="part">Parte 1 · Plano de pesquisa</span><h2>Do objetivo às metas verificáveis</h2>
+  <p class="lead">Tudo começa com uma cascata: um objetivo geral, alguns objetivos específicos e, para cada um, metas que dá para verificar.</p>
+
+  <h3>A cascata do GeadaZero</h3>
+  <table>
+   <tr><th>Nível</th><th>Conteúdo</th></tr>
+   <tr><td class="bd">Objetivo geral</td><td>Comprovar a viabilidade técnica de prever geada no microclima do vinhedo.</td></tr>
+   <tr><td class="bd">Específico 1</td><td>Treinar um modelo de previsão com microdados locais.</td></tr>
+   <tr><td class="bd">Específico 2</td><td>Validar a precisão e a antecedência do alerta em campo.</td></tr>
+   <tr><td class="bd">Específico 3</td><td>Avaliar a viabilidade de operação do sensor-estaca.</td></tr>
+  </table>
+
+  <h3>Meta fraca × meta forte</h3>
+  <p>Uma meta precisa ter <b>número, prazo e condição</b> — algo que se possa marcar como cumprido sem discussão.</p>
+  <table>
+   <tr><th>Versão</th><th>Meta</th><th>Por quê</th></tr>
+   <tr><td><span class="tag bad">fraca</span></td><td>Melhorar o modelo de previsão.</td><td>Não dá para medir. Melhorou quanto? Até quando?</td></tr>
+   <tr><td><span class="tag good">forte</span></td><td>Atingir 85% de acerto na previsão de geada com 6h de antecedência, em 3 vinhedos, até o mês 7.</td><td>Tem número (85%, 6h, 3), prazo (mês 7) e condição clara.</td></tr>
+   <tr><td><span class="tag bad">fraca</span></td><td>Testar o sensor em campo.</td><td>Testar como? Quantos? Que resultado conta como sucesso?</td></tr>
+   <tr><td><span class="tag good">forte</span></td><td>Operar 6 sensores-estaca por uma safra inteira, com 90% de disponibilidade.</td><td>Dá para auditar ao final.</td></tr>
+  </table>
+
+  <h3>Da incerteza à atividade</h3>
+  <p>Cada incerteza técnica vira uma atividade no cronograma e responde a uma meta. É assim que plano, cronograma e metas ficam amarrados.</p>
+  <table>
+   <tr><th>Incerteza</th><th>Atividade que responde</th><th>Meta ligada</th></tr>
+   <tr><td>O modelo prevê geada local com precisão?</td><td>Treinar e validar o modelo com dados de 3 vinhedos.</td><td>85% de acerto (mês 7)</td></tr>
+   <tr><td>O alerta chega com antecedência útil?</td><td>Teste de campo do alerta de 6h.</td><td>Alerta validado (mês 8)</td></tr>
+   <tr><td>O sensor aguenta o campo?</td><td>Operação dos sensores por uma safra.</td><td>90% de disponibilidade</td></tr>
+  </table>
+ </section>
+
+ <!-- PARTE 2 -->
+ <section id="p2"><span class="part">Parte 2 · Cronograma</span><h2>9 meses desenhados (Gantt)</h2>
+  <p class="lead">O cronograma físico mostra qual atividade acontece em cada mês e onde estão os marcos de verificação. Veja o do GeadaZero, pronto:</p>
+
+  <div id="gantt" class="gantt"></div>
+  <div class="legend"><span class="sw" style="background:linear-gradient(120deg,var(--brand),var(--brand2))"></span> atividade em andamento &nbsp;&nbsp; ◆ marco de verificação</div>
+
+  <h3>Como este cronograma foi construído</h3>
+  <ol class="steps">
+   <li>Listamos as atividades concretas (revisão, coleta, protótipo, modelo, teste, relatório).</li>
+   <li>Sequenciamos: a validação do modelo só começa depois de coletar dados (dependência).</li>
+   <li>Estimamos a duração de cada uma — com folga, sem encavalar tudo no fim.</li>
+   <li>Distribuímos nos 9 meses, deixando o teste de campo numa janela com risco de geada.</li>
+   <li>Marcamos os marcos: dados coletados (M4), modelo validado (M7), relatório final (M9).</li>
+  </ol>
+
+  <div class="box warn"><b>⚠️ Sinais de cronograma irreal:</b> atividades sem nenhuma folga, tudo em paralelo no último mês, validação de campo amontoada no fim, e nenhum tempo reservado para imprevistos. Se o seu Gantt parece "perfeito demais", desconfie.</div>
+ </section>
+
+ <!-- PARTE 3 -->
+ <section id="p3"><span class="part">Parte 3 · Riscos</span><h2>Mapa de calor e mitigações</h2>
+  <p class="lead">Cada risco recebe duas notas de 1 a 5: <b>probabilidade</b> (quão provável) e <b>impacto</b> (quão grave). O produto P×I diz a prioridade. Veja os riscos do GeadaZero plotados:</p>
+
+  <div class="heatwrap">
+   <div id="heat" class="heat"></div>
+   <ul class="heatkey" id="heatkey"></ul>
+  </div>
+  <p style="font-size:12.5px;color:var(--muted)">Eixo horizontal: probabilidade (1→5). Eixo vertical: impacto (1→5, de baixo para cima). Verde = baixo, amarelo = médio, vermelho = alto.</p>
+
+  <h3>Tabela de riscos com mitigação</h3>
+  <table>
+   <tr><th>Risco</th><th>P</th><th>I</th><th>P×I</th><th>Mitigação (ação concreta)</th></tr>
+   <tr><td>O sensor não atinge a precisão necessária</td><td>2</td><td>3</td><td>6</td><td>Validar em 3 vinhedos; fusão de sensores; plano B estatístico.</td></tr>
+   <tr><td>Poucas geadas na janela para validar</td><td>3</td><td>3</td><td>9</td><td>Usar dados históricos + câmara fria para simular o evento.</td></tr>
+   <tr><td>Conectividade LoRa instável no relevo</td><td>2</td><td>2</td><td>4</td><td>Gateways redundantes; fallback por satélite.</td></tr>
+   <tr><td>Baixa adesão dos produtores ao piloto</td><td>2</td><td>2</td><td>4</td><td>Piloto gratuito + demonstração da redução de perdas.</td></tr>
+  </table>
+
+  <div class="box ex"><b>🔮 Técnica do pré-mortem (para achar riscos):</b> imagine que o projeto já terminou e <b>fracassou</b>. Cada pessoa do grupo escreve, sozinha, 3 motivos do fracasso. Depois vocês juntam, agrupam os parecidos e classificam por P×I. Quase sempre aparecem riscos que ninguém via perguntando "o que pode dar errado?".</div>
+
+  <h3>Mitigação boa × mitigação vazia</h3>
+  <table>
+   <tr><th>Versão</th><th>Mitigação</th></tr>
+   <tr><td><span class="tag bad">vazia</span></td><td>"Tomar cuidado com a precisão do sensor."</td></tr>
+   <tr><td><span class="tag good">boa</span></td><td>"Validar em 3 vinhedos diferentes, combinar 2 tipos de sensor (fusão) e ter um modelo estatístico de reserva caso a precisão fique abaixo de 80%."</td></tr>
+  </table>
+  <div class="box tip"><b>Regra:</b> mitigação é uma ação concreta que reduz a probabilidade ou o impacto — de preferência com um plano B. "Ter atenção" não é mitigação.</div>
+ </section>
+
+ <!-- PARTE 4 -->
+ <section id="p4"><span class="part">Parte 4 · Generalizando</span><h2>O mesmo método, outro setor</h2>
+  <p class="lead">Para mostrar que não é só "coisa de AgTech", veja o caso <b>SOS Idoso</b> (sensor que detecta queda de idoso) com o mesmo raciocínio, em versão compacta.</p>
+  <table>
+   <tr><th>Item</th><th>Conteúdo</th></tr>
+   <tr><td class="bd">Objetivo geral</td><td>Comprovar que dá para detectar quedas por radar, sem câmera, com baixa taxa de falso alarme.</td></tr>
+   <tr><td class="bd">Meta forte</td><td>Detectar 95% das quedas com no máximo 1 falso alarme por dia, em 10 residências, até o mês 6.</td></tr>
+   <tr><td class="bd">Atividade-chave</td><td>Coletar dados de queda simulada e treinar o classificador (M2–M5).</td></tr>
+   <tr><td class="bd">Risco principal</td><td>Confundir "sentar rápido" com queda (P3×I3) → enriquecer o conjunto de dados com casos-limite e ajustar o limiar.</td></tr>
+  </table>
+  <div class="box ex">Repare: a <b>estrutura é idêntica</b> — objetivo, meta verificável, atividade que testa a incerteza, risco com mitigação concreta. Troque o conteúdo pelo do seu projeto.</div>
+ </section>
+
+ <!-- PARTE 5 -->
+ <section id="p5"><span class="part">Parte 5 · Fechamento</span><h2>Erros comuns e autoavaliação</h2>
+  <table>
+   <tr><th>Erro</th><th>Como corrigir</th></tr>
+   <tr><td>Meta não verificável ("melhorar", "otimizar")</td><td>Acrescente número, prazo e condição de sucesso.</td></tr>
+   <tr><td>Cronograma sem folga</td><td>Reserve tempo entre atividades e antes de marcos críticos.</td></tr>
+   <tr><td>Validação de campo no último mês</td><td>Antecipe o teste para uma janela segura do calendário.</td></tr>
+   <tr><td>Risco genérico ("pode dar errado")</td><td>Nomeie o risco, dê P e I, e escreva a mitigação.</td></tr>
+   <tr><td>Mitigação vaga ("ter atenção")</td><td>Transforme em ação concreta com plano B.</td></tr>
+  </table>
+
+  <h3>✔️ Antes de fechar a Aula 10, confira:</h3>
+  <ul class="check">
+   <li>Cada objetivo específico tem ao menos uma meta verificável</li>
+   <li>Cada meta tem número, prazo e condição</li>
+   <li>O cronograma cabe em 9 meses, com folgas e marcos</li>
+   <li>Há pelo menos 3 riscos com P, I e mitigação concreta</li>
+   <li>Orçamento (Aula 11) vai conversar com este cronograma</li>
+  </ul>
+
+  <div class="cta">
+   <a class="go" href="widgets/10_cronograma_riscos.html" target="_blank">🧰 Abrir o Cronograma & Riscos</a>
+   <a class="alt" href="slides/estudo_aula10_cronograma_riscos.html" target="_blank">📚 Slides de estudo</a>
+   <a class="alt" href="guia_aluno/tecnica_riscos.html" target="_blank">⚠️ Técnica do pré-mortem</a>
+  </div>
+ </section>
+
+ <div class="foot"><a href="index_jornada_pipe.html">← Voltar ao hub</a> · Jornada PIPE FAPESP</div>
+</div>
+<script>
+// ---- GANTT ----
+const ACTS=[
+ {n:"Revisão do estado da arte e anterioridade",s:1,d:2},
+ {n:"Coleta de microdados em 3 vinhedos-piloto",s:1,d:4},
+ {n:"Desenvolvimento do protótipo do sensor",s:2,d:4},
+ {n:"Treino e validação do modelo de previsão",s:4,d:4},
+ {n:"Teste de campo do alerta (6h de antecedência)",s:6,d:3},
+ {n:"Análise de viabilidade e relatório final",s:8,d:2}
+];
+const MARCOS={4:"dados",7:"modelo",9:"relatório"}; // mês -> rótulo (◆)
+const g=document.getElementById("gantt");
+let html='<div class="gh"></div>';
+for(let m=1;m<=9;m++)html+=`<div class="gh">M${m}</div>`;
+ACTS.forEach(a=>{
+ html+=`<div class="gl">${a.n}</div>`;
+ for(let m=1;m<=9;m++){
+  const on=(m>=a.s&&m<=a.s+a.d-1);
+  html+=`<div class="cell ${on?'on':''}"></div>`;
+ }
+});
+// linha de marcos
+html+='<div class="gl" style="font-weight:800;color:var(--gold)">◆ Marcos</div>';
+for(let m=1;m<=9;m++){html+=`<div class="cell ${MARCOS[m]?'mk':''}" title="${MARCOS[m]||''}"></div>`;}
+g.innerHTML=html;
+
+// ---- HEATMAP ----
+const RISKS=[
+ {id:1,n:"Sensor não atinge precisão",p:2,i:3},
+ {id:2,n:"Poucas geadas na janela",p:3,i:3},
+ {id:3,n:"Conectividade LoRa instável",p:2,i:2},
+ {id:4,n:"Baixa adesão ao piloto",p:2,i:2}
+];
+const h=document.getElementById("heat");
+let hh='';
+for(let i=5;i>=1;i--){
+ hh+=`<div class="axl">${i===5?'Impacto 5':(i===1?'1':i)}</div>`;
+ for(let p=1;p<=5;p++){
+  const sc=p*i;const cls=sc>=12?'r':(sc>=6?'y':'g');
+  const here=RISKS.filter(r=>r.p===p&&r.i===i);
+  const dot=here.length?`<span class="dot">${here.map(r=>r.id).join(',')}</span>`:'';
+  hh+=`<div class="hc ${cls}">${dot}</div>`;
+ }
+}
+hh+='<div class="axl"></div>';
+for(let p=1;p<=5;p++)hh+=`<div class="axl">${p===1?'Prob 1':(p===5?'5':p)}</div>`;
+h.innerHTML=hh;
+document.getElementById("heatkey").innerHTML=RISKS.map(r=>`<li><b>${r.id}</b>${r.n} <span style="color:var(--muted)">(P${r.p}×I${r.i}=${r.p*r.i})</span></li>`).join("");
+</script>
+</body></html>
