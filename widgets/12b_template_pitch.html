@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template de Pitch — Jornada PIPE</title>
+<style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#6366f1;--brand2:#8b5cf6;--accent:#14b8a6;--line:#e2e8f0;--soft:#f8fafc;--radius:16px;--shadow:0 10px 30px rgba(2,6,23,.08);--gold:#f59e0b}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,#eef2ff,#f0fdfa 60%);min-height:100vh;padding:28px 16px}
+.wrap{max-width:880px;margin:0 auto}
+.head{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow)}
+.badge{display:inline-block;background:rgba(255,255,255,.2);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;margin-bottom:10px}
+.head h1{font-size:25px;margin-bottom:6px}.head p{opacity:.93;font-size:15px;line-height:1.5}
+.bartop{display:flex;gap:12px;flex-wrap:wrap;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 20px;margin-top:16px}
+.bartop .f{flex:1;min-width:200px}
+.bartop label{display:block;font-size:11.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.3px;margin-bottom:5px}
+.bartop input{width:100%;border:1.5px solid var(--line);border-radius:9px;padding:10px;font-size:14.5px;font-family:inherit}
+.block{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px 24px;margin-top:16px;border-left:5px solid var(--brand)}
+.block .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.block h2{font-size:17px;color:var(--ink)}
+.block .time{font-size:12px;font-weight:800;color:#fff;background:var(--accent);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.guide{background:var(--soft);border-radius:10px;padding:10px 13px;font-size:13px;color:var(--muted);line-height:1.5;margin:10px 0}
+.guide b{color:var(--ink)}
+.need{font-size:11.5px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px;display:block}
+textarea{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px;font-size:14.5px;font-family:inherit;resize:vertical;line-height:1.5}
+.vp{border-left-color:var(--gold)}
+.vp .fx{background:#fffbeb;border:1px dashed var(--gold);border-radius:10px;padding:10px 13px;font-size:13.5px;margin:8px 0;color:#92400e}
+.bar{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.btn{background:var(--brand);color:#fff;border:none;border-radius:10px;padding:11px 18px;font-weight:700;cursor:pointer;font-size:14px}
+.btn.alt{background:#fff;color:var(--muted);border:1.5px solid var(--line)}
+.btn.teal{background:var(--accent)}
+.foot{text-align:center;color:var(--muted);font-size:12px;margin-top:24px}
+.foot a{color:var(--brand)}
+@media print{.bar,.ioBar,.head p,.guide{display:none}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div class="head"><span class="badge">AULA 12 · TEMPLATE DE PITCH</span>
+  <h1>🎤 Roteiro do Pitch (8 minutos)</h1>
+  <p>Preencham cada bloco com o detalhe pedido. Este roteiro guia a apresentação e, ao mesmo tempo, dá ao professor tudo o que ele precisa para entender o projeto de vocês. Ao final, exportem o roteiro e/ou salvem na nuvem.</p></div>
+
+ <div class="bartop">
+  <div class="f"><label>Startup (comece pelo código do grupo)</label><input id="startupName" placeholder="Ex.: G1 – GeadaZero"></div>
+  <div class="f"><label>Apresentadores</label><input data-k="quem" placeholder="Quem vai falar (nomes)"></div>
+  <div class="f" style="max-width:150px"><label>Tempo-alvo</label><input data-k="tempo" placeholder="8 min" value="8 min"></div>
+ </div>
+
+ <div class="block"><div class="top"><h2>1 · 🎬 Abertura & Problema</h2><span class="time">⏱ 1–2 min</span></div>
+  <div class="guide"><b>Comece com uma cena real, não com definição.</b> Quem sente a dor? Qual o tamanho dela?</div>
+  <span class="need">Detalhe necessário: a cena + quem sofre + dimensão (nº de pessoas, %, R$ perdidos por ano)</span>
+  <textarea data-k="problema" rows="4" placeholder="Ex.: São 3h da manhã e o pequeno produtor de uva não sabe se vai perder a safra. A geada destrói até 30% da produção de ~X mil vinícolas no interior de SP, um prejuízo de R$ Y por safra."></textarea></div>
+
+ <div class="block"><div class="top"><h2>2 · 💡 Solução</h2><span class="time">⏱ ~1 min</span></div>
+  <div class="guide"><b>O que vocês fazem em UMA frase</b> e como funciona em 2–3 linhas.</div>
+  <span class="need">Detalhe necessário: a proposta em 1 frase + o funcionamento essencial</span>
+  <textarea data-k="solucao" rows="4" placeholder="Ex.: A GeadaZero avisa o produtor da geada com 6h de antecedência. Um sensor-estaca solar mede o microclima do vinhedo e um modelo prevê a geada local, disparando um alerta automático por SMS e ligação."></textarea></div>
+
+ <div class="block"><div class="top"><h2>3 · 🔬 Caráter inovador & estado da arte</h2><span class="time">⏱ 1–1,5 min</span></div>
+  <div class="guide"><b>O coração do PIPE.</b> O que já existe hoje, qual é a novidade de vocês, qual a incerteza técnica (o risco de pesquisa) e em que TRL estão.</div>
+  <span class="need">Detalhe necessário: estado da arte + novidade + incerteza técnica + TRL atual</span>
+  <textarea data-k="inovacao" rows="5" placeholder="Ex.: Hoje só existe previsão regional, que não enxerga o microclima do talhão (estado da arte). Nossa novidade é um modelo treinado com microdados do próprio vinhedo. A incerteza: ainda não está provado que atingimos a precisão necessária com 6h de antecedência (risco). Estamos em TRL 3."></textarea></div>
+
+ <div class="block"><div class="top"><h2>4 · ✅ Como vamos provar (Fase 1)</h2><span class="time">⏱ ~1 min</span></div>
+  <div class="guide"><b>O que a Fase 1 vai validar</b> em 9 meses. Liste as 2–3 metas principais.</div>
+  <span class="need">Detalhe necessário: 2–3 metas verificáveis (com número e prazo)</span>
+  <textarea data-k="validacao" rows="4" placeholder="Ex.: (1) Atingir 85% de acerto na previsão, em 3 vinhedos, até o mês 7. (2) Validar o alerta de 6h em campo até o mês 8. (3) Operar 6 sensores por uma safra."></textarea></div>
+
+ <div class="block"><div class="top"><h2>5 · 📈 Mercado & modelo de negócio</h2><span class="time">⏱ 1–1,5 min</span></div>
+  <div class="guide"><b>Quem paga e como.</b> Cliente-alvo, tamanho do mercado e como a empresa gera receita.</div>
+  <span class="need">Detalhe necessário: cliente-alvo + tamanho do mercado + fonte de receita</span>
+  <textarea data-k="mercado" rows="4" placeholder="Ex.: Cliente: pequenas vinícolas de SP (~X mil propriedades). Modelo: assinatura mensal por hectare (hardware como serviço). Depois, expandir para café e frutas sensíveis a geada."></textarea></div>
+
+ <div class="block"><div class="top"><h2>6 · 👥 Equipe</h2><span class="time">⏱ 0,5–1 min</span></div>
+  <div class="guide"><b>Por que ESTE time consegue executar.</b> Quem são e o papel de cada um.</div>
+  <span class="need">Detalhe necessário: integrantes, papéis e a competência que sustenta o projeto</span>
+  <textarea data-k="equipe" rows="3" placeholder="Ex.: Helena (pesquisadora responsável, ML/agro), Caio (engenheiro de hardware), Bruna (mercado), Diego (gestão). Experiência em sensoriamento e agronomia."></textarea></div>
+
+ <div class="block"><div class="top"><h2>7 · 🎯 Plano & pedido</h2><span class="time">⏱ ~1 min</span></div>
+  <div class="guide"><b>Feche com clareza.</b> O que a Fase 1 entrega, em quanto tempo, com quanto — e qual é o pedido.</div>
+  <span class="need">Detalhe necessário: entrega da Fase 1 + prazo (9 meses) + orçamento (≤ R$300 mil) + o pedido</span>
+  <textarea data-k="pedido" rows="4" placeholder="Ex.: Em 9 meses e com R$300 mil, entregamos a prova de viabilidade do modelo validada em campo. Pedimos o apoio do PIPE Fase 1 para chegar lá e, na sequência, desenvolver o produto na Fase 2."></textarea></div>
+
+ <div class="block vp"><div class="top"><h2>⭐ Frase de valor (1 linha)</h2><span class="time">resumo</span></div>
+  <div class="fx">Para <b>[cliente]</b> que sofre com <b>[dor]</b>, a <b>[startup]</b> entrega <b>[ganho]</b>, diferente de <b>[alternativa]</b>.</div>
+  <textarea data-k="frase" rows="2" placeholder="Ex.: Para pequenas vinícolas que perdem safra com geada, a GeadaZero entrega previsão local e alerta a tempo de agir, diferente das previsões regionais que não enxergam o vinhedo."></textarea></div>
+
+ <div class="bar">
+  <button class="btn teal" onclick="exportTxt()">⬇ Exportar roteiro (.txt)</button>
+  <button class="btn alt" onclick="window.print()">🖨️ Imprimir / PDF</button>
+ </div>
+ <div class="foot">Jornada PIPE FAPESP · Estratégias de Fomento à Inovação</div>
+</div>
+
+<script>
+const KEY="pitch_tpl";
+let S=JSON.parse(localStorage.getItem(KEY)||"null")||{f:{}};
+if(!S.f)S.f={};
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+document.querySelectorAll("[data-k]").forEach(el=>{const k=el.dataset.k;el.value=S.f[k]||el.value||"";el.addEventListener("input",()=>{S.f[k]=el.value;save()})});
+const sn=document.getElementById("startupName");
+sn.value=S.f.startup||(localStorage.getItem("jornada_startup_nome")||"");
+sn.addEventListener("input",()=>{S.f.startup=sn.value;localStorage.setItem("jornada_startup_nome",sn.value.trim());save()});
+function exportTxt(){
+ const L=[["quem","Apresentadores"],["problema","1. ABERTURA & PROBLEMA"],["solucao","2. SOLUÇÃO"],["inovacao","3. CARÁTER INOVADOR & ESTADO DA ARTE"],["validacao","4. COMO VAMOS PROVAR (FASE 1)"],["mercado","5. MERCADO & MODELO"],["equipe","6. EQUIPE"],["pedido","7. PLANO & PEDIDO"],["frase","FRASE DE VALOR"]];
+ let s="ROTEIRO DE PITCH — "+(S.f.startup||"(startup)")+"\nTempo-alvo: "+(S.f.tempo||"8 min")+"\n\n";
+ L.forEach(([k,t])=>{s+=t+"\n"+((S.f[k]||"—").trim())+"\n\n";});
+ const b=new Blob([s],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="roteiro_pitch.txt";a.click();
+}
+</script>
+
+<div id="ioBar" style="position:fixed;top:12px;right:12px;display:flex;gap:6px;z-index:99">
+<button onclick="salvarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#5B5BD6;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">💾 Salvar</button>
+<button onclick="carregarArquivo()" style="background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#0F766E;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)">📂 Carregar</button>
+</div>
+<script>
+const _KEY="pitch_tpl",_FN="template_pitch";
+function salvarArquivo(){const d=localStorage.getItem(_KEY)||"{}";const b=new Blob([d],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=_FN+".json";a.click();}
+function carregarArquivo(){const i=document.createElement("input");i.type="file";i.accept=".json,application/json";i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{JSON.parse(r.result);localStorage.setItem(_KEY,r.result);location.reload();}catch(err){alert("Arquivo .json inválido.");}};r.readAsText(f);};i.click();}
+</script>
+<script>
+(function(){
+var A="https://script.google.com/macros/s/AKfycbzc0dabdL6Gg3qGKQAyEtYyAohQfErSsizfD5TwfSWwnTbgP_aPbzzfKx3glycpsX1a6A/exec",T="MBA-2026-1-Inova";
+var B=["jornada_done","jornada_bonus","jornada_spent","jornada_free","jornada_startup_nome","jornada_pin","termo","dores","radar","osborn","scamper","matriz","trl","vpc","bmc","crono","orc","rubrica","pitch_tpl","taxonomia","indicadores","pi"];
+function sn(){try{var t=JSON.parse(localStorage.getItem("termo")||"null");if(t&&t.f&&t.f.nome)return t.f.nome;}catch(e){}return (localStorage.getItem("jornada_startup_nome")||"").trim();}
+window.salvarNuvem=function(){
+ var nome=sn();if(!nome){nome=prompt("Nome da sua startup:");if(!nome)return;nome=nome.trim();localStorage.setItem("jornada_startup_nome",nome);}
+ var pin=(localStorage.getItem("jornada_pin")||"").trim();if(!pin){pin=prompt("PIN do grupo:");if(!pin)return;pin=pin.trim();localStorage.setItem("jornada_pin",pin);}
+ var d={};B.forEach(function(k){var v=localStorage.getItem(k);if(v!==null)d[k]=v;});
+ var rs={};try{var dn=JSON.parse(localStorage.getItem("jornada_done")||"[]");var c=dn.filter(Boolean).length;rs={xp:c*100,capitalSemente:c*50,missoes:c+"/12",conquistas:[]};}catch(e){}
+ var bo={tipo:"boletim_jornada_pipe",versao:1,startup:nome,exportadoEm:new Date().toISOString(),resumo:rs,dados:d};
+ fetch(A,{method:"POST",body:JSON.stringify({action:"save",turma:T,startup:nome,pin:pin,boletim:bo})}).then(function(r){return r.json();}).then(function(j){alert(j&&j.ok?"☁️ Trabalho salvo na nuvem!":"Erro: "+((j&&j.error)||"?"));}).catch(function(){alert("Enviado para a nuvem.");});
+};
+var bar=document.getElementById("ioBar");
+if(bar){var b=document.createElement("button");b.textContent="☁️ Salvar na nuvem";b.title="Envia todo o trabalho do grupo para a planilha da turma";b.setAttribute("style","background:#0F766E;border:none;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 14px rgba(2,6,23,.12)");b.onclick=window.salvarNuvem;bar.insertBefore(b,bar.firstChild);}
+})();
+</script>
+</body>
+</html>

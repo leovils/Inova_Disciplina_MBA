@@ -1,0 +1,15 @@
+{
+ "f": {
+  "startup": "G1 – GeadaZero",
+  "quem": "Helena (abertura e solução), Caio (inovação e validação), Bruna (mercado e pedido)",
+  "tempo": "8 min",
+  "problema": "São 3h da manhã e o pequeno produtor de uva não tem como saber se vai perder a safra. A geada destrói até 30% da produção e atinge milhares de pequenas vinícolas no interior de SP — um prejuízo que pode passar de R$ 50 mil por safra numa propriedade familiar.",
+  "solucao": "A GeadaZero avisa o produtor da geada com 6 horas de antecedência. Um sensor-estaca solar mede o microclima do próprio vinhedo e um modelo de previsão dispara um alerta automático por SMS e ligação de voz — a tempo de ligar a aspersão e salvar a safra.",
+  "inovacao": "Hoje só existe previsão meteorológica regional, que não enxerga o microclima do talhão (estado da arte). Nossa novidade é um modelo treinado com microdados do próprio vinhedo. A incerteza técnica — o risco de pesquisa — é provar que atingimos a precisão necessária com 6h de antecedência em campo. Estamos em TRL 3 (prova de conceito com dados históricos).",
+  "validacao": "Na Fase 1, em 9 meses, vamos: (1) treinar e validar o modelo em 3 vinhedos-piloto, atingindo 85% de acerto até o mês 7; (2) validar o alerta de 6h em campo até o mês 8; (3) operar 6 sensores por uma safra com 90% de disponibilidade.",
+  "mercado": "Cliente: pequenas e médias vinícolas do interior de SP (milhares de propriedades). Receita: assinatura mensal por hectare (hardware como serviço). Depois, expansão para café e frutas sensíveis a geada — um mercado muito maior.",
+  "equipe": "Helena (pesquisadora responsável, mestre em machine learning aplicado ao agro), Caio (engenheiro eletrônico, hardware e sensores), Bruna (agronomia e mercado) e Diego (gestão). A equipe une competência técnica e conhecimento de campo.",
+  "pedido": "Em 9 meses e com R$ 300 mil, entregamos a prova de viabilidade do modelo validada em campo. Pedimos o apoio do PIPE Fase 1 para chegar lá — e, na sequência, desenvolver o produto e entrar no mercado na Fase 2.",
+  "frase": "Para pequenas vinícolas que perdem safra com geada, a GeadaZero entrega previsão local e alerta a tempo de agir, diferente das previsões regionais que não enxergam o vinhedo."
+ }
+}

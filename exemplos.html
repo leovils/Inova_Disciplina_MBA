@@ -178,6 +178,28 @@ small.hint{color:var(--muted);font-size:11.5px;display:block;margin-top:4px}
   <div class="lesson">💡 Orçamento coerente com o cronograma e dentro do teto. <b>Lição:</b> orçamento é metade da aprovação.</div>
  </div>
 
+ <div class="case" id="ex-pitch">
+  <h2>9) Template de Pitch</h2>
+  <div class="lead">Fechando a jornada: o roteiro de 8 minutos do GeadaZero, bloco a bloco, pronto para apresentar.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('pitch_tpl',PITCH,'widgets/12b_template_pitch.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('pitch_geadazero.json',PITCH)">⬇️ Baixar .json</button>
+  </div>
+  <div class="attrs" id="pitchList"></div>
+  <div class="lesson">💡 Repare no nível de detalhe do bloco <b>caráter inovador</b>: estado da arte + novidade + incerteza + TRL. <b>Lição:</b> é isso que faz a banca (e o professor) entender o projeto.</div>
+ </div>
+
+ <div class="case" id="ex-rubrica">
+  <h2>10) Autoavaliação do Pitch (modo banca)</h2>
+  <div class="lead">O GeadaZero avaliado com os critérios e pesos da banca FAPESP — veja a nota ponderada e o diagnóstico.</div>
+  <div class="btns">
+   <button class="btn" onclick="carregar('rubrica',RUBRICA,'widgets/12_rubrica_pitch_submissao.html')">▶️ Carregar no widget</button>
+   <button class="btn alt" onclick="baixar('rubrica_geadazero.json',RUBRICA)">⬇️ Baixar .json</button>
+  </div>
+  <div class="attrs" id="rubList"></div>
+  <div class="lesson">💡 Nota ponderada <b id="rubScore"></b>. O diagnóstico aponta <b>caráter inovador</b> e <b>mercado</b> como focos (nota 4, alto peso). <b>Lição:</b> a autoavaliação revela onde investir antes de apresentar.</div>
+ </div>
+
  <small class="hint" style="text-align:center;display:block;margin-top:14px">⚠️ "Carregar no widget" substitui o conteúdo daquele navegador. Use uma aba limpa para demonstrar; recarregue a página do widget para zerar.</small>
  <div class="foot"><a href="index_jornada_pipe.html" style="color:var(--brand)">← Voltar ao hub</a> · Jornada PIPE FAPESP</div>
 </div>
@@ -263,6 +285,11 @@ document.getElementById("lenses").innerHTML=LET.map(l=>`<div class="lens"><b><sp
 ["jobs","dores","gdesejo","prod","alivio","ganho"].forEach(k=>{document.getElementById("v_"+k).innerHTML=VPC[k].map(x=>`<li>${x}</li>`).join("");});
 document.getElementById("bmc").innerHTML=BMCLBL.map(b=>`<div class="bcell"><h4>${b[1]}</h4><p>${BMC[b[0]]}</p></div>`).join("");
 renderMatrix();
+{const _tot=RUBC.reduce((a,c,i)=>a+(RUBRICA.s[i]||0)*c[1]/100,0);
+document.getElementById("rubList").innerHTML=RUBC.map((c,i)=>`<div class="attr"><span class="cat">peso ${c[1]}% · nota ${RUBRICA.s[i]}/5</span><h4>${c[0]}</h4></div>`).join("");
+document.getElementById("rubScore").textContent=_tot.toFixed(2)+"/5 (Forte)";}
+{const PB=[["problema","🎬 Problema"],["solucao","💡 Solução"],["inovacao","🔬 Caráter inovador"],["validacao","✅ Validação (Fase 1)"],["mercado","📈 Mercado & modelo"],["equipe","👥 Equipe"],["pedido","🎯 Plano & pedido"],["frase","⭐ Frase de valor"]];
+document.getElementById("pitchList").innerHTML=PB.map(b=>`<div class="attr"><span class="cat">${b[1]}</span><p>${PITCH.f[b[0]]||""}</p></div>`).join("");}
 document.getElementById("doresList").innerHTML=[...DORES.dores].sort((a,b)=>b.f*b.i-a.f*a.i).map(d=>`<div class="attr"><span class="cat">★ ${d.f*d.i} · freq ${d.f}/5 · int ${d.i}/5</span><h4>${d.d}</h4><p>Quem sente: ${d.pub}</p></div>`).join("");
 
 const TRL={trl:3,chk:[true,true,true,true,true,true]};
@@ -287,6 +314,17 @@ const ORC={fase:1,v:{"Material de consumo":35000,"Serviços de terceiros (PJ)":6
  {n:"Bolsista TT-III",r:"Desenvolvimento e testes de campo",d:"40h/sem"},
  {n:"Consultor de viticultura",r:"Validação agronômica",d:"sob demanda"}
 ]};
+const PITCH={f:{startup:"G1 – GeadaZero",quem:"Helena, Caio e Bruna",tempo:"8 min",
+ problema:"São 3h da manhã e o pequeno produtor de uva não tem como saber se vai perder a safra. A geada destrói até 30% da produção de milhares de vinícolas de SP.",
+ solucao:"A GeadaZero avisa da geada com 6h de antecedência: um sensor-estaca solar lê o microclima do vinhedo e um modelo dispara alerta por SMS e ligação.",
+ inovacao:"Hoje só há previsão regional (estado da arte). Novidade: modelo treinado com microdados do talhão. Incerteza: provar a precisão com 6h de antecedência em campo. TRL 3.",
+ validacao:"Fase 1 (9 meses): 85% de acerto em 3 vinhedos (mês 7); alerta de 6h validado (mês 8); 6 sensores operando por uma safra.",
+ mercado:"Cliente: pequenas vinícolas de SP. Receita: assinatura por hectare. Depois, café e frutas sensíveis a geada.",
+ equipe:"Helena (pesquisadora responsável, ML/agro), Caio (hardware), Bruna (mercado), Diego (gestão).",
+ pedido:"Em 9 meses e R$ 300 mil, entregamos a prova de viabilidade em campo. Pedimos o PIPE Fase 1.",
+ frase:"Para pequenas vinícolas que perdem safra com geada, a GeadaZero entrega previsão local e alerta a tempo, diferente das previsões regionais."}};
+const RUBRICA={s:{0:5,1:4,2:5,3:4,4:4,5:4},chk:[true,true,true,true,true,true,true,true]};
+const RUBC=[["Problema / dor relevante",15],["Caráter inovador",25],["Viabilidade técnica e método",25],["Mercado e modelo de negócio",15],["Equipe e infraestrutura",10],["Clareza e impacto do pitch",10]];
 function fmtR(n){return "R$ "+n.toLocaleString("pt-BR");}
 document.getElementById("trlrow").innerHTML=TRLDESC.map((tt,i)=>{const n=i+1;const on=n===TRL.trl;return `<div style="flex:1;min-width:78px;text-align:center;border:2px solid ${on?'var(--brand)':'var(--line)'};background:${on?'#eef2ff':'#fff'};border-radius:8px;padding:6px"><b style="color:var(--brand)">${n}</b><br><small style="font-size:9px;color:var(--muted)">${tt}</small></div>`;}).join("");
 document.getElementById("trlchk").innerHTML=TRLCHK.map((c,i)=>`<li style="font-size:13px;margin-bottom:3px">${TRL.chk[i]?"✅":"⬜"} ${c}</li>`).join("");
