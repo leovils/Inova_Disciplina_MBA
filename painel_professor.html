@@ -90,7 +90,7 @@ const BADGES=[{em:"🏁",n:"Fundador",test:d=>d[1]},{em:"🎯",n:"Caçador de Do
  {em:"💡",n:"Mestre da Ideação",test:d=>d[3]&&d[4]&&d[5]},{em:"🔬",n:"Validador",test:d=>d[6]&&d[7]&&d[8]},
  {em:"🧭",n:"Caça-Editais",test:d=>d[9]},{em:"🛠️",n:"Eng. do Plano",test:d=>d[10]&&d[11]},
  {em:"🎤",n:"Pitch Master",test:d=>d[12]},{em:"🌉",n:"Travessia",test:d=>[1,2,3,4,5,6,7,8,9,10,11,12].every(n=>d[n])}];
-const TOOLKEYS=[["termo","Termo"],["radar","Radar"],["osborn","Osborn"],["scamper","SCAMPER"],["matriz","Matriz"],["trl","TRL"],["vpc","VPC"],["bmc","BMC"],["crono","Cronog."],["orc","Orçam."],["rubrica","Pitch"],["taxonomia","Taxon."],["indicadores","KPIs"],["pi","PI"]];
+const TOOLKEYS=[["termo","Termo"],["radar","Radar"],["osborn","Osborn"],["scamper","SCAMPER"],["matriz","Matriz"],["trl","TRL"],["vpc","VPC"],["bmc","BMC"],["crono","Cronog."],["orc","Orçam."],["rubrica","pitch_tpl","Pitch"],["taxonomia","Taxon."],["indicadores","KPIs"],["pi","PI"]];
 let TURMA=JSON.parse(localStorage.getItem("prof_boletins")||"[]");
 
 function level(xp){let l=LEVELS[0][1];for(const[t,n]of LEVELS)if(xp>=t)l=n;return l;}

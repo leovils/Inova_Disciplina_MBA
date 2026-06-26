@@ -1,0 +1,23 @@
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos exportados pelos alunos (não versionar trabalhos)
+*.json
+!package.json
+exports/
+*.tmp
+
+# Banca e pitches (uso exclusivo do professor — não publicar)
+sala_da_banca.html
+pitch/
+
+# Exemplos didáticos (estes JSON devem ir para o repo)
+!exemplos/*.json
+
+# Lista de alunos (contem RA — NAO publicar)
+alunos.js
+
+# Formacao de grupos (ferramenta local do professor — usa alunos.js)
+formacao_grupos.html
